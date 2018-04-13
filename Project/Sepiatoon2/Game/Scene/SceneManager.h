@@ -6,8 +6,8 @@ class SceneManager :public Singleton<SceneManager>
 {
 	friend class Singleton<SceneManager>;
 	SceneManager();
-public:
 	~SceneManager();
+public:
 
 	void update();
 	void draw();
