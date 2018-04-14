@@ -1,5 +1,7 @@
 #pragma once
 
+#include"../Camera/SceneCamera.cpp"
+
 #include"Scene.h"
 
 class SceneManager :public Singleton<SceneManager>
@@ -16,11 +18,13 @@ public:
 
 	void change_scene(Scene*);
 public:
-	void debug();
+	void debug_update();
+	void debug_draw();
 private:
 	std::unique_ptr<Scene> m_current_scene = nullptr;
 };
 
+#include"SceneSub\TestWorld.cpp"
 #include"SceneSub\Title.cpp"
 
 

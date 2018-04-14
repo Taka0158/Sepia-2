@@ -25,5 +25,6 @@ protected:
 class ManagerEntity
 {
 public:
+	//IDからEntityのインスタンスを探す
 	virtual Entity* get_entity_from_id(ID _id) = 0;
 };

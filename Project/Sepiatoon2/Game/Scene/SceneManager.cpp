@@ -36,8 +36,8 @@ void SceneManager::update()
 	if (m_current_scene)
 	{
 		m_current_scene->update();
-		m_current_scene->debug_update();
 	}
+
 }
 
 void SceneManager::draw()
@@ -45,22 +45,43 @@ void SceneManager::draw()
 	if (m_current_scene)
 	{
 		m_current_scene->draw();
-		m_current_scene->debug_draw();
 	}
 
-	debug();
 }
 
-void SceneManager::debug()
+void SceneManager::debug_update()
+{
+	if (m_current_scene)
+	{
+		m_current_scene->debug_update();
+	}
+
+	if (Input::KeyLControl.pressed && Input::Key0.clicked)
+	{
+		if (dynamic_cast<TestWorld*>(m_current_scene.get()))
+		{
+			change_scene(new Title());
+		}
+		else
+		{
+			change_scene(new TestWorld());
+		}
+	}
+}
+
+
+void SceneManager::debug_draw()
 {
 	if (m_current_scene)
 	{
 		Println(L"CurrentScene : " + m_current_scene->get_scene_name());
+		m_current_scene->debug_draw();
 	}
 	else
 	{
 
 	}
+	SCENE_CAMERA->debug_draw();
 }
 
 void SceneManager::change_scene(Scene* _scene)

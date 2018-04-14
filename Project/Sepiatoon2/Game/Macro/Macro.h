@@ -8,6 +8,7 @@
 #define SETTING Setting::getInstance()
 #define MSG_DIS MessageDispatcher::getInstance()
 #define DEBUG Debug::getInstance()
+#define SCENE_CAMERA SceneCamera::getInstance()
 
 //--------------------------ID------------------------------------
 //	 MGR  CLASS	 インスタンス(1～1048575)
@@ -24,6 +25,7 @@
 #define ID_MGR_EFFECT	0x20000000
 #define ID_MGR_AUDIO	0x30000000
 #define ID_MGR_UI		0x40000000
+#define ID_SCENE_CAMERA 0x50000000
 
 
 //-------------------------MSG--------------------------
