@@ -29,7 +29,7 @@
 void Main()
 {
 	//Siv3Dアセット機能の利用
-	FontAsset::Register(L"font_debug_8", 8, Typeface::Black);
+	FontAsset::Register(L"font_debug_8", 8, Typeface::Default);
 
 	SETTING;
 	SCENE_CAMERA;
@@ -66,6 +66,47 @@ UIの作成(アニメーション)
 
 色塗りアルゴリズム
 
+----------------------------
 
+ObjectManager::get_entity_from_id() が線形探索により非効率
+	→二部探索
 
 */
+
+/*仕様上注意
+----------------------------
+
+Cameraの移動を考慮に入れたマウス座標は
+
+SCENE_CAMERA->get_mouse_pos()
+
+で得られる
+ただしScale 1 の場合のみ
+
+----------------------------
+
+Objectが他のObjectクラスや管理クラスに影響を与える処理を行う場合
+
+1.MessageType にて　メッセージ名を列挙型に加え、Debug用にStringで変換定義をする
+
+2.(宛先(ID)が未定義の場合は MessageDispatcher　にて　get_entity_from_id 関数内で定義する)
+	+管理クラスが宛先IDを持つ特定のインスタンスを探す場合は同名関数にて探索方法を定義する
+
+3.宛先の　handle_message　関数にて受け取った　Telegram　を on_message　に渡し
+	MessageType に応じて 処理内容を記述する
+
+----------------------------
+
+Cameraの影響を受けるのは各Sceneのdraw関数において
+
+SCENE_CAMERA->update();
+{
+
+}
+
+のスコープ内だけである
+
+GUI等を描画する時はこの範囲外で記述する
+
+*/
+

@@ -11,21 +11,21 @@
 #define SCENE_CAMERA SceneCamera::getInstance()
 
 //--------------------------ID------------------------------------
-//	 MGR  CLASS	 インスタンス(1～1048575)
-// ID 0    00		00000 
+//	 MGR  CLASS	 インスタンス(1～65535)
+// ID 00    00		0000 
 
-#define ID_UNKNOWN		0xFFFFFFFF
+#define ID_UNKNOWN		0x00000000
 
-#define ID_MGR_SCENE	0x00000000
+#define ID_MGR_SCENE	0x01000000
 
 // or(| : 論理和) で　結合すること
-#define ID_MGR_OBJ		0x10000000
-#define ID_OBJ_TEST		0x10100000
+#define ID_MGR_OBJ		0x02000000
+#define ID_OBJ_TEST		0x02010000
 
-#define ID_MGR_EFFECT	0x20000000
-#define ID_MGR_AUDIO	0x30000000
-#define ID_MGR_UI		0x40000000
-#define ID_SCENE_CAMERA 0x50000000
+#define ID_MGR_EFFECT	0x04000000
+#define ID_MGR_AUDIO	0x08000000
+#define ID_MGR_UI		0x10000000
+#define ID_SCENE_CAMERA 0x20000000
 
 
 //-------------------------MSG--------------------------
