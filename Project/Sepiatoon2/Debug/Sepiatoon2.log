@@ -2,6 +2,7 @@
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\system\setting.h(59): warning C4356: 'Singleton<Setting>::instance': 静的データ メンバーは派生クラスを使って初期化できません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\message\telegram.h(8): warning C4099: 'Telegram': タイプ名は最初 'class' として使われていましたが 'struct' として使われています。
   c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\message\telegram.h(7): note: 'Telegram' の宣言を確認してください
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\uimanager\uimanager.cpp(58): warning C4100: '_msg': 引数は関数の本体部で 1 度も参照されません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\message\messagedispatcher.h(37): warning C4356: 'Singleton<MessageDispatcher>::instance': 静的データ メンバーは派生クラスを使って初期化できません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\testobj.cpp(58): warning C4100: '_msg': 引数は関数の本体部で 1 度も参照されません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\message\messagedispatcher.cpp(122): warning C4715: 'MessageDispatcher::get_entity_from_id': 値を返さないコントロール パスがあります。

@@ -36,8 +36,16 @@ void SceneManager::update()
 	if (m_current_scene)
 	{
 		m_current_scene->update();
+		m_current_scene->debug_update();
+		
+		if (m_current_scene->get_ui() != nullptr)
+		{
+			m_current_scene->get_ui()->update();
+			m_current_scene->get_ui()->debug_update();
+		}
 	}
 
+	
 }
 
 void SceneManager::draw()
@@ -45,6 +53,13 @@ void SceneManager::draw()
 	if (m_current_scene)
 	{
 		m_current_scene->draw();
+		m_current_scene->debug_draw();
+
+		if (m_current_scene->get_ui() != nullptr)
+		{
+			m_current_scene->get_ui()->draw();
+			m_current_scene->get_ui()->debug_draw();
+		}
 	}
 
 }
@@ -53,7 +68,6 @@ void SceneManager::debug_update()
 {
 	if (m_current_scene)
 	{
-		m_current_scene->debug_update();
 	}
 
 	if (Input::KeyLControl.pressed && Input::Key0.clicked)
@@ -75,7 +89,6 @@ void SceneManager::debug_draw()
 	if (m_current_scene)
 	{
 		Println(L"CurrentScene : " + m_current_scene->get_scene_name());
-		m_current_scene->debug_draw();
 	}
 	else
 	{

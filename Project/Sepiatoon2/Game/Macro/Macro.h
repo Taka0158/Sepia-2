@@ -1,6 +1,9 @@
 #pragma once
 
 #define ASSERT(str) assert(false && (str))
+//--------------------------Assets------------------------------------
+#define FONT_IKA_ALPHABET_32 FontAsset(L"font_ika_alphabet_32")
+#define FONT_IKA_KANA_32 FontAsset(L"font_ika_kana_32")
 
 //--------------------------Singletonクラス------------------------------------
 #define SCENE_MGR SceneManager::getInstance()
@@ -9,6 +12,7 @@
 #define MSG_DIS MessageDispatcher::getInstance()
 #define DEBUG Debug::getInstance()
 #define SCENE_CAMERA SceneCamera::getInstance()
+#define UI_MGR UIManager::getInstance()
 
 //--------------------------ID------------------------------------
 //	 MGR  CLASS	 インスタンス(1～65535)

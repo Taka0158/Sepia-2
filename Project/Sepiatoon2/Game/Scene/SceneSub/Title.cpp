@@ -16,12 +16,10 @@ Title::~Title()
 
 void Title::initialize()
 {
-
 }
 
 void Title::finalize()
 {
-
 }
 
 void Title::enter()

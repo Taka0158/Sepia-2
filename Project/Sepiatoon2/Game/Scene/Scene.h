@@ -23,6 +23,13 @@ public:
 	virtual ~Scene() {};
 
 	String get_scene_name() { return scene_name; };
+	UIManager* get_ui() { return m_ui; };
 protected:
 	String scene_name;
+	
+	//シーンごとに別のUIにすべき？
+	//規模が小さいので単一のUIで済ます
+	//UIが存在しないSceneは　nullptr
+	//		  する			 UIManager
+	UIManager* m_ui = nullptr;
 };

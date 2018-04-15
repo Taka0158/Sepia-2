@@ -8,6 +8,7 @@
 #include<set>
 #include<bitset>
 
+
 #include"Game\Library\Library.cpp"
 #include"Game\Macro\Macro.h"
 
@@ -21,6 +22,7 @@
 
 #include"Game\Message\Telegram.h"
 
+#include"Game\UIManager\UIManager.cpp"
 #include"Game\Message\MessageDispatcher.cpp"
 
 #include"Game\Object\ObjectManager.cpp"
@@ -33,6 +35,14 @@ void Main()
 	//Siv3Dアセット機能の利用
 	FontAsset::Register(L"font_debug_8", 8, Typeface::Default);
 
+	//フォントのアセット登録
+	FontManager::Register(L"Assets/Fonts/Ika_font.ttf");
+	FontManager::Register(L"Assets/Fonts/Ika_font_kana.ttf");
+
+	FontAsset::Register(L"font_ika_alphabet_32", 32, L"Project Paintball");
+	FontAsset::Register(L"font_ika_kana_32", 32, L"イカモドキ");
+
+	//シングルトンクラス生成
 	SETTING;
 	SCENE_CAMERA;
 

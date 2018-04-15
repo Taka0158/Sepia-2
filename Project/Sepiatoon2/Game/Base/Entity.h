@@ -22,6 +22,7 @@ protected:
 };
 
 //管理クラスは継承する
+//管理するクラスがなければEntityを継承する
 class ManagerEntity
 {
 public:
