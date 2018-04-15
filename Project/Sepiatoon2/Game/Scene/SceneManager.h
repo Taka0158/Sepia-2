@@ -3,6 +3,17 @@
 #include"../Camera/SceneCamera.cpp"
 
 #include"Scene.h"
+//シーン切り替えクラスSceneSwitchの状態を定義
+enum class SwitchType {
+	FIRST,
+	SWITCH,
+	SECOND,
+	END
+};
+
+#include"SceneSwitch.h"
+
+
 
 class SceneManager :public Singleton<SceneManager>
 {
@@ -16,12 +27,15 @@ public:
 	void initialize();
 	void finalize();
 
-	void change_scene(Scene*);
+	void change_scene(Scene*, SceneSwitch* = new FadeInOut());
+	void change_scene();
 public:
 	void debug_update();
 	void debug_draw();
 private:
 	std::unique_ptr<Scene> m_current_scene = nullptr;
+	std::unique_ptr<Scene> m_next_scene = nullptr;
+	std::unique_ptr<SceneSwitch> m_current_scene_switch = nullptr;
 };
 
 #include"SceneSub\TestWorld.cpp"

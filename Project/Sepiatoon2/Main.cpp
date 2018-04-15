@@ -130,3 +130,11 @@ ObjectManager::check_alive()で死ぬ時にreset()を呼ぶ
 
 */
 
+
+/*
+懸念
+
+Setting::stopwatch()が最大値を越えると…
+→ INT_MAX 2147483.647秒　-> 24日
+
+*/
