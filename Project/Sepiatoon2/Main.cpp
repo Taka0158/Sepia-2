@@ -4,6 +4,8 @@
 #include<memory>
 #include<cassert>
 #include<climits>
+#include<functional>
+#include<set>
 #include<bitset>
 
 #include"Game\Library\Library.cpp"
@@ -107,6 +109,14 @@ SCENE_CAMERA->update();
 のスコープ内だけである
 
 GUI等を描画する時はこの範囲外で記述する
+
+----------------------------
+
+レイヤ機能
+
+ObjectManager::create～()を呼び出す際に順序集合(set)に登録regist()
+
+ObjectManager::check_alive()で死ぬ時にreset()を呼ぶ
 
 */
 
