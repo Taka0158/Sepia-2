@@ -21,7 +21,7 @@ void FadeInOut::update_sub()
 	{
 		m_a = 255 * EaseIn(1.00, 0.01, Easing::Quart, m_2nd_r);
 	}
-	m_a = MinMax(m_a, 0, 255);
+	m_a = clamp(m_a, 0, 255);
 	
 }
 

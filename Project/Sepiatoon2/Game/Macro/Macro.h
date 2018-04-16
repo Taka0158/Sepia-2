@@ -42,3 +42,6 @@
 
 //メッセージ送信の際秒表記で遅延時間を渡す場合に使用
 #define MSG_SEC 1000
+//-------------------------REP/FOR--------------------------
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define JUMP_REP(i,n,v) for(int i=0;i<(n);(i)+=(v))

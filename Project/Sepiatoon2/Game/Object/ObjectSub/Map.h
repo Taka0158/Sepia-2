@@ -28,7 +28,8 @@ public:
 	//単一オブジェクトよりidはマクロ指定
 	virtual void set_id() {};
 protected:
-
+	Color m_c1 = Palette::Aqua;
+	Color m_c2 = Palette::Orange;
 };
 
 #include"MapSub\MapSimple.cpp"

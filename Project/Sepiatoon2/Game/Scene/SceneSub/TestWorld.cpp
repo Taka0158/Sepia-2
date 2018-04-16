@@ -62,7 +62,7 @@ void TestWorld::draw()
 
 void TestWorld::debug_update()
 {
-	if (Input::MouseL.pressed)
+	if (Input::MouseM.pressed)
 	{
 		OBJ_MGR->create_TestObj(SCENE_CAMERA->get_mouse_pos());
 	}
@@ -74,6 +74,14 @@ void TestWorld::debug_update()
 	{
 		initialize();
 		DEBUG->regist(DebugText(5, L"‰Šú‰»"));
+	}
+	if (Input::KeyF2.clicked)
+	{
+		OBJ_MGR->set_map(MapType::SIMPLE);
+	}
+	if (Input::KeyF3.clicked)
+	{
+		OBJ_MGR->destroy_map();
 	}
 }
 

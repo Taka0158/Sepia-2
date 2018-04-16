@@ -11,7 +11,7 @@ Point Vec2_to_Point(Vec2 _v)
 }
 
 template <class T>
-T MinMax(T _val,T _min,T _max)
+T clamp(T _val,T _min,T _max)
 {
 	return Min(_max, Max(_val, _min));
 };

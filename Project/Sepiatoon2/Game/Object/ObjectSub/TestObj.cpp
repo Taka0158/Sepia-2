@@ -42,14 +42,7 @@ void TestObj::debug_update()
 		MSG_DIS->dispatch_message(0, m_id, UID_SCENE_CAMERA, msg::TYPE::SCENE_SET_CENTER, this);
 	}
 
-	if (Input::KeyF2.clicked)
-	{
-		OBJ_MGR->set_map(MapType::SIMPLE);
-	}
-	if (Input::KeyF3.clicked)
-	{
-		OBJ_MGR->destroy_map();
-	}
+
 }
 
 void TestObj::debug_draw()

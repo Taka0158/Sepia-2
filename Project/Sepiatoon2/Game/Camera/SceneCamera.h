@@ -20,6 +20,8 @@ public:
 	//カメラ中心を引数にあわせる
 	void set_center(Vec2,bool);
 
+	Vec2 get_center_pos()const { return m_pos; };
+
 	//カメラ移動に応じたマウス位置を返す
 	//ただし、Scale 1　以外の場合　正常に機能しない
 	static Vec2 get_mouse_pos()
