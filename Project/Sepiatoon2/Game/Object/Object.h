@@ -2,7 +2,7 @@
 class Object :public Entity
 {
 public:
-	Object(ID _id) :Entity(ID(ID_MGR_OBJ) | _id) 
+	Object(ID _id) :Entity(ID(UID_MGR_OBJ) | _id) 
 	{
 
 	};

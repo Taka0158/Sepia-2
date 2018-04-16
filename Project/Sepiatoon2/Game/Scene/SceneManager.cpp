@@ -67,6 +67,7 @@ void SceneManager::update()
 
 void SceneManager::draw()
 {
+
 	if (m_current_scene)
 	{
 		m_current_scene->draw();
@@ -91,6 +92,7 @@ void SceneManager::debug_update()
 {
 	if (m_current_scene)
 	{
+
 	}
 
 	if (Input::KeyLControl.pressed && Input::Key0.clicked)

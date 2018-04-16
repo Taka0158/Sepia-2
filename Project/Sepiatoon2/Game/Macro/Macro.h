@@ -13,23 +13,25 @@
 #define DEBUG Debug::getInstance()
 #define SCENE_CAMERA SceneCamera::getInstance()
 #define UI_MGR UIManager::getInstance()
+#define OBJ_MAP_SIMPLE MapSimple::getInstance()
 
 //--------------------------ID------------------------------------
 //	 MGR  CLASS	 インスタンス(1～65535)
 // ID 00    00		0000 
 
-#define ID_UNKNOWN		0x00000000
+#define UID_UNKNOWN			0x00000000
 
-#define ID_MGR_SCENE	0x01000000
+#define UID_MGR_SCENE		0x01000000
 
 // or(| : 論理和) で　結合すること
-#define ID_MGR_OBJ		0x02000000
-#define ID_OBJ_TEST		0x02010000
+#define UID_MGR_OBJ			0x02000000
+#define UID_OBJ_MAP_SIMPLE	0x02000001
+#define ID_OBJ_TEST			0x02010000
 
-#define ID_MGR_EFFECT	0x04000000
-#define ID_MGR_AUDIO	0x08000000
-#define ID_MGR_UI		0x10000000
-#define ID_SCENE_CAMERA 0x20000000
+#define UID_MGR_EFFECT		0x04000000
+#define UID_MGR_AUDIO		0x08000000
+#define UID_MGR_UI			0x10000000
+#define UID_SCENE_CAMERA	0x20000000
 
 
 //-------------------------MSG--------------------------

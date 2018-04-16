@@ -1,9 +1,10 @@
 #include"ObjectManager.h"
 
 #include"Object.h"
+#include"ObjectSub\Map.h"
 #include"ObjectSub\TestObj.cpp"
 
-ObjectManager::ObjectManager():Entity(ID(ID_MGR_OBJ))
+ObjectManager::ObjectManager():Entity(ID(UID_MGR_OBJ))
 {
 	initialize();
 }
@@ -23,11 +24,15 @@ void ObjectManager::finalize()
 	destroy_all_object();
 	check_alive();
 	reset_object_id();
+	destroy_map();
 }
 
 void ObjectManager::update()
 {
 	check_alive();
+	
+	if (m_map != nullptr)m_map->update();
+
 
 	for (unsigned int i = 0; i < m_objects.size(); i++)
 	{
@@ -51,6 +56,7 @@ void ObjectManager::draw()
 		}
 	}
 	*/
+	if (m_map != nullptr)m_map->draw();
 
 	//ƒŒƒCƒ„—L‚è
 	for (auto itr : m_objects_drawer)
@@ -65,6 +71,8 @@ void ObjectManager::draw()
 
 void ObjectManager::debug_update()
 {
+	if (m_map != nullptr)m_map->debug_update();
+
 	for (unsigned int i = 0; i < m_objects.size(); i++)
 	{
 		if (m_objects[i] != nullptr)
@@ -77,6 +85,8 @@ void ObjectManager::debug_update()
 
 void ObjectManager::debug_draw()
 {
+	if (m_map != nullptr)m_map->debug_draw();
+
 	for (unsigned int i = 0; i < m_objects.size(); i++)
 	{
 		if (m_objects[i] != nullptr)
@@ -197,4 +207,38 @@ void ObjectManager::regist_object(Object* _obj)
 {
 	m_objects.push_back(_obj);
 	regist_draw_object(_obj);
+}
+
+void ObjectManager::set_map(MapType _type)
+{
+	if (m_map)return;
+
+	switch (_type)
+	{
+	case MapType::SIMPLE:
+		m_map = OBJ_MAP_SIMPLE;
+		break;
+	}
+
+	m_map->enter();
+
+}
+
+void ObjectManager::destroy_map()
+{
+	if (!m_map)return;
+
+	m_map->exit();
+	m_map = nullptr;
+}
+
+void ObjectManager::change_map(Map* _map)
+{
+	if (!m_map)return;
+
+	m_map->exit();
+
+	m_map = _map;
+
+	m_map->enter();
 }

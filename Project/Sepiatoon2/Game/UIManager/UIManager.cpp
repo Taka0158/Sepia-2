@@ -1,6 +1,6 @@
 #include"UIManager.h"
 
-UIManager::UIManager() :Entity(ID_MGR_UI)
+UIManager::UIManager() :Entity(UID_MGR_UI)
 {
 	initialize();
 }

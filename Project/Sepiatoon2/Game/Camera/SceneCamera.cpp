@@ -1,6 +1,6 @@
 #include"SceneCamera.h"
 
-SceneCamera::SceneCamera():Entity(ID_SCENE_CAMERA)
+SceneCamera::SceneCamera():Entity(UID_SCENE_CAMERA)
 {
 	initialize();
 }

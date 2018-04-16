@@ -39,7 +39,16 @@ void TestObj::debug_update()
 	//OBJ_MGR‚ÌÅŒã‚ÉŠi”[‚³‚ê‚½TestObj‚ªÅI“I‚É“K‰ž‚³‚ê‚é
 	if (Input::KeySpace.clicked)
 	{
-		MSG_DIS->dispatch_message(0, m_id, ID_SCENE_CAMERA, msg::TYPE::SCENE_SET_CENTER, this);
+		MSG_DIS->dispatch_message(0, m_id, UID_SCENE_CAMERA, msg::TYPE::SCENE_SET_CENTER, this);
+	}
+
+	if (Input::KeyF2.clicked)
+	{
+		OBJ_MGR->set_map(MapType::SIMPLE);
+	}
+	if (Input::KeyF3.clicked)
+	{
+		OBJ_MGR->destroy_map();
 	}
 }
 
@@ -66,7 +75,7 @@ bool TestObj::on_message(const Telegram& _msg)
 
 void TestObj::set_id()
 {
-	if (m_next_valid_id < 0xFFFFF)
+	if (m_next_valid_id < 0xFFFF)
 	{
 		m_id |= m_next_valid_id;
 		m_next_valid_id++;

@@ -75,13 +75,13 @@ void MessageDispatcher::destroy_all_message()
 Entity* MessageDispatcher::get_entity_from_id(ID _id)
 {
 	Entity* ret = nullptr;
-	if ((_id & ID(ID_MGR_SCENE)) != 0)
+	if ((_id & ID(UID_MGR_SCENE)) != 0)
 	{
 
 	}
-	else if ((_id & ID(ID_MGR_OBJ)) != 0)
+	else if ((_id & ID(UID_MGR_OBJ)) != 0)
 	{
-		if (_id == ID(ID_MGR_OBJ))
+		if (_id == ID(UID_MGR_OBJ))
 		{
 			ret = OBJ_MGR;
 		}
@@ -90,19 +90,19 @@ Entity* MessageDispatcher::get_entity_from_id(ID _id)
 			ret = OBJ_MGR->get_entity_from_id(_id);
 		}
 	}
-	else if ((_id & ID(ID_MGR_EFFECT)) != 0)
+	else if ((_id & ID(UID_MGR_EFFECT)) != 0)
 	{
 
 	}
-	else if ((_id & ID(ID_MGR_AUDIO)) != 0)
+	else if ((_id & ID(UID_MGR_AUDIO)) != 0)
 	{
 
 	}
-	else if ((_id & ID(ID_MGR_UI)) != 0)
+	else if ((_id & ID(UID_MGR_UI)) != 0)
 	{
 
 	}
-	else if ((_id & ID(ID_SCENE_CAMERA)) != 0)
+	else if ((_id & ID(UID_SCENE_CAMERA)) != 0)
 	{
 		ret = SCENE_CAMERA;
 	}

@@ -7,10 +7,10 @@
 struct Telegram
 {
 	//送信者のエンティティタイプ
-	ID sender_id = ID_UNKNOWN;
+	ID sender_id = UID_UNKNOWN;
 	
 	//受信者のエンティティタイプ
-	ID receiver_id = ID_UNKNOWN;
+	ID receiver_id = UID_UNKNOWN;
 
 	//メッセージの種類・内容
 	//message_types.hで定義

@@ -2,6 +2,12 @@
 
 #include"Object.h"
 
+class Map;
+
+enum class MapType {
+	SIMPLE
+};
+
 // GameMain
 class ObjectManager : public Singleton<ObjectManager>,public Entity,public ManagerEntity
 {
@@ -30,6 +36,14 @@ public:
 
 	//管理オブジェクトのIDによる探索
 	Entity* get_entity_from_id(ID _id)override;
+
+	//--------MAP関数-----
+	void set_map(MapType);
+	void destroy_map();
+	//使う予定はない
+	//連続バトル的なモードがあれば使用する？
+	//Mapサブクラスから呼び出す
+	void change_map(Map*);
 private:
 
 	//Objectが死んでいたら削除する
@@ -51,6 +65,7 @@ private:
 	//この関数に渡す
 	void regist_object(Object*);
 
+
 private:
 	//オブジェクトのインスタンス（のポインタ）を格納する
 	std::vector<Object*> m_objects;
@@ -60,6 +75,9 @@ private:
 
 	//object.m_depth基準で並び替える
 	std::set<Drawer> m_objects_drawer;
+
+	//mapインスタンス
+	Map* m_map = nullptr;
 
 };						 
 
