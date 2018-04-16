@@ -1,0 +1,17 @@
+﻿  Main.cpp
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\System\Setting.h(64): warning C4356: 'Singleton<Setting>::instance': 静的データ メンバーは派生クラスを使って初期化できません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\Message\Telegram.h(8): warning C4099: 'Telegram': タイプ名は最初 'class' として使われていましたが 'struct' として使われています。
+  c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\Message\Telegram.h(7): note: 'Telegram' の宣言を確認してください
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\UIManager\UIManager.cpp(58): warning C4100: '_msg': 引数は関数の本体部で 1 度も参照されません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\message\MessageDispatcher.h(37): warning C4356: 'Singleton<MessageDispatcher>::instance': 静的データ メンバーは派生クラスを使って初期化できません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\ObjectSub\TestObj.cpp(58): warning C4100: '_msg': 引数は関数の本体部で 1 度も参照されません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\scene\SceneSwitchSub\FadeInOut.cpp(18): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\scene\SceneSwitchSub\FadeInOut.cpp(22): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+     ライブラリ C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.lib とオブジェクト C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.exp を作成中
+  コード生成しています。
+  1 of 1163 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  コード生成が終了しました。
+  Sepiatoon2.vcxproj -> C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.exe
+  Sepiatoon2.vcxproj -> C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.pdb (Full PDB)

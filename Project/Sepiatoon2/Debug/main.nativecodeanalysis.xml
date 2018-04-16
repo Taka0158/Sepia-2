@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>d:\siv3d(august2016v2)\inc\siv3d\</FILEPATH>
+      <FILENAME>ireader.hpp</FILENAME>
+      <LINE>34</LINE>
+      <COLUMN>23</COLUMN>
+    </SFA>
+    <DEFECTCODE>28204</DEFECTCODE>
+    <DESCRIPTION>'isOpened' には `d:\siv3d(august2016v2)\inc\siv3d\binaryreader.hpp(71)` にオーバーライドがありますが、return に対してオーバーライドが注釈として設定されているのみです: オーバーライドを注釈として設定する場合、ベース (この関数) も同様に注釈を設定する必要があります。</DESCRIPTION>
+    <FUNCTION></FUNCTION>
+    <DECORATED></DECORATED>
+    <FUNCLINE>0</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>d:\siv3d(august2016v2)\inc\siv3d\</FILEPATH>
+      <FILENAME>ireader.hpp</FILENAME>
+      <LINE>111</LINE>
+      <COLUMN>32</COLUMN>
+    </SFA>
+    <DEFECTCODE>28204</DEFECTCODE>
+    <DESCRIPTION>'supportsLookahead' には `d:\siv3d(august2016v2)\inc\siv3d\binaryreader.hpp(181)` にオーバーライドがありますが、return に対してオーバーライドが注釈として設定されているのみです: オーバーライドを注釈として設定する場合、ベース (この関数) も同様に注釈を設定する必要があります。</DESCRIPTION>
+    <FUNCTION></FUNCTION>
+    <DECORATED></DECORATED>
+    <FUNCLINE>0</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

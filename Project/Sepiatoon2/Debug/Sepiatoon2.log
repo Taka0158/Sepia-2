@@ -1,3 +1,2 @@
-﻿  Main.cpp
-c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\main.cpp : fatal error C1041: プログラム データベース 'C:\Users\tomoki\Desktop\Sepiatoon2\Project\Sepiatoon2\Debug\vc140.idb' を開けません。複数の CL.EXE が同じ .PDB ファイルに書き込む場合、/FS を使用してください。
-cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
+﻿  Sepiatoon2.vcxproj -> C:\Users\tomoki\Desktop\Sepiatoon2\Project\Debug\Sepiatoon2.exe
+  Sepiatoon2.vcxproj -> C:\Users\tomoki\Desktop\Sepiatoon2\Project\Debug\Sepiatoon2.pdb (Full PDB)
