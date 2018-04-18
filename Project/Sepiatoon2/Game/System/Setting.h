@@ -1,5 +1,31 @@
 #pragma once
 
+enum class TeamType
+{
+	TEAM_A,
+	TEAM_B
+};
+
+enum class CharType
+{
+	NORMAL
+};
+
+enum class SpecialType
+{
+	UNKNOWN
+};
+
+enum class MapType
+{
+	SIMPLE
+};
+
+enum class PlayModeType
+{
+	ONE_ON_ONE
+};
+
 class Setting :public Singleton<Setting>
 {
 	friend class Singleton<Setting>;
@@ -59,6 +85,54 @@ public:
 	static int full_sc_h;
 	static int window_sc_w;
 	static int window_sc_h;
+
+	static Color get_color_A() { return m_color_A; }
+	static Color get_color_B() { return m_color_B; }
+	static TeamType get_ika_1_team() { return m_ika_1; }
+	static TeamType get_ika_2_team() { return m_ika_2; }
+	static TeamType get_ika_3_team() { return m_ika_3; }
+	static TeamType get_ika_4_team() { return m_ika_4; }
+	static CharType get_char_1() { return m_char_1; }
+	static CharType get_char_2() { return m_char_2; }
+	static CharType get_char_3() { return m_char_3; }
+	static CharType get_char_4() { return m_char_4; }
+	static SpecialType get_special_1() { return m_special_1; }
+	static SpecialType get_special_2() { return m_special_2; }
+	static SpecialType get_special_3() { return m_special_3; }
+	static SpecialType get_special_4() { return m_special_4; }
+	static MapType get_map(){ return m_map; }
+	static PlayModeType get_playmode() { return m_playmode; }
+
+private:
+	//ゲーム情報の保持
+	//A・Bチームの色
+	static Color m_color_A;
+	static Color m_color_B;
+
+	//チームの割り当て
+	static TeamType m_ika_1;
+	static TeamType m_ika_2;
+	static TeamType m_ika_3;
+	static TeamType m_ika_4;
+
+	//キャラのタイプ
+	static CharType m_char_1;
+	static CharType m_char_2;
+	static CharType m_char_3;
+	static CharType m_char_4;
+
+	//スペシャルタイプ
+	static SpecialType m_special_1;
+	static SpecialType m_special_2;
+	static SpecialType m_special_3;
+	static SpecialType m_special_4;
+
+	//マップ
+	static MapType m_map;
+
+	//プレイモード
+	static PlayModeType m_playmode;
+
 };
 Stopwatch Setting::stopwatch = Stopwatch();
 Setting* Setting::instance = nullptr;
@@ -73,3 +147,31 @@ int Setting::window_sc_h = 480;
 //フルスクリーン解像度
 int Setting::full_sc_w = 1920;
 int Setting::full_sc_h = 1080;
+
+//A・Bチームの色
+Color Setting::m_color_A = Color(Palette::Aqua);
+Color Setting::m_color_B = Color(Palette::Orange);
+
+//チームの割り当て
+TeamType Setting::m_ika_1 = TeamType::TEAM_A;
+TeamType Setting::m_ika_2 = TeamType::TEAM_A;
+TeamType Setting::m_ika_3 = TeamType::TEAM_B;
+TeamType Setting::m_ika_4 = TeamType::TEAM_B;
+
+//キャラのタイプ
+CharType Setting::m_char_1 = CharType::NORMAL;
+CharType Setting::m_char_2 = CharType::NORMAL;
+CharType Setting::m_char_3 = CharType::NORMAL;
+CharType Setting::m_char_4 = CharType::NORMAL;
+
+//スペシャルタイプ
+SpecialType Setting::m_special_1 = SpecialType::UNKNOWN;
+SpecialType Setting::m_special_2 = SpecialType::UNKNOWN;
+SpecialType Setting::m_special_3 = SpecialType::UNKNOWN;
+SpecialType Setting::m_special_4 = SpecialType::UNKNOWN;
+
+//マップ
+MapType Setting::m_map = MapType::SIMPLE;
+
+//プレイモード
+PlayModeType Setting::m_playmode = PlayModeType::ONE_ON_ONE;

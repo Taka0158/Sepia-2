@@ -7,7 +7,8 @@ namespace msg
 	{
 		UNKNOWN						,
 		OBJMGR_DESTROY_ALL_OBJECT  ,
-		SCENE_SET_CENTER
+		SCENE_SET_CENTER ,
+		MAP_PAINT
 	};
 
 	//デバグ用に表示する名前
@@ -24,6 +25,9 @@ namespace msg
 			break;
 		case TYPE::SCENE_SET_CENTER:
 			str = L"CAMERA:中心を設定";
+			break;
+		case TYPE::MAP_PAINT:
+			str = L"MAP:色塗り";
 			break;
 		}
 		return str;

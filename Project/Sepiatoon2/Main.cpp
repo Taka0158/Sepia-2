@@ -7,13 +7,15 @@
 #include<functional>
 #include<set>
 #include<bitset>
-
-
-#include"Game\Library\Library.cpp"
-#include"Game\Macro\Macro.h"
+#include<queue>
 
 #include"Game\Pattern\Command.h"
 #include"Game\Pattern\Singleton.h"
+
+#include"Game\Macro\Macro.h"
+#include"Game\Library\Library.cpp"
+#include"Game\Asset\AssetFactory.cpp"
+
 
 #include"Game\System\Setting.h"
 #include"Game\System\Debug.h"
@@ -59,6 +61,7 @@ void Main()
 		SCENE_MGR->debug_draw();
 
 		DEBUG->update();
+		//DEBUG->show();
 		MSG_DIS->debug_draw();
 	}
 }
@@ -79,11 +82,17 @@ void Main()
 
 色塗りアルゴリズム
 O(1920*1080)は死んだ
+->従来方式
 
 ----------------------------
+既存の問題
+
+fullscreenでマップをcreateすると位置がずれる（カメラPosの問題？）
 
 ObjectManager::get_entity_from_id() が線形探索により非効率
 	→二部探索
+
+Map::get_color()関数がSCENE_CAMER部分でバグ？
 
 */
 
@@ -130,6 +139,10 @@ ObjectManager::create～()を呼び出す際に順序集合(set)に登録regist(
 
 ObjectManager::check_alive()で死ぬ時にreset()を呼ぶ
 
+----------------------------
+
+Mapクラスは必ず左上座標が(0,0)の位置に描画される
+
 */
 
 
@@ -139,4 +152,13 @@ ObjectManager::check_alive()で死ぬ時にreset()を呼ぶ
 Setting::stopwatch()が最大値を越えると…
 → INT_MAX 2147483.647秒　-> 24日
 
+*/
+
+/*
+備忘録
+
+・外部シンボルの解決法（基底クラスの基底クラスが純粋仮想関数もつ場合の継承
+Object						<-		Map		 <-		 MapSimple
+仮想initialize()=0		   仮想initialize(){空}	   initialize(){定義}
+  
 */

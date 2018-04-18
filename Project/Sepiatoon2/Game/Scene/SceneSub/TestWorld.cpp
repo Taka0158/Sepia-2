@@ -66,9 +66,25 @@ void TestWorld::debug_update()
 	{
 		OBJ_MGR->create_TestObj(SCENE_CAMERA->get_mouse_pos());
 	}
-	if (Input::MouseR.clicked)
+	if (Input::MouseL.pressed)
 	{
-		//MSG_DIS->dispatch_message(0.0, ID_MGR_SCENE, ID_MGR_OBJ, msg::TYPE::OBJMGR_DESTROY_ALL_OBJECT);
+		if(Input::KeyControl.pressed)
+		{
+			if (OBJ_MGR->get_entity_from_id(UID_OBJ_MAP))
+			{
+				std::unique_ptr<Paint> p = std::make_unique<Paint>(Paint(SCENE_CAMERA->get_mouse_posP(), Setting::get_color_A()));
+				MSG_DIS->dispatch_message(0, UID_UNKNOWN, UID_OBJ_MAP, msg::TYPE::MAP_PAINT, p.get());
+			}
+		}
+		else
+		{
+			if (OBJ_MGR->get_entity_from_id(UID_OBJ_MAP))
+			{
+				std::unique_ptr<Paint> p = std::make_unique<Paint>(Paint(SCENE_CAMERA->get_mouse_posP(), Setting::get_color_B()));
+				MSG_DIS->dispatch_message(0, UID_UNKNOWN, UID_OBJ_MAP, msg::TYPE::MAP_PAINT, p.get());
+			}
+		}
+
 	}
 	if (Input::KeyF1.clicked)
 	{
@@ -83,6 +99,7 @@ void TestWorld::debug_update()
 	{
 		OBJ_MGR->destroy_map();
 	}
+
 }
 
 void TestWorld::debug_draw()

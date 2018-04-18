@@ -27,6 +27,11 @@ public:
 	static Vec2 get_mouse_pos()
 	{
 		Vec2 temp = Vec2(SCENE_CAMERA->getCameraArea().pos);
+		return Mouse::PosF() + temp;
+	}
+	static Point get_mouse_posP()
+	{
+		Point temp = Vec2_to_Point(SCENE_CAMERA->getCameraArea().pos);
 		return Mouse::Pos() + temp;
 	}
 private:

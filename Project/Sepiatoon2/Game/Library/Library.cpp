@@ -1,5 +1,18 @@
 typedef std::bitset<32> ID;
 
+class Paint
+{
+public:
+	Paint()
+	{
+		pos = Point(0.0, 0.0);
+		color = Color(Palette::White);
+	}
+	Paint(Point _p, Color _c):pos(_p), color(_c) {};
+	Point pos;
+	Color color;
+};
+
 Vec2 Point_to_Vec2(Point _p)
 {
 	return Vec2(_p.x, _p.y);
@@ -14,6 +27,16 @@ template <class T>
 T clamp(T _val,T _min,T _max)
 {
 	return Min(_max, Max(_val, _min));
+};
+
+Point clamp(Point _val, Point _min, Point _max)
+{
+	return Point(Min(_max.x, Max(_val.x, _min.x)), Min(_max.y, Max(_val.y, _min.y)));
+};
+
+Vec2 clamp(Vec2 _val, Vec2 _min, Vec2 _max)
+{
+	return Vec2(Min(_max.x, Max(_val.x, _min.x)), Min(_max.y, Max(_val.y, _min.y)));
 };
 
 //IDÇ16êiêîï\ãLÇ…

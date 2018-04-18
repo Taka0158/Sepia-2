@@ -4,10 +4,6 @@
 
 class Map;
 
-enum class MapType {
-	SIMPLE
-};
-
 // GameMain
 class ObjectManager : public Singleton<ObjectManager>,public Entity,public ManagerEntity
 {
@@ -44,6 +40,8 @@ public:
 	//連続バトル的なモードがあれば使用する？
 	//Mapサブクラスから呼び出す
 	void change_map(Map*);
+
+	Map* get_map() { return m_map; };
 private:
 
 	//Objectが死んでいたら削除する

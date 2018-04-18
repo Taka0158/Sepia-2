@@ -36,13 +36,15 @@ public:
 		{
 			Setting::toggle_fullscreen();
 		}
-
 		//fps•\Ž¦
 		Println(Profiler::FPS(), L"FPS");
 
 		if (texts.empty())return;
 		check();
-			for (auto itr : texts)
+	}
+	void show()
+	{
+		for (auto itr : texts)
 		{
 			Println(itr.info);
 		}

@@ -1,7 +1,6 @@
 #include"ObjectManager.h"
 
-#include"Object.h"
-#include"ObjectSub\Map.h"
+#include"ObjectSub\Map.cpp"
 #include"ObjectSub\TestObj.cpp"
 
 ObjectManager::ObjectManager():Entity(ID(UID_MGR_OBJ))
@@ -17,6 +16,7 @@ ObjectManager::~ObjectManager()
 void ObjectManager::initialize()
 {
 	finalize();
+	SCENE_CAMERA->initialize();
 }
 
 void ObjectManager::finalize()
@@ -146,6 +146,11 @@ bool ObjectManager::on_message(const Telegram& _msg)
 Entity* ObjectManager::get_entity_from_id(ID _id)
 {
 	Entity* ret = nullptr;
+
+	if (_id == ID(UID_OBJ_MAP))
+	{
+		return m_map;
+	}
 
 	//最適な探索アルゴリズム（二部探索）TODO
 	for (auto itr : m_objects)
