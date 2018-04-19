@@ -36,6 +36,8 @@ void Main()
 {
 	//Siv3Dアセット機能の利用
 	FontAsset::Register(L"font_debug_8", 8, Typeface::Default);
+	FontAsset::Register(L"font_debug_4", 4, Typeface::Default);
+	FontAsset::Register(L"font_debug_2", 2, Typeface::Default);
 
 	//フォントのアセット登録
 	FontManager::Register(L"Assets/Fonts/Ika_font.ttf");

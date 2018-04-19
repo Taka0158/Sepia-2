@@ -34,6 +34,10 @@ void SceneCamera::finalize()
 
 void SceneCamera::debug_draw()
 {
+	if (Input::KeyNum3.clicked)
+	{
+		setTargetScale(1.0);
+	}
 	String str = L"Camera: ";
 	Println(str, L"m_pos", m_pos);
 	Println(str, L"m_targetPos", m_targetPos);

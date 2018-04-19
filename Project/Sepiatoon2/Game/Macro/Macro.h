@@ -2,6 +2,9 @@
 
 #define ASSERT(str) assert(false && (str))
 //--------------------------Assets------------------------------------
+#define FONT_DEBUG_8 FontAsset(L"font_debug_8")
+#define FONT_DEBUG_4 FontAsset(L"font_debug_4")
+#define FONT_DEBUG_2 FontAsset(L"font_debug_2")
 #define FONT_IKA_ALPHABET_32 FontAsset(L"font_ika_alphabet_32")
 #define FONT_IKA_KANA_32 FontAsset(L"font_ika_kana_32")
 
