@@ -72,9 +72,11 @@ void Main()
 
 Object:衝突関数
 Ika:IkaState以下の実装
-Ika:入力関数(ジョイコンも考慮)
-Ika:update内での合力計算（入力によるもの）（AIによるものは後日）
-MoivingObject：行列計算
+Ikaの描画角度導出
+
+//Ika:入力関数(ジョイコンも考慮)
+//Ika:update内での合力計算（入力によるもの）（AIによるものは後日）
+//MoivingObject：行列計算
 
 */
 

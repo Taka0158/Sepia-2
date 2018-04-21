@@ -3,7 +3,7 @@
 Map::Map():Object(ID(UID_OBJ_MAP)) {
 	m_depth = -100;
 	m_is_alive = true;
-	m_p = Vec2(0.0, 0.0);
+	m_pos = Vec2(0.0, 0.0);
 	initialize();
 };
 

@@ -27,6 +27,9 @@ public:
 
 	//引数ピクセル場所の色を返す
 	Color get_color(Point);
+
+	//マップサイズを返す
+	Size get_map_size() { return Size(m_map_w, m_map_h); }
 protected:
 	//画像処理（ブレンド）を行う
 	void blend();

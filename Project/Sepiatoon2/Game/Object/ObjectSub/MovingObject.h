@@ -17,7 +17,12 @@ public:
 	double get_max_force() { return m_max_force; }
 	double get_max_turn_rate() { return m_max_turn_rate; }
 
+	//目標の座標へ正面ベクトルが向くようにする
+	//ただしベクトル回転の更新はm_max_turn_rateによって制限される
+	//目標の座標へ向くとtrueを返す
 	bool rotate_heading_to_face_position(Vec2);
+
+	//新しく方向ベクトルm_heading（vec_side)を設定
 	void set_heading(Vec2);
 
 	//MovingObjectのパラメータを設定する
@@ -29,6 +34,8 @@ protected:
 	Vec2 m_heading=Vec2(0.0,1.0);
 
 	Vec2 m_side_heading=Vec2(1.0,0.0);
+
+	double m_friction;
 
 	double m_mass;
 
@@ -54,7 +61,7 @@ bool MovingObject::rotate_heading_to_face_position(Vec2 _vec)
 	Mat3x2 rotation_matrix;
 
 	//clockwise
-	//rotation_matrix.rotate(angle*m_heading.)
+	rotation_matrix.rotate(angle*Sign(m_heading.cross(to_target)));
 	rotation_matrix.transform(m_heading);
 	rotation_matrix.transform(m_velocity);
 
@@ -70,6 +77,6 @@ void MovingObject::set_heading(Vec2 _vec)
 	m_heading = _vec;
 
 	//垂直
-	//m_side_heading = ;
+	m_side_heading = perp(m_heading);
 
 }

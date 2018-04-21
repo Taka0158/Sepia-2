@@ -1,27 +1,27 @@
 ﻿  Main.cpp
-c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\System\Setting.h(143): warning C4356: 'Singleton<Setting>::instance': 静的データ メンバーは派生クラスを使って初期化できません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\System\Setting.h(157): warning C4356: 'Singleton<Setting>::instance': 静的データ メンバーは派生クラスを使って初期化できません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\Message\Telegram.h(8): warning C4099: 'Telegram': タイプ名は最初 'class' として使われていましたが 'struct' として使われています。
   c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\Message\Telegram.h(7): note: 'Telegram' の宣言を確認してください
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\UIManager\UIManager.cpp(58): warning C4100: '_msg': 引数は関数の本体部で 1 度も参照されません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\message\MessageDispatcher.h(37): warning C4356: 'Singleton<MessageDispatcher>::instance': 静的データ メンバーは派生クラスを使って初期化できません。
-c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobjectsub\ikastate\IkaNormal.cpp(13): warning C4100: '_owner': 引数は関数の本体部で 1 度も参照されません。
-c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobjectsub\ikastate\IkaNormal.cpp(18): warning C4100: '_owner': 引数は関数の本体部で 1 度も参照されません。
-c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobjectsub\ikastate\IkaNormal.cpp(28): warning C4100: '_owner': 引数は関数の本体部で 1 度も参照されません。
-c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\MovingObjectSub\Ika.cpp(32): warning C4458: 'm_depth' を宣言すると、クラス メンバーが隠蔽されます
-  c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\Object.h(41): note: 'Object::m_depth' の宣言を確認してください
-c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\MovingObjectSub\Ika.cpp(32): warning C4189: 'm_depth': ローカル変数が初期化されましたが、参照されていません
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\ObjectSub\TestObj.cpp(60): warning C4100: '_msg': 引数は関数の本体部で 1 度も参照されません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobjectsub\ikastate\IkaNormal.cpp(37): warning C4100: '_owner': 引数は関数の本体部で 1 度も参照されません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\MovingObjectSub\Ika.cpp(38): warning C4458: 'm_depth' を宣言すると、クラス メンバーが隠蔽されます
+  c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\Object.h(41): note: 'Object::m_depth' の宣言を確認してください
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\MovingObjectSub\Ika.cpp(38): warning C4189: 'm_depth': ローカル変数が初期化されましたが、参照されていません
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\MovingObjectSub\Ika.cpp(150): warning C4100: '_friction': 引数は関数の本体部で 1 度も参照されません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\MovingObjectSub\Ika.cpp(150): warning C4100: '_max_turn_rate': 引数は関数の本体部で 1 度も参照されません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\MovingObjectSub\Ika.cpp(221): warning C4100: '_msg': 引数は関数の本体部で 1 度も参照されません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\scene\SceneSwitchSub\FadeInOut.cpp(18): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\scene\SceneSwitchSub\FadeInOut.cpp(22): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\scene\SceneSwitchSub\IkaSwitch.cpp(22): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\scene\SceneSwitchSub\IkaSwitch.cpp(30): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
      ライブラリ C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.lib とオブジェクト C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.exp を作成中
   コード生成しています。
-c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\message\messagedispatcher.cpp(122): warning C4715: 'MessageDispatcher::get_entity_from_id': 値を返さないコントロール パスがあります。
-  1520 of 1524 functions (99.7%) were compiled, the rest were copied from previous compilation.
-    16 functions were new in current compilation
+  0 of 1601 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   Sepiatoon2.vcxproj -> C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.exe
   Sepiatoon2.vcxproj -> C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.pdb (Full PDB)
-c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobject.h(58): warning C6001: 初期化されていないメモリ 'rotation_matrix' を使用しています。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobject.h(64): warning C6001: 初期化されていないメモリ 'rotation_matrix' を使用しています。

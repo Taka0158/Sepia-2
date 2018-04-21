@@ -11,7 +11,7 @@ public:
 		ID _sender_id,
 		ID _receiver_id,
 		msg::TYPE _msg,
-		void* _exInfo = nullptr);
+		void* _exinfo = nullptr);
 
 	//遅延メッセージの送信
 	bool dispatch_delayed_message();

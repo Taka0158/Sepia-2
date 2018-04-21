@@ -4,7 +4,7 @@ TestObj::TestObj(Vec2 _p):Object(ID_OBJ_TEST)
 {
 	set_id();
 	initialize();
-	m_p = _p;
+	m_pos = _p;
 }
 
 TestObj::~TestObj()
@@ -15,7 +15,7 @@ TestObj::~TestObj()
 void TestObj::initialize()
 {
 	m_is_alive = true;
-	m_p = Vec2(0.0, 0.0);
+	m_pos = Vec2(0.0, 0.0);
 	radius = 8.0;
 }
 
@@ -31,7 +31,7 @@ void TestObj::update()
 
 void TestObj::draw()
 {
-	Circle(m_p, radius).draw();
+	Circle(m_pos, radius).draw();
 }
 
 void TestObj::debug_update()
@@ -47,8 +47,8 @@ void TestObj::debug_update()
 
 void TestObj::debug_draw()
 {
-	FontAsset(L"font_debug_8")(m_p).drawCenter(m_p, Palette::Black);
-	FontAsset(L"font_debug_8")(to_hex(m_id)).drawCenter(m_p+Vec2(0.0,10.0), Palette::Black);
+	FontAsset(L"font_debug_8")(m_pos).drawCenter(m_pos, Palette::Black);
+	FontAsset(L"font_debug_8")(to_hex(m_id)).drawCenter(m_pos+Vec2(0.0,10.0), Palette::Black);
 }
 
 bool TestObj::handle_message(const Telegram& _msg)

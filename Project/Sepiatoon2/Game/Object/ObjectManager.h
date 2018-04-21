@@ -20,9 +20,18 @@ public:
 	void initialize();
 	void finalize();
 
-	//Create関数
+	//-----------------------------------------------Create関数--------------------------------------------------------------------------
 	//テスト用
 	void create_TestObj(Vec2 _p);
+
+	void create_Ika(Vec2 _init_p=Vec2(240.0,240.0),
+		ControllerType _contoroller_type=ControllerType::PLAYER_1,
+		Color _color=Setting::get_color_A(),
+		TeamType _team_type=Setting::get_ika_1_team(),
+		CharType _char_type=Setting::get_char_1(),
+		SpecialType _special_type=Setting::get_special_1());
+
+	//-----------------------------------------------Create関数--------------------------------------------------------------------------
 
 	//メッセージの受け取り関数
 	bool handle_message(const Telegram& _msg)override;

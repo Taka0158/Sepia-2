@@ -28,14 +28,14 @@
     <SFA>
       <FILEPATH>c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\</FILEPATH>
       <FILENAME>movingobject.h</FILENAME>
-      <LINE>58</LINE>
-      <COLUMN>26</COLUMN>
+      <LINE>64</LINE>
+      <COLUMN>23</COLUMN>
     </SFA>
     <DEFECTCODE>6001</DEFECTCODE>
     <DESCRIPTION>初期化されていないメモリ 'rotation_matrix' を使用しています。</DESCRIPTION>
     <FUNCTION>MovingObject::rotate_heading_to_face_position</FUNCTION>
     <DECORATED>?rotate_heading_to_face_position@MovingObject@@QAE_NU?$Vector2D@N@s3d@@@Z</DECORATED>
-    <FUNCLINE>44</FUNCLINE>
+    <FUNCLINE>51</FUNCLINE>
     <PROBABILITY>1</PROBABILITY>
     <RANK>3</RANK>
     <CATEGORY>
@@ -45,31 +45,31 @@
       <SFA>
         <FILEPATH>c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\</FILEPATH>
         <FILENAME>movingobject.h</FILENAME>
-        <LINE>46</LINE>
+        <LINE>53</LINE>
         <COLUMN>6</COLUMN>
       </SFA>
       <SFA>
         <FILEPATH>c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\</FILEPATH>
         <FILENAME>movingobject.h</FILENAME>
-        <LINE>48</LINE>
+        <LINE>55</LINE>
         <COLUMN>8</COLUMN>
       </SFA>
       <SFA>
         <FILEPATH>c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\</FILEPATH>
         <FILENAME>movingobject.h</FILENAME>
-        <LINE>50</LINE>
+        <LINE>57</LINE>
         <COLUMN>11</COLUMN>
       </SFA>
       <SFA>
         <FILEPATH>c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\</FILEPATH>
         <FILENAME>movingobject.h</FILENAME>
-        <LINE>52</LINE>
+        <LINE>59</LINE>
         <COLUMN>11</COLUMN>
       </SFA>
       <SFA>
         <FILEPATH>c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\</FILEPATH>
         <FILENAME>movingobject.h</FILENAME>
-        <LINE>54</LINE>
+        <LINE>61</LINE>
         <COLUMN>8</COLUMN>
         <KEYEVENT>
           <ID>1</ID>
@@ -81,20 +81,20 @@
       <SFA>
         <FILEPATH>c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\</FILEPATH>
         <FILENAME>movingobject.h</FILENAME>
-        <LINE>58</LINE>
-        <COLUMN>26</COLUMN>
+        <LINE>64</LINE>
+        <COLUMN>23</COLUMN>
         <KEYEVENT>
           <ID>2</ID>
           <KIND>宣言</KIND>
           <IMPORTANCE>Full</IMPORTANCE>
-          <MESSAGE>'rotation_matrix' は 's3d::Mat3x2::transform' からの出力です (d:\siv3d(august2016v2)\inc\siv3d\mat3x2.hpp:189 で宣言)</MESSAGE>
+          <MESSAGE>'rotation_matrix' は 's3d::Mat3x2::rotate' からの出力です (d:\siv3d(august2016v2)\inc\siv3d\mat3x2.hpp:126 で宣言)</MESSAGE>
         </KEYEVENT>
       </SFA>
       <SFA>
         <FILEPATH>c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\</FILEPATH>
         <FILENAME>movingobject.h</FILENAME>
-        <LINE>58</LINE>
-        <COLUMN>26</COLUMN>
+        <LINE>64</LINE>
+        <COLUMN>23</COLUMN>
         <KEYEVENT>
           <ID>3</ID>
           <KIND>使用法</KIND>

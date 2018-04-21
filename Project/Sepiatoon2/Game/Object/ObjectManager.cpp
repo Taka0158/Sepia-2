@@ -1,7 +1,6 @@
 #include"ObjectManager.h"
 
-#include"ObjectSub\Map.cpp"
-#include"ObjectSub\TestObj.cpp"
+
 
 ObjectManager::ObjectManager():Entity(ID(UID_MGR_OBJ))
 {
@@ -168,6 +167,15 @@ void ObjectManager::create_TestObj(Vec2 _p)
 {
 	Object* new_obj = new TestObj(_p);
 
+	regist_object(new_obj);
+}
+
+void ObjectManager::create_Ika(Vec2 _init_p,ControllerType _contoroller_type,Color _color,TeamType _team_type,CharType _char_type,SpecialType _special_type)
+{
+	if (m_map == nullptr)return;
+
+	Ika* new_obj = new Ika(m_map,_contoroller_type,_init_p,_color,_team_type,_char_type,_special_type);
+	
 	regist_object(new_obj);
 }
 

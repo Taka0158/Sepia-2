@@ -23,6 +23,12 @@ Point Vec2_to_Point(Vec2 _v)
 	return Point(_v.x, _v.y);
 }
 
+//右方向の垂直ベクトルを返す
+Vec2 perp(Vec2 _vec)
+{
+	return Vec2(-_vec.y, _vec.x);
+}
+
 template <class T>
 T clamp(T _val,T _min,T _max)
 {

@@ -18,7 +18,7 @@ public:
 	virtual void mask_update() {};
 
 	bool get_is_alive()const { return m_is_alive; };
-	Vec2 get_p()const { return m_p; };
+	Vec2 get_p()const { return m_pos; };
 	int get_depth()const { return m_depth; };
 	void set_is_alive(bool _b) { m_is_alive = _b; };
 	Circle& get_mask() { return m_mask; };
@@ -35,7 +35,7 @@ protected:
 	bool m_is_alive;
 
 	//自身の中心座標
-	Vec2 m_p;
+	Vec2 m_pos;
 
 	//描画深度　大きいほど後に描画 地面は5
 	int m_depth = 5;
@@ -46,6 +46,8 @@ protected:
 	//コリジョンマスクの大きさ
 	double m_mask_radius;
 };
+#include"ObjectSub\Map.cpp"
+#include"ObjectSub\TestObj.cpp"
 #include"ObjectSub\MovingObject.h"
 
 /*

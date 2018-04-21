@@ -62,6 +62,11 @@ void TestWorld::draw()
 
 void TestWorld::debug_update()
 {
+
+	if (Input::KeyF5.clicked)
+	{
+		OBJ_MGR->create_Ika();
+	}
 	if (Input::MouseM.pressed)
 	{
 		OBJ_MGR->create_TestObj(SCENE_CAMERA->get_mouse_pos());
@@ -84,6 +89,7 @@ void TestWorld::debug_update()
 				MSG_DIS->dispatch_message(0, UID_UNKNOWN, UID_OBJ_MAP, msg::TYPE::MAP_PAINT, p.get());
 			}
 		}
+
 
 	}
 	if (Input::KeyF1.clicked)

@@ -26,6 +26,13 @@ enum class PlayModeType
 	ONE_ON_ONE
 };
 
+enum class ControllerType
+{
+	PLAYER_1,
+	PLAYER_2,
+	CPU
+};
+
 class Setting :public Singleton<Setting>
 {
 	friend class Singleton<Setting>;
@@ -132,6 +139,13 @@ private:
 	static SpecialType m_special_3;
 	static SpecialType m_special_4;
 
+	//PLAYERかCPU
+	static ControllerType m_controller_1;
+	static ControllerType m_controller_2;
+	static ControllerType m_controller_3;
+	static ControllerType m_controller_4;
+
+
 	//マップ
 	static MapType m_map;
 
@@ -174,6 +188,12 @@ SpecialType Setting::m_special_1 = SpecialType::UNKNOWN;
 SpecialType Setting::m_special_2 = SpecialType::UNKNOWN;
 SpecialType Setting::m_special_3 = SpecialType::UNKNOWN;
 SpecialType Setting::m_special_4 = SpecialType::UNKNOWN;
+
+//スペシャルタイプ
+ControllerType Setting::m_controller_1 = ControllerType::PLAYER_1;
+ControllerType Setting::m_controller_2 = ControllerType::CPU;
+ControllerType Setting::m_controller_3 = ControllerType::PLAYER_2;
+ControllerType Setting::m_controller_4 = ControllerType::CPU;
 
 //マップ
 MapType Setting::m_map = MapType::SIMPLE;
