@@ -13,31 +13,31 @@ enum class SwitchType {
 
 #include"SceneSwitch.h"
 
+namespace mine {
 
+	class SceneManager :public Singleton<SceneManager>
+	{
+		friend class Singleton<SceneManager>;
+		SceneManager();
+		~SceneManager();
+	public:
 
-class SceneManager :public Singleton<SceneManager>
-{
-	friend class Singleton<SceneManager>;
-	SceneManager();
-	~SceneManager();
-public:
+		void update();
+		void draw();
+		void initialize();
+		void finalize();
 
-	void update();
-	void draw();
-	void initialize();
-	void finalize();
-
-	void change_scene(Scene*, SceneSwitch* = new FadeInOut());
-	void change_scene();
-public:
-	void debug_update();
-	void debug_draw();
-private:
-	std::unique_ptr<Scene> m_current_scene = nullptr;
-	std::unique_ptr<Scene> m_next_scene = nullptr;
-	std::unique_ptr<SceneSwitch> m_current_scene_switch = nullptr;
-};
-
+		void change_scene(Scene*, SceneSwitch* = new IkaSwitch());
+		void change_scene();
+	public:
+		void debug_update();
+		void debug_draw();
+	private:
+		std::unique_ptr<Scene> m_current_scene = nullptr;
+		std::unique_ptr<Scene> m_next_scene = nullptr;
+		std::unique_ptr<SceneSwitch> m_current_scene_switch = nullptr;
+	};
+}
 #include"SceneSub\TestWorld.cpp"
 #include"SceneSub\Title.cpp"
 

@@ -86,3 +86,4 @@ protected:
 };
 
 #include"SceneSwitchSub\FadeInOut.cpp"
+#include"SceneSwitchSub\IkaSwitch.cpp"

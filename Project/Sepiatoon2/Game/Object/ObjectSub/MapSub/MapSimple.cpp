@@ -50,7 +50,7 @@ void MapSimple::debug_update()
 void MapSimple::debug_draw()
 {
 	Println(L"***MAP_SIMPLE***");
-
+	/*
 	for (int i = 0; i < m_map_w/32; i++)
 	{
 		for (int j = 0; j < m_map_h/32; j++)
@@ -58,7 +58,7 @@ void MapSimple::debug_draw()
 			FONT_DEBUG_4(i,L",",j).drawCenter(Vec2(i*32+16, j*32+16),Palette::Black);
 		}
 	}
-
+	*/
 }
 
 

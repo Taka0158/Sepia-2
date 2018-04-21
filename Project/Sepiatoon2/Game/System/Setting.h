@@ -69,6 +69,11 @@ public:
 	{
 		return Vec2(sc_w, sc_h);
 	}
+	//フルスクリーンの場合を1.0とする 比率は16:9のみを想定
+	static double get_sc_scale()
+	{
+		return double(sc_w) / double(full_sc_w);
+	}
 
 	//ストップウォッチ
 	static Stopwatch stopwatch;

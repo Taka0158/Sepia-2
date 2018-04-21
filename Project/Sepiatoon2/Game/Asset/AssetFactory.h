@@ -12,7 +12,10 @@ enum class ImageType{
 	IKA_N_A,
 	IKA_N_C,
 	IKA_N_N,
-	IKA_N_S
+	IKA_N_S,
+	SCENESWITCH_1,
+	SCENESWITCH_1_BG,
+	SCENESWITCH_IKA,
 };
 
 class AssetFactory :public Singleton<AssetFactory>
@@ -28,7 +31,7 @@ public:
 	//各読み込み画像を削除するメソッドがないため読み込みっぱなし
 
 	//動的に画像処理を行わない場合の画像取得メソッド
-	Image* get_image(ImageType);
+	Image& get_image(ImageType);
 
 	//動的に画像処理を行う場合の画像複製メソッド
 	Image get_image_copy(ImageType);
@@ -36,19 +39,41 @@ public:
 	//テクスチャ取得メソッド
 	Texture get_tex_copy(ImageType);
 
+	//テクスチャ取得メソッド（生成コストなし
+	Texture& get_tex(ImageType);
+
 private:
-	Image* m_map_simple_1920_1080 = nullptr;
-	Image* m_ink_0_128=nullptr;
-	Image* m_ink_1_128=nullptr;
-	Image* m_ink_2_128=nullptr;
-	Image* m_ink_3_128=nullptr;
-	Image* m_ink_4_128=nullptr;
-	Image* m_ink_5_128=nullptr;
-	Image* m_ink_0_600=nullptr;
-	Image* m_ika_n_n = nullptr;
-	Image* m_ika_n_s = nullptr;
-	Image* m_ika_n_c = nullptr;
-	Image* m_ika_n_a = nullptr;
+	Image* m_im_map_simple_1920_1080 = nullptr;
+	Image* m_im_ink_0_128=nullptr;
+	Image* m_im_ink_1_128=nullptr;
+	Image* m_im_ink_2_128=nullptr;
+	Image* m_im_ink_3_128=nullptr;
+	Image* m_im_ink_4_128=nullptr;
+	Image* m_im_ink_5_128=nullptr;
+	Image* m_im_ink_0_600=nullptr;
+	Image* m_im_ika_n_n = nullptr;
+	Image* m_im_ika_n_s = nullptr;
+	Image* m_im_ika_n_c = nullptr;
+	Image* m_im_ika_n_a = nullptr;
+	Image* m_im_scene_switch_1 = nullptr;
+	Image* m_im_scene_switch_ika = nullptr;
+	Image* m_im_scene_switch_1_bg = nullptr;
+
+	Texture* m_tex_map_simple_1920_1080 = nullptr;
+	Texture* m_tex_ink_0_128 = nullptr;
+	Texture* m_tex_ink_1_128 = nullptr;
+	Texture* m_tex_ink_2_128 = nullptr;
+	Texture* m_tex_ink_3_128 = nullptr;
+	Texture* m_tex_ink_4_128 = nullptr;
+	Texture* m_tex_ink_5_128 = nullptr;
+	Texture* m_tex_ink_0_600 = nullptr;
+	Texture* m_tex_ika_n_n = nullptr;
+	Texture* m_tex_ika_n_s = nullptr;
+	Texture* m_tex_ika_n_c = nullptr;
+	Texture* m_tex_ika_n_a = nullptr;
+	Texture* m_tex_scene_switch_1 = nullptr;
+	Texture* m_tex_scene_switch_ika = nullptr;
+	Texture* m_tex_scene_switch_1_bg = nullptr;
 
 	std::vector<Image*> m_images;
 };

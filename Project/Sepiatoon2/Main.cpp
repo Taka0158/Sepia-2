@@ -31,7 +31,6 @@
 #include"Game\Scene\SceneManager.cpp"
 
 
-
 void Main()
 {
 	//Siv3Dアセット機能の利用
@@ -68,7 +67,16 @@ void Main()
 	}
 }
 
+/*
+作業中の内容180420
 
+Object:衝突関数
+Ika:IkaState以下の実装
+Ika:入力関数(ジョイコンも考慮)
+Ika:update内での合力計算（入力によるもの）（AIによるものは後日）
+MoivingObject：行列計算
+
+*/
 
 /* TODOIST
 //https://qiita.com/hamukun8686/items/95471335b8a0fa1d877f

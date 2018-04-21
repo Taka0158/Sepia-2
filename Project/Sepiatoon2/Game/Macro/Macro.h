@@ -20,9 +20,12 @@
 #define PASS_IKA_N_C L"Assets/Images/Ika/ika_n_c.png"
 #define PASS_IKA_N_N L"Assets/Images/Ika/ika_n_n.png"
 #define PASS_IKA_N_S L"Assets/Images/Ika/ika_n_s.png"
+#define PASS_SCENESWITCH_1 L"Assets/Images/SceneSwitch/scene_switch_1.png"
+#define PASS_SCENESWITCH_IKA L"Assets/Images/SceneSwitch/scene_switch_ika.png"
+#define PASS_SCENESWITCH_1_BG L"Assets/Images/SceneSwitch/scene_switch_1_bg.png"
 
 //--------------------------Singletonクラス------------------------------------
-#define SCENE_MGR SceneManager::getInstance()
+#define SCENE_MGR mine::SceneManager::getInstance()
 #define OBJ_MGR ObjectManager::getInstance()
 #define SETTING Setting::getInstance()
 #define MSG_DIS MessageDispatcher::getInstance()
@@ -41,14 +44,15 @@
 #define UID_MGR_SCENE		0x01000000
 
 // or(| : 論理和) で　結合すること
-#define UID_MGR_OBJ			0x02000000
-#define UID_OBJ_MAP			0x02000001
-#define ID_OBJ_TEST			0x02010000
+#define UID_MGR_OBJ				0x02000000
+#define UID_OBJ_MAP				0x02000001
+#define ID_OBJ_TEST				0x02010000
+#define ID_OBJ_IKA				0x02020000
 
-#define UID_MGR_EFFECT		0x04000000
-#define UID_MGR_AUDIO		0x08000000
-#define UID_MGR_UI			0x10000000
-#define UID_SCENE_CAMERA	0x20000000
+#define UID_MGR_EFFECT			0x04000000
+#define UID_MGR_AUDIO			0x08000000
+#define UID_MGR_UI				0x10000000
+#define UID_SCENE_CAMERA		0x20000000
 
 
 //-------------------------MSG--------------------------

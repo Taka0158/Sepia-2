@@ -1,17 +1,17 @@
 #include"SceneManager.h"
 
 
-SceneManager::SceneManager()
+mine::SceneManager::SceneManager()
 {
 	initialize();
 }
 
-SceneManager::~SceneManager()
+mine::SceneManager::~SceneManager()
 {
 	finalize();
 }
 
-void SceneManager::initialize()
+void mine::SceneManager::initialize()
 {
 	finalize();
 	if (!m_current_scene)
@@ -26,7 +26,7 @@ void SceneManager::initialize()
 
 }
 
-void SceneManager::finalize()
+void mine::SceneManager::finalize()
 {
 	if (!m_current_scene)
 	{
@@ -38,7 +38,7 @@ void SceneManager::finalize()
 	}
 }
 
-void SceneManager::update()
+void mine::SceneManager::update()
 {
 	if (m_current_scene)
 	{
@@ -65,7 +65,7 @@ void SceneManager::update()
 	
 }
 
-void SceneManager::draw()
+void mine::SceneManager::draw()
 {
 
 	if (m_current_scene)
@@ -88,7 +88,7 @@ void SceneManager::draw()
 
 }
 
-void SceneManager::debug_update()
+void mine::SceneManager::debug_update()
 {
 	if (m_current_scene)
 	{
@@ -109,7 +109,7 @@ void SceneManager::debug_update()
 }
 
 
-void SceneManager::debug_draw()
+void mine::SceneManager::debug_draw()
 {
 	if (m_current_scene)
 	{
@@ -122,7 +122,7 @@ void SceneManager::debug_draw()
 	SCENE_CAMERA->debug_draw();
 }
 
-void SceneManager::change_scene(Scene* _scene,SceneSwitch* _switch)
+void mine::SceneManager::change_scene(Scene* _scene,SceneSwitch* _switch)
 {
 	if (m_current_scene)
 	{
@@ -135,10 +135,10 @@ void SceneManager::change_scene(Scene* _scene,SceneSwitch* _switch)
 	}
 	else
 	{
-		ASSERT("シーンが存在しないのに SceneManager::change_scene が呼ばれました");
+		ASSERT("シーンが存在しないのに mine::SceneManager::change_scene が呼ばれました");
 	}
 }
-void SceneManager::change_scene()
+void mine::SceneManager::change_scene()
 {
 	if (m_current_scene)
 	{
@@ -155,12 +155,12 @@ void SceneManager::change_scene()
 	}
 	else
 	{
-		ASSERT("シーンが存在しないのに SceneManager::change_scene が呼ばれました");
+		ASSERT("シーンが存在しないのに mine::SceneManager::change_scene が呼ばれました");
 	}
 }
 
 
-SceneManager* Singleton<SceneManager>::instance = nullptr;
+mine::SceneManager* Singleton<mine::SceneManager>::instance = nullptr;
 
 /*
 

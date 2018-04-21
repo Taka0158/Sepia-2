@@ -99,9 +99,7 @@ Image& Map::get_random_ink()
 {
 	int p = Random(int(ImageType::INK_0_128), int(ImageType::INK_5_128));
 	
-	Image* ret=ASSET_FAC->get_image(ImageType(p));
-
-	return *ret;
+	return ASSET_FAC->get_image(ImageType(p));
 }
 
 Image& Map::rotate_image(Image& _img)
