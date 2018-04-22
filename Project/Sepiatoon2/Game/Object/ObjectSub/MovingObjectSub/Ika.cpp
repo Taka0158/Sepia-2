@@ -9,8 +9,6 @@ Ika::Ika(Map* _map, ControllerType _controller_type,Vec2 _init_p, Color _color, 
 	m_special_type = _special_type;
 	m_controller_type = _controller_type;
 
-
-
 	regist_texture(m_char_type);
 	regist_controller(m_controller_type);
 	set_moving_parm();
@@ -19,8 +17,10 @@ Ika::Ika(Map* _map, ControllerType _controller_type,Vec2 _init_p, Color _color, 
 	set_init_pos(_init_p);
 	initialize();
 
-	m_ika_state.reset(new IkaNormal());
-	m_ika_state->enter(this);
+	m_ika_fsm.reset(new IkaStateMachine(this));
+	m_ika_fsm->set_current_state(new IkaNormal());
+	m_ika_fsm->set_global_state(nullptr);
+
 }
 Ika::~Ika()
 {
@@ -35,7 +35,8 @@ void Ika::initialize()
 	m_pos = m_init_pos;
 	m_target_pos = Vec2(0.0, 0.0);
 
-	int m_depth = 5;
+	m_depth = 5;
+	m_angle = 0.0;
 
 	m_mask_radius = 32.0;
 }
@@ -50,17 +51,19 @@ void Ika::update()
 	//コリジョンマスクの座標更新
 	mask_update();
 
-	m_ika_state->update(this);
+	m_ika_fsm->update();
 
 	restrain();
 
 	//この関数はState内で適宜呼ばれたり、よばれなかったり
 	//behavior_update();
+
+	calc_angle();
 }
 
 void Ika::draw()
 {
-	m_ika_state->draw(this);
+	m_ika_fsm->draw();
 }
 
 void Ika::mask_update()
@@ -138,13 +141,14 @@ void Ika::set_moving_parm()
 	{
 	case CharType::NORMAL:
 		//適当パラメータ
-		m_mass = 1.0;
-		m_max_speed = 10.0;
-		m_max_force = 5.0;
-		m_max_turn_rate = 0.2;
-		m_friction = 0.05;
+		m_init_mass = 1.0;
+		m_init_max_speed = 6.0;
+		m_init_max_force = 5.0;
+		m_init_max_turn_rate = 0.02;
+		m_init_friction = 1.0;
 		break;
 	}
+	set_moving_parm(m_init_mass, m_init_max_speed, m_init_max_force, m_init_max_turn_rate, m_init_friction);
 }
 
 void Ika::set_moving_parm(double _mass,double _max_speed,double _max_force,double _max_turn_rate,double _friction)
@@ -156,12 +160,24 @@ void Ika::set_moving_parm(double _mass,double _max_speed,double _max_force,doubl
 	m_friction = m_friction;
 }
 
-void Ika::change_state(IkaState* _new_state)
+void Ika::set_moving_parm(IkaStateType _type)
 {
-	m_ika_state->exit(this);
-	m_ika_state.release();
-	m_ika_state.reset(_new_state);
-	m_ika_state->enter(this);
+	switch (_type)
+	{
+	case IkaStateType::IKA_NORMAL:
+		set_moving_parm(m_init_mass, m_init_max_speed, m_init_max_force, m_init_max_turn_rate, m_init_friction);
+		break;
+	case IkaStateType::IKA_SWIM:
+		set_moving_parm(m_init_mass, m_init_max_speed*1.5, m_init_max_force, m_init_max_turn_rate, m_init_friction);
+		break;
+	case IkaStateType::IKA_SINK:
+		set_moving_parm(m_init_mass, m_init_max_speed*0.5, m_init_max_force, m_init_max_turn_rate, m_init_friction);
+		break;
+	case IkaStateType::IKA_DAMAGED:
+	case IkaStateType::IKA_SPECIAL:
+		set_moving_parm(m_init_mass, m_init_max_speed, m_init_max_force, m_init_max_turn_rate, m_init_friction);
+		break;
+	}
 }
 
 void Ika::behavior_update()
@@ -181,7 +197,8 @@ void Ika::behavior_update()
 	m_velocity += acceleration;
 
 	//摩擦による速度の減算
-	m_velocity -= m_velocity*m_friction;
+	m_velocity.x -= m_velocity.x*m_friction;
+	m_velocity.y -= m_velocity.y*m_friction;
 
 	//速度の制限
 	if (m_velocity.length() > m_max_speed)
@@ -221,8 +238,19 @@ bool Ika::handle_message(const Telegram& _msg)
 bool Ika::on_message(const Telegram& _msg)
 {
 	bool ret = false;
+	IkaState* new_state;
 
-	//switch
+	switch (_msg.msg)
+	{
+	case msg::TYPE::CHANGE_IKA_STATE:
+		new_state = (IkaState*)_msg.extraInfo;
+		m_ika_fsm->change_state(new_state);
+		break;
+	case msg::TYPE::SET_IKA_GLOBAL_STATE:
+		new_state = (IkaState*)_msg.extraInfo;
+		m_ika_fsm->set_global_state(new_state);
+		break;
+	}
 
 	return ret;
 }
@@ -234,4 +262,19 @@ void Ika::restrain()
 	Vec2 p2 = m_map->get_map_size();
 
 	m_pos = clamp(m_pos, p1, p2);
+}
+
+void Ika::calc_angle()
+{
+	//前作からのコピペ
+	//角度計算
+	if (m_velocity.length() <= m_max_speed*0.2)return;
+	double angletemp = Atan2(m_velocity.y, m_velocity.x);
+	//回転角の小さい方をdiffとする（この部分）
+	double anglediff1 = (abs(angletemp - m_angle)<Pi) ? angletemp - m_angle : 2 * Pi - abs(angletemp - m_angle);
+	double angle_add = Pi / 180 * 3 ;
+	double temp = Sign(anglediff1)*angle_add;
+	m_angle += temp;
+	if (m_angle > 2 * Pi)m_angle -= 2 * Pi;
+	else if (m_angle < -Pi + 1)m_angle += 2 * Pi;
 }

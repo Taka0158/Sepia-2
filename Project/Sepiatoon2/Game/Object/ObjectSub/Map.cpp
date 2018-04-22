@@ -29,7 +29,6 @@ void Map::update()
 
 	blend();
 
-	m_tex_background = Texture(m_im_background);
 }
 
 void Map::draw()
@@ -77,6 +76,7 @@ void Map::blend()
 		Size s = Size(img.width, img.height) / 2;
 		rotate_image(img).write(m_im_background, Vec2_to_Point(p.pos) - s, p.color);
 		que.pop();
+		m_tex_background.fill(m_im_background);
 	}
 }
 
@@ -92,7 +92,9 @@ void Map::paint(Paint _p)
 Color Map::get_color(Point _p)
 {
 	Clamp(_p, Point(0, 0), Point(m_map_w - 1, m_map_h - 1));
-	return m_im_background[_p.x][_p.y];
+	Println(L"’n–Ê‚ÌêŠ", _p);
+	Println(L"’n–Ê‚ÌF", m_im_background.getPixel(_p.y, _p.x));
+	return m_im_background.getPixel(_p.y,_p.x);
 }
 
 Image& Map::get_random_ink()

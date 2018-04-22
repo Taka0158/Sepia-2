@@ -87,3 +87,38 @@ protected:
 
 #include"SceneSwitchSub\FadeInOut.cpp"
 #include"SceneSwitchSub\IkaSwitch.cpp"
+#include"SceneSwitchSub\IkaIkaSwitch.cpp"
+
+/*
+
+T::T():SceneSwitch(Setting::get_ms(), 800)
+{
+
+}
+
+T::~T()
+{
+
+}
+
+void T::update_sub()
+{
+if (m_current_state == SwitchType::FIRST)
+{
+double easing = EaseIn(0.01, 1.0, Easing::Sine, m_1st_r);
+
+}
+else
+{
+double easing = EaseIn(1.00, 0.01, Easing::Sine, m_2nd_r);
+}
+
+}
+
+void T::draw()
+{
+
+}
+
+
+*/

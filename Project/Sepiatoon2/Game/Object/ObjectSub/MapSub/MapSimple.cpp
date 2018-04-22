@@ -16,8 +16,7 @@ void MapSimple::initialize()
 
 	set_background_im();
 	
-	m_tex_background = Texture(m_im_background);
-	m_update_interval = 2;
+	m_tex_background = DynamicTexture(m_im_background);
 	m_timer = 0;
 }
 
@@ -34,7 +33,6 @@ void MapSimple::update()
 
 	blend();
 
-	m_tex_background = Texture(m_im_background);
 }
 
 void MapSimple::draw()

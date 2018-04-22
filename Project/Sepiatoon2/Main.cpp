@@ -106,6 +106,10 @@ ObjectManager::get_entity_from_id() が線形探索により非効率
 
 Map::get_color()関数がSCENE_CAMER部分でバグ？
 
+IkaStateSubクラスで相互include
+
+IkaStateが挙動不審（Map::get_color()で位置ピクセル分しかとらないのが原因か）
+
 */
 
 /*仕様上注意

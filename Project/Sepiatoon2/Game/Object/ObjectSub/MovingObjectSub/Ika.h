@@ -1,8 +1,17 @@
 #pragma once
 
+enum class IkaStateType {
+	IKA_NORMAL,
+	IKA_SWIM,
+	IKA_SINK,
+	IKA_DAMAGED,
+	IKA_SPECIAL
+};
+
 class Map;
 class IkaState;
 class IkaController;
+class IkaStateMachine;
 
 class Ika :public MovingObject
 {
@@ -32,17 +41,17 @@ public:
 	//Mapにインクをぶちまける関数
 	void paint();
 
-	//State変更
-	void change_state(IkaState*);
-
 	//座標の制限
 	void restrain();
 
 	//テクスチャの倍率
 	double get_tex_scale() { return 0.25; };
 
-	//同名クラス以下で呼び出されるパラメータの補正
-	void set_moving_parm(double _mass, double _max_speed, double _max_force, double _max_turn_rate, double _friction);
+	//画像の描画角度を計算
+	void calc_angle();
+
+	//Stateによる補正
+	void set_moving_parm(IkaStateType);
 
 	//ノーマル状態
 	Texture& get_tex_n() { return m_tex_n; }
@@ -58,10 +67,16 @@ public:
 	CharType get_char_type() { return m_char_type; }
 	SpecialType get_special_type() { return m_special_type; }
 	ControllerType get_controller_type() { return m_controller_type; }
+	IkaController* get_controller() { return m_controller.get(); }
+	IkaStateMachine* get_ika_fsm() { return m_ika_fsm.get(); }
+
+
 	Vec2 get_init_pos() { return m_init_pos; }
 	Vec2 get_target_pos() { return m_target_pos; }
 	Map* get_map() { return m_map; }
 	Color get_rival_color() { return m_rival_color; }
+	//0.5*Piは素材の向きによるもの
+	double get_angle() { return m_angle +0.5*Pi; }
 
 	void set_init_pos(Vec2 _p) { m_init_pos = _p; }
 
@@ -75,15 +90,16 @@ private:
 	void regist_controller(ControllerType);
 	//相手の色を設定する
 	void set_rival_color();
+	//パラメータ変更
+	void set_moving_parm(double _mass, double _max_speed, double _max_force, double _max_turn_rate, double _friction);
 protected:
 	Vec2 m_target_pos;
-
 private:
-	//イカの状態を表す
-	std::unique_ptr<IkaState> m_ika_state;
-
 	//イカのコントロールクラス
 	std::unique_ptr<IkaController> m_controller;
+
+	//イカ状態のFSM
+	std::unique_ptr<IkaStateMachine> m_ika_fsm;
 	
 	//開始座標
 	Vec2 m_init_pos;
@@ -97,7 +113,14 @@ private:
 	TeamType m_team_type;
 	CharType m_char_type;
 	SpecialType m_special_type;
-	ControllerType m_controller_type;
+	ControllerType m_controller_type;	   
+
+	//Charによる初期パラメータ保存
+	double m_init_mass;
+	double m_init_max_speed;
+	double m_init_max_force;
+	double m_init_max_turn_rate;
+	double m_init_friction;
 
 	//画像データ
 	Texture m_tex_n;
@@ -105,11 +128,14 @@ private:
 	Texture m_tex_s;
 	Texture m_tex_a;
 
+	//描画角度
+	double m_angle;
+
 	static int m_next_valid_id;
 
 };
 
 int Ika::m_next_valid_id = 0;
 
-#include"IkaState\IkaState.h"
 #include"IkaController\IkaController.h"
+#include"IkaStateMachine.cpp"

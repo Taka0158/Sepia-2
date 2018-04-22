@@ -42,12 +42,14 @@ void IkaPlayerController::set_config(ControllerType _type)
 		m_key_down = Input::KeyDown;
 		m_key_right = Input::KeyRight;
 		m_key_left = Input::KeyLeft;
+		m_key_swim = Input::KeyRShift;
 		break;
 	case ControllerType::PLAYER_2:
 		m_key_up = Input::KeyW;
 		m_key_down = Input::KeyS;
 		m_key_right = Input::KeyD;
 		m_key_left = Input::KeyA;
+		m_key_swim = Input::KeyLShift;
 		break;
 	}
 

@@ -43,13 +43,13 @@ protected:
 	Image& rotate_image(Image&);
 protected:
 	Image m_im_background;
-	Texture m_tex_background;
+	DynamicTexture m_tex_background;
 
 	int m_map_w = 1920;
 	int m_map_h = 1080;
 
 	//XVŠÔŠu
-	int m_update_interval;
+	int m_update_interval=1;
 
 	int m_timer;
 

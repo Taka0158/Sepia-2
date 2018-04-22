@@ -99,7 +99,7 @@ void mine::SceneManager::debug_update()
 	{
 		if (dynamic_cast<TestWorld*>(m_current_scene.get()))
 		{
-			change_scene(new Title());
+			change_scene(new Title(),new IkaSwitch());
 		}
 		else
 		{

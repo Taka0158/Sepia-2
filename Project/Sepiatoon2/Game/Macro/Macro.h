@@ -24,6 +24,11 @@
 #define PASS_SCENESWITCH_IKA L"Assets/Images/SceneSwitch/scene_switch_ika.png"
 #define PASS_SCENESWITCH_1_BG L"Assets/Images/SceneSwitch/scene_switch_1_bg.png"
 
+//--------------------------ä»à’êFéØï ------------------------------------
+#define COLOR_MINE 0
+#define COLOR_RIVAL 1
+#define COLOR_NEUTRAL 2
+
 //--------------------------SingletonÉNÉâÉX------------------------------------
 #define SCENE_MGR mine::SceneManager::getInstance()
 #define OBJ_MGR ObjectManager::getInstance()

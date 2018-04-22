@@ -38,6 +38,41 @@ struct Telegram
 
 };
 
+//直接相手指定のメッセージパッケージ
+struct DirectTelegram
+{
+	//送信者のエンティティタイプ
+	Entity* sender = nullptr;
+
+	//受信者のエンティティタイプ
+	Entity* receiver = nullptr;
+
+	//メッセージの種類・内容
+	//message_types.hで定義
+	msg::TYPE msg = msg::TYPE::UNKNOWN;
+
+	//メッセージの遅延時間を設定
+	//単位は秒
+	double dispatch_time = -1.0;
+
+	//追加情報
+	void* extraInfo = nullptr;
+
+	DirectTelegram(double _dispatch_time,
+		Entity* _sender,
+		Entity* _receiver,
+		msg::TYPE _msg,
+		void* _exInfo = nullptr) :dispatch_time(_dispatch_time),
+		sender(_sender),
+		receiver(_receiver),
+		msg(_msg),
+		extraInfo(_exInfo)
+	{
+
+	}
+
+};
+
 
 //比較演算子のオーバーロード
 //STLのコンテナで優先度を決める
@@ -51,6 +86,27 @@ inline bool operator==(const Telegram& t1, const Telegram& t2)
 		);
 }
 inline bool operator<(const Telegram& t1, const Telegram& t2)
+{
+	if (t1 == t2)
+	{
+		return false;
+	}
+	else
+	{
+		return (t1.dispatch_time < t2.dispatch_time);
+	}
+}
+
+inline bool operator==(const DirectTelegram& t1, const DirectTelegram& t2)
+{
+	return (
+		Abs(t1.dispatch_time - t2.dispatch_time) < MSG_DELAY &&
+		(t1.sender == t2.sender) &&
+		(t1.receiver == t2.receiver) &&
+		(t1.msg == t2.msg)
+		);
+}
+inline bool operator<(const DirectTelegram& t1, const DirectTelegram& t2)
 {
 	if (t1 == t2)
 	{

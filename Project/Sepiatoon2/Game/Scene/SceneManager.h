@@ -27,7 +27,7 @@ namespace mine {
 		void initialize();
 		void finalize();
 
-		void change_scene(Scene*, SceneSwitch* = new IkaSwitch());
+		void change_scene(Scene*, SceneSwitch* = new IkaIkaSwitch());
 		void change_scene();
 	public:
 		void debug_update();

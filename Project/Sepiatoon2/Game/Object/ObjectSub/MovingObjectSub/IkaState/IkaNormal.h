@@ -6,9 +6,13 @@ public:
 	IkaNormal();
 	~IkaNormal();
 
-	void enter(Ika* _owner);
-	void update(Ika* _owner);
-	void draw(Ika* _owner);
-	void exit(Ika* _owner);
+	void input(Ika* _owner)override;
+	void state(Ika* _owner)override;
+	
+	void enter(Ika* _owner)override;
+	void update(Ika* _owner)override;
+	void draw(Ika* _owner)override;
+	void exit(Ika* _owner)override;
+
 private:
 };

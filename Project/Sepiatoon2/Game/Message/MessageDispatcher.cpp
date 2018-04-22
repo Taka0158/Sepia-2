@@ -32,6 +32,34 @@ void MessageDispatcher::dispatch_message(double _dispatch_time,
 	}
 }
 
+void MessageDispatcher::dispatch_message(double _dispatch_time,
+	Entity* _sender,
+	Entity* _receiver,
+	msg::TYPE _msg,
+	void* _exInfo)
+{
+	//届け先のポインタを受け取る
+	Entity* receiver = _receiver;
+
+	//荷物の作成
+	DirectTelegram direct_telegram(_dispatch_time,_sender, _receiver, _msg, _exInfo);
+
+	//デバッグ用テキストの追加
+	DEBUG->regist(DebugText(3.0 + _dispatch_time / MSG_SEC, L"送信:" + to_hex(_sender->get_id()) + L"-->" + to_hex(_receiver->get_id()) + L"<" + msg::toString(_msg) + L">"));
+
+	//即時配達の場合
+	if (_dispatch_time <= 0.0)
+	{
+		discharge(receiver, direct_telegram);
+	}
+	else
+	{
+		double current_time = Setting::stopwatch.ms();
+		direct_telegram.dispatch_time = current_time + _dispatch_time;
+		direct_telegrams.insert(direct_telegram);
+	}
+}
+
 bool MessageDispatcher::dispatch_delayed_message()
 {
 	if (telegrams.size() == 0)return true;
@@ -57,6 +85,25 @@ bool MessageDispatcher::dispatch_delayed_message()
 		//メッセージがなくなると終了
 		if (telegrams.size() == 0)break;
 	}
+
+	//配達時間を過ぎたメッセージを送信する
+	while (direct_telegrams.begin()->dispatch_time < current_time&&direct_telegrams.begin()->dispatch_time>0)
+	{
+		//先頭のメッセージの読み込み
+		DirectTelegram direct_telegram = *(direct_telegrams.begin());
+
+		//受信者の発見
+		Entity* receiver = direct_telegram.receiver;
+
+		//発信
+		discharge(receiver, direct_telegram);
+
+		//キューから削除
+		direct_telegrams.erase(direct_telegrams.begin());
+
+		//メッセージがなくなると終了
+		if (direct_telegrams.size() == 0)break;
+	}
 	return true;
 }
 
@@ -65,6 +112,17 @@ void MessageDispatcher::discharge(Entity* _receiver, const Telegram& _msg)
 	//デバッグ用テキストの追加
 	DEBUG->regist(DebugText(3.0, L"受信:" + to_hex(_msg.receiver_id) + L"<--" + to_hex(_msg.sender_id) + L"<" + msg::toString(_msg.msg) + L">"));
 	_receiver->handle_message(_msg);
+}
+
+void MessageDispatcher::discharge(Entity* _receiver, const DirectTelegram& _msg)
+{
+	//デバッグ用テキストの追加
+	DEBUG->regist(DebugText(3.0, L"受信:" + to_hex(_msg.receiver->get_id()) + L"<--" + to_hex(_msg.sender->get_id()) + L"<" + msg::toString(_msg.msg) + L">"));
+	
+	//通常のTelegramに変換
+	Telegram msg=Telegram(_msg.dispatch_time, _msg.sender->get_id(), _msg.receiver->get_id(), _msg.msg, _msg.extraInfo);
+	
+	_receiver->handle_message(msg);
 }
 
 void MessageDispatcher::destroy_all_message()

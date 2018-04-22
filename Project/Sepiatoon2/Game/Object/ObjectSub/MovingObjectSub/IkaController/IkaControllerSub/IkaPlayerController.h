@@ -15,10 +15,9 @@ public:
 
 	//プレイヤー◯Pに応じてキーコンフィグを設定する
 	void set_config(ControllerType);
+
+
 private:
-	Key m_key_up;
-	Key m_key_down;
-	Key m_key_right;
-	Key m_key_left;
+
 
 };
