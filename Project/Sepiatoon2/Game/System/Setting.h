@@ -112,6 +112,10 @@ public:
 	static SpecialType get_special_2() { return m_special_2; }
 	static SpecialType get_special_3() { return m_special_3; }
 	static SpecialType get_special_4() { return m_special_4; }
+	static ControllerType get_controller_1() { return m_controller_1; }
+	static ControllerType get_controller_2() { return m_controller_2; }
+	static ControllerType get_controller_3() { return m_controller_3; }
+	static ControllerType get_controller_4() { return m_controller_4; }
 	static MapType get_map(){ return m_map; }
 	static PlayModeType get_playmode() { return m_playmode; }
 
@@ -189,7 +193,7 @@ SpecialType Setting::m_special_2 = SpecialType::UNKNOWN;
 SpecialType Setting::m_special_3 = SpecialType::UNKNOWN;
 SpecialType Setting::m_special_4 = SpecialType::UNKNOWN;
 
-//スペシャルタイプ
+//コントローラータイプ
 ControllerType Setting::m_controller_1 = ControllerType::PLAYER_1;
 ControllerType Setting::m_controller_2 = ControllerType::CPU;
 ControllerType Setting::m_controller_3 = ControllerType::PLAYER_2;

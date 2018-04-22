@@ -36,8 +36,7 @@ public:
 	//メッセージの受け取り関数
 	bool handle_message(const Telegram& _msg)override;
 	//メッセージの仕分けを行う関数
-	//ここでメッセージに対応する処理を呼び出す
-	bool on_message(const Telegram& _msg);
+
 
 	//管理オブジェクトのIDによる探索
 	Entity* get_entity_from_id(ID _id)override;
@@ -52,6 +51,11 @@ public:
 
 	Map* get_map() { return m_map; };
 private:
+	//ここでメッセージに対応する処理を呼び出す
+	bool on_message(const Telegram& _msg);
+
+	//衝突判定関数
+	void check_collide();
 
 	//Objectが死んでいたら削除する
 	void check_alive();

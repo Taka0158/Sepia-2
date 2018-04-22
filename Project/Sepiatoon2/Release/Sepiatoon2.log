@@ -1,17 +1,23 @@
 ﻿  Main.cpp
-c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\System\Setting.h(157): warning C4356: 'Singleton<Setting>::instance': 静的データ メンバーは派生クラスを使って初期化できません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\System\Setting.h(161): warning C4356: 'Singleton<Setting>::instance': 静的データ メンバーは派生クラスを使って初期化できません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\Message\Telegram.h(8): warning C4099: 'Telegram': タイプ名は最初 'class' として使われていましたが 'struct' として使われています。
   c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\Message\Telegram.h(7): note: 'Telegram' の宣言を確認してください
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\UIManager\UIManager.cpp(58): warning C4100: '_msg': 引数は関数の本体部で 1 度も参照されません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\message\MessageDispatcher.h(45): warning C4356: 'Singleton<MessageDispatcher>::instance': 静的データ メンバーは派生クラスを使って初期化できません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\Object.h(32): warning C4100: '_obj': 引数は関数の本体部で 1 度も参照されません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\Object.h(39): warning C4100: '_obj': 引数は関数の本体部で 1 度も参照されません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\ObjectSub\TestObj.cpp(60): warning C4100: '_msg': 引数は関数の本体部で 1 度も参照されません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobjectsub\IkaState\IkaState.h(20): warning C4100: '_owner': 引数は関数の本体部で 1 度も参照されません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobjectsub\IkaState\IkaState.h(23): warning C4100: '_owner': 引数は関数の本体部で 1 度も参照されません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobjectsub\IkaState\IkaState.h(63): warning C4800: 'int': ブール値を 'true' または 'false' に強制的に設定します (警告の処理)
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobjectsub\ikastate\IkaGlobalState\IkaDamaged.cpp(44): warning C4100: '_owner': 引数は関数の本体部で 1 度も参照されません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobjectsub\ikastate\IkaGlobalState\IkaDamaged.cpp(49): warning C4100: '_owner': 引数は関数の本体部で 1 度も参照されません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobjectsub\ikastate\IkaNormal.cpp(50): warning C4100: '_owner': 引数は関数の本体部で 1 度も参照されません。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobjectsub\ikastate\IkaSwim.cpp(45): warning C4100: '_owner': 引数は関数の本体部で 1 度も参照されません。
-c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\MovingObjectSub\Ika.cpp(154): warning C4100: '_friction': 引数は関数の本体部で 1 度も参照されません。
-c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\MovingObjectSub\Ika.cpp(154): warning C4100: '_max_turn_rate': 引数は関数の本体部で 1 度も参照されません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\MovingObjectSub\Ika.cpp(157): warning C4100: '_friction': 引数は関数の本体部で 1 度も参照されません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\MovingObjectSub\Ika.cpp(157): warning C4100: '_max_turn_rate': 引数は関数の本体部で 1 度も参照されません。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\Object\ObjectManager.cpp(266): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\Game\Object\ObjectManager.cpp(271): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\scene\SceneSwitchSub\FadeInOut.cpp(18): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\scene\SceneSwitchSub\FadeInOut.cpp(22): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\scene\SceneSwitchSub\IkaSwitch.cpp(22): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
@@ -22,9 +28,9 @@ c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\scene\SceneSwitchSub\
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\scene\SceneSwitchSub\IkaIkaSwitch.cpp(64): warning C4244: '初期化中': 'double' から 'int' への変換です。データが失われる可能性があります。
      ライブラリ C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.lib とオブジェクト C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.exp を作成中
   コード生成しています。
-  3 of 1821 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
-    1 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+  1 of 1865 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   Sepiatoon2.vcxproj -> C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.exe
   Sepiatoon2.vcxproj -> C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.pdb (Full PDB)

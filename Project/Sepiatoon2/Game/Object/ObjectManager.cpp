@@ -30,6 +30,8 @@ void ObjectManager::update()
 {
 	check_alive();
 	
+	check_collide();
+
 	if (m_map != nullptr)m_map->update();
 
 
@@ -254,4 +256,31 @@ void ObjectManager::change_map(Map* _map)
 	m_map = _map;
 
 	m_map->enter();
+}
+
+void ObjectManager::check_collide()
+{
+	if (m_objects.empty())return;
+
+	//ゴリ押し全探索
+	for (int i = 0; i < m_objects.size(); i++)
+	{
+		//コリジョン半径が0に近いと判定をスキップ
+		if (m_objects[i]->get_mask_radius() < 0.1)continue;
+
+		for (int j = i+1; j < m_objects.size(); j++)
+		{
+			if (m_objects[j]->get_mask_radius() < 0.1)continue;
+
+			//衝突しているなら
+			if (m_objects[i]->get_mask().intersects(m_objects[j]->get_mask()))
+			{
+				//高さが同じならば
+				if(Abs(m_objects[i]->get_height()-m_objects[j]->get_height())<=HEIGHT_THRESHOLD)
+				{
+					m_objects[i]->handle_collide(m_objects[j]);
+				}
+			}
+		}
+	}
 }

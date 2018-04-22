@@ -91,7 +91,7 @@ public:
 	}
 protected:
 	//前のペイントした座標を記録
-	static Vec2 m_old_pos;
+	Vec2 m_old_pos=Vec2(0.0,0.0);
 
 	//この距離以上前のペイント場所から離れたら更新可能となる
 	static double m_threshold_paint;
@@ -106,8 +106,7 @@ protected:
 	IkaState* m_next_state = nullptr;
 };
 
-Vec2 IkaState::m_old_pos = Vec2(0.0, 0.0);
-double IkaState::m_threshold_paint = 16.0;
+double IkaState::m_threshold_paint = 8.0;
 bool IkaState::m_enable_paint = true;
 
 

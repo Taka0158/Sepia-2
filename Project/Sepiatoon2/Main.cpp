@@ -66,6 +66,16 @@ void Main()
 		MSG_DIS->debug_draw();
 	}
 }
+/*
+TODOIST20180423
+
+IkaStateの挙動不審を修正
+paint()の謎の挙動を修正
+Collide関係(Ika同士の衝突)の処理を正確に
+
+
+*/
+
 
 /*
 作業中の内容180420

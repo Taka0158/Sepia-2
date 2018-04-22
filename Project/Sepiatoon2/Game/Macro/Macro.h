@@ -23,6 +23,12 @@
 #define PASS_SCENESWITCH_1 L"Assets/Images/SceneSwitch/scene_switch_1.png"
 #define PASS_SCENESWITCH_IKA L"Assets/Images/SceneSwitch/scene_switch_ika.png"
 #define PASS_SCENESWITCH_1_BG L"Assets/Images/SceneSwitch/scene_switch_1_bg.png"
+//--------------------------“–‚½‚è”»’è------------------------------------
+//‚‚³‚Ì·‚ª‚±‚Ì’lˆÈ‰º‚È‚çÕ“Ë
+#define HEIGHT_THRESHOLD 5.0
+//‘¬‚³‚Ì·‚ª‚±‚Ì’lˆÈ‰º‚È‚ç“¯‚¶
+#define VELOCITY_THRESHOLD 0.5
+
 
 //--------------------------ŠÈˆÕF¯•Ê------------------------------------
 #define COLOR_MINE 0

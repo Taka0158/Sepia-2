@@ -44,6 +44,8 @@ void Ika::initialize()
 void Ika::finalize()
 {
 	m_is_alive = false;
+
+	m_ika_fsm.release();
 }
 
 void Ika::update()
@@ -120,6 +122,7 @@ void Ika::debug_update()
 void Ika::debug_draw()
 {
 	m_mask.drawFrame(1.0,0.0,Palette::Red);
+	FONT_DEBUG_8(L"HP:", m_hp).drawCenter(get_p());
 }
 
 void Ika::set_id()
@@ -277,4 +280,61 @@ void Ika::calc_angle()
 	m_angle += temp;
 	if (m_angle > 2 * Pi)m_angle -= 2 * Pi;
 	else if (m_angle < -Pi + 1)m_angle += 2 * Pi;
+}
+
+void Ika::damaged(double _damage)
+{
+	m_hp -= _damage;
+}
+
+void Ika::damaged(CharType _type)
+{
+	switch (_type)
+	{
+	case CharType::NORMAL:
+		damaged(30.0);
+		break;
+	}
+}
+
+void Ika::burst(Vec2 _power)
+{
+	m_velocity = _power;
+}
+
+void Ika::destroy()
+{
+	finalize();
+}
+
+bool Ika::handle_collide(Object* _obj)
+{
+	on_collide(_obj);
+	return true;
+}
+
+bool Ika::on_collide(Object* _obj)
+{
+	bool ret = false;
+	//同じクラスとの衝突
+	if (is_same_class(_obj->get_id(), get_id()))
+	{
+		Ika* ika = dynamic_cast<Ika*>(_obj);
+		//異なるチームなら
+		if(ika->get_team_type()==get_team_type())
+		{
+			//相手のほうが早ければ
+			if (ika->get_velocity().length() - get_velocity().length() >= VELOCITY_THRESHOLD)
+			{
+				damaged(ika->get_char_type());
+				burst(get_Vec2(ika->get_p(), get_p())*2.0);
+			}
+		}
+		else
+		{
+			burst(get_Vec2(ika->get_p(), get_p())*1.5);
+		}
+		ret = true;
+	}
+	return ret;
 }

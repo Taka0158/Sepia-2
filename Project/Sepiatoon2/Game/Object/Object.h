@@ -23,13 +23,20 @@ public:
 	void set_is_alive(bool _b) { m_is_alive = _b; };
 	Circle& get_mask() { return m_mask; };
 	double get_mask_radius() { return m_mask_radius; };
+	double get_height() { return m_height; }
 
 	//IDを設定する
 	virtual void set_id() = 0;
+	
+	//衝突判定の受け取りを行う
+	virtual bool handle_collide(Object*  _obj) { return false; };
 
 protected:
 	//メッセージ処理を行う関数
 	virtual bool on_message(const Telegram&) { return false; };
+
+	//衝突処理を行う
+	virtual bool on_collide(Object* _obj) { return false; };
 
 	//死んでいるか生きているか
 	bool m_is_alive;
@@ -39,6 +46,9 @@ protected:
 
 	//描画深度　大きいほど後に描画 地面は5
 	int m_depth = 5;
+
+	//地面からの高さ
+	double m_height = 0.0;
 
 	//コリジョンマスク
 	Circle m_mask = Circle(0, 0, 0);

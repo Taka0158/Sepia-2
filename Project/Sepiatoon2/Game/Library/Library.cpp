@@ -1,3 +1,5 @@
+//TODO
+
 typedef std::bitset<32> ID;
 
 class Paint
@@ -68,4 +70,21 @@ bool is_same_color(const Color& _c1, const Color& _c2)
 	int db = abs(b1 - b2);
 	int sum = dr + dg + db;
 	return (sum <= COLOR_THRESHOLD);
+}
+
+bool is_same_class(ID _id1, ID _id2)
+{
+	std::bitset<16> b16_1;
+	std::bitset<16> b16_2;
+	for (int i = 0; i < 16; i++)
+	{
+		b16_1[i] = _id1[i + 16];
+		b16_2[i] = _id2[i + 16];
+	}
+	return (b16_1 == b16_2);
+}
+
+Vec2 get_Vec2(Vec2 _from, Vec2 _to)
+{
+	return Vec2(_to.x - _from.x, _to.y - _from.y);
 }

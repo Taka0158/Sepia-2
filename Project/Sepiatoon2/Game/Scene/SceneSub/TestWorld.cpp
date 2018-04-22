@@ -67,6 +67,15 @@ void TestWorld::debug_update()
 	{
 		OBJ_MGR->create_Ika();
 	}
+	if (Input::KeyF6.clicked)
+	{
+		OBJ_MGR->create_Ika(Vec2(400,400),
+			Setting::get_controller_3(),
+			Setting::get_color_B(),
+			Setting::get_ika_3_team(),
+			Setting::get_char_3(),
+			Setting::get_special_3());
+	}
 	if (Input::MouseM.pressed)
 	{
 		OBJ_MGR->create_TestObj(SCENE_CAMERA->get_mouse_pos());

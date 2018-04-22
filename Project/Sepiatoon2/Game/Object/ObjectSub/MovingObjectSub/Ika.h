@@ -81,9 +81,11 @@ public:
 	void set_init_pos(Vec2 _p) { m_init_pos = _p; }
 
 	bool handle_message(const Telegram&)override;
-	bool on_message(const Telegram&);
+	bool handle_collide(Object* _obj)override;
 
 private:
+	bool on_message(const Telegram&)override;
+	bool on_collide(Object* _obj)override;
 	//画像の登録
 	void regist_texture(CharType);
 	//コントロールクラスの割り当て
@@ -92,6 +94,14 @@ private:
 	void set_rival_color();
 	//パラメータ変更
 	void set_moving_parm(double _mass, double _max_speed, double _max_force, double _max_turn_rate, double _friction);
+	//ダメージを受けた時呼ぶ
+	void damaged(double);
+	//相手のキャラタイプに応じてダメージ量変動
+	void damaged(CharType);
+	//HPが0の時呼び出す
+	void destroy();
+	//吹っ飛ぶ関数
+	void burst(Vec2);
 protected:
 	Vec2 m_target_pos;
 private:
@@ -132,6 +142,9 @@ private:
 	double m_angle;
 
 	static int m_next_valid_id;
+
+	//------------------GAME内で利用するパラメータ
+	double m_hp = 100;
 
 };
 
