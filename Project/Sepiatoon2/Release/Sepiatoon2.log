@@ -22,9 +22,9 @@ c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\scene\SceneSwitchSub\
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\scene\SceneSwitchSub\IkaIkaSwitch.cpp(64): warning C4244: '初期化中': 'double' から 'int' への変換です。データが失われる可能性があります。
      ライブラリ C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.lib とオブジェクト C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.exp を作成中
   コード生成しています。
-  1 of 1820 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+  3 of 1821 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   Sepiatoon2.vcxproj -> C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.exe
   Sepiatoon2.vcxproj -> C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.pdb (Full PDB)

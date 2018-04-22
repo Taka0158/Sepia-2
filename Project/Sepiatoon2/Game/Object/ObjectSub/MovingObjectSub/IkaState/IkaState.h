@@ -51,11 +51,11 @@ public:
 
 		Color ground_color = _owner->get_map()->get_color(Vec2_to_Point(_owner->get_p()));
 
-		if (ground_color == _owner->get_color())
+		if (is_same_color(ground_color,_owner->get_color()))
 		{
 			ret = COLOR_MINE;
 		}
-		else if (ground_color == _owner->get_rival_color())
+		else if (is_same_color(ground_color, _owner->get_rival_color()))
 		{
 			ret = COLOR_RIVAL;
 		}

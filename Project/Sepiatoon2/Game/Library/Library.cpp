@@ -58,3 +58,14 @@ String to_hex(ID _id)
 	}
 	return ret;
 }
+
+bool is_same_color(const Color& _c1, const Color& _c2)
+{
+	int r1 = _c1.r, g1 = _c1.g, b1 = _c1.b;
+	int r2 = _c2.r, g2 = _c2.g, b2 = _c2.b;
+	int dr = abs(r1 - r2);
+	int dg = abs(g1 - g2);
+	int db = abs(b1 - b2);
+	int sum = dr + dg + db;
+	return (sum <= COLOR_THRESHOLD);
+}

@@ -29,6 +29,9 @@
 #define COLOR_RIVAL 1
 #define COLOR_NEUTRAL 2
 
+//この値差以下なら同じ色とみなす閾値
+#define COLOR_THRESHOLD 3
+
 //--------------------------Singletonクラス------------------------------------
 #define SCENE_MGR mine::SceneManager::getInstance()
 #define OBJ_MGR ObjectManager::getInstance()
