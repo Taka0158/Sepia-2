@@ -279,6 +279,7 @@ void ObjectManager::check_collide()
 				if(Abs(m_objects[i]->get_height()-m_objects[j]->get_height())<=HEIGHT_THRESHOLD)
 				{
 					m_objects[i]->handle_collide(m_objects[j]);
+					m_objects[j]->handle_collide(m_objects[i]);
 				}
 			}
 		}

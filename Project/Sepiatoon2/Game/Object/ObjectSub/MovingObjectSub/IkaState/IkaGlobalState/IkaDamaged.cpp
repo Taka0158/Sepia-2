@@ -19,12 +19,11 @@ IkaDamaged::~IkaDamaged()
 void IkaDamaged::enter(Ika* _owner)
 {
 	_owner->set_moving_parm(m_state_type);
+	MSG_DIS->dispatch_message(m_invincible_time*MSG_SEC, _owner, _owner, msg::TYPE::DELETE_IKA_GLOBAL_STATE);
 }
 
 void IkaDamaged::update(Ika* _owner)
 {
-	timer++;
-
 	_owner->behavior_update();
 
 	state(_owner);
@@ -48,8 +47,5 @@ void IkaDamaged::exit(Ika* _owner)
 
 void IkaDamaged::state(Ika* _owner)
 {
-	if (timer > m_invincible_time)
-	{
-		set_next_state(new IkaNormal());
-	}
+
 }

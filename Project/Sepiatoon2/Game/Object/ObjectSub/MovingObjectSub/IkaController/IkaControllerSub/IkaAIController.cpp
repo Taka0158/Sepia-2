@@ -11,7 +11,7 @@ IkaAIController::~IkaAIController()
 
 }
 
-Vec2 IkaAIController::calculate()
+Vec2 IkaAIController::calculate(Ika* _owner)
 {
 	Vec2 ret = Vec2(0.0, 0.0);
 
@@ -21,3 +21,8 @@ Vec2 IkaAIController::calculate()
 	   
 }
 
+
+bool IkaAIController::is_pressed_swim()
+{
+	return m_key_swim.pressed;
+}

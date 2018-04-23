@@ -68,27 +68,25 @@ public:
 		return ((m_old_pos - _owner->get_p()).length() > m_threshold_paint);
 	}
 
-	virtual void set_next_state(IkaState* _new_state)
+	virtual void set_next_state(IkaStateType _type)
 	{
-		if (m_next_state == nullptr)
-		{
-			m_next_state = _new_state;
-		}
-		else
-		{
-			delete m_next_state;
-			m_next_state = nullptr;
-			m_next_state = _new_state;
-		}
+		m_next_state_type = _type;
+		
 	}
 
 	virtual void execute_change_state(Ika* _owner)
 	{
-		if (m_next_state != nullptr)
+		if (m_next_state_type != IkaStateType::IKA_UNDEFINED)
 		{
-			MSG_DIS->dispatch_message(0.0, _owner, _owner, msg::TYPE::CHANGE_IKA_STATE, m_next_state);
+			MSG_DIS->dispatch_message(0.0, _owner, _owner, msg::TYPE::CHANGE_IKA_STATE, &m_next_state_type);
 		}
 	}
+
+	//呼び出す関数は所有者ownerのもののみ
+	virtual bool on_collide(Ika* _owner,Object* _obj) { return false; };
+
+	//自分のStateTypeを返す
+	IkaStateType get_state_type() { return m_state_type; }
 protected:
 	//前のペイントした座標を記録
 	Vec2 m_old_pos=Vec2(0.0,0.0);
@@ -97,17 +95,15 @@ protected:
 	static double m_threshold_paint;
 
 	//塗れる場合true
-	static bool m_enable_paint;
+	bool m_enable_paint = true;
 
 	//Stateタイプ
 	IkaStateType m_state_type;
 
-	//次のState
-	IkaState* m_next_state = nullptr;
+	IkaStateType m_next_state_type =IkaStateType::IKA_UNDEFINED;
 };
 
 double IkaState::m_threshold_paint = 8.0;
-bool IkaState::m_enable_paint = true;
 
 
 

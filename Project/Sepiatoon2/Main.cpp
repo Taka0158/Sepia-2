@@ -55,6 +55,7 @@ void Main()
 		ClearPrint();
 
 		MSG_DIS->dispatch_delayed_message();
+		MSG_DIS->dispatch_delayed_direct_message();
 
 		SCENE_MGR->update();
 		SCENE_MGR->debug_update();
@@ -69,20 +70,22 @@ void Main()
 /*
 TODOIST20180423
 
-IkaStateの挙動不審を修正
-paint()の謎の挙動を修正
+//IkaStateの挙動不審を修正
+//paint()の謎の挙動を修正
+
+//摩擦が機能していないのを修正
+//ただの変数名ミス
+
 Collide関係(Ika同士の衝突)の処理を正確に
-
-
 */
 
 
 /*
 作業中の内容180420
 
-Object:衝突関数
-Ika:IkaState以下の実装
-Ikaの描画角度導出
+//Object:衝突関数
+//Ika:IkaState以下の実装
+//Ikaの描画角度導出
 
 //Ika:入力関数(ジョイコンも考慮)
 //Ika:update内での合力計算（入力によるもの）（AIによるものは後日）

@@ -63,7 +63,6 @@ void MessageDispatcher::dispatch_message(double _dispatch_time,
 bool MessageDispatcher::dispatch_delayed_message()
 {
 	if (telegrams.size() == 0)return true;
-
 	//現在時間
 	double current_time = Setting::stopwatch.ms();
 
@@ -86,6 +85,16 @@ bool MessageDispatcher::dispatch_delayed_message()
 		if (telegrams.size() == 0)break;
 	}
 
+
+	return true;
+}
+
+bool MessageDispatcher::dispatch_delayed_direct_message()
+{
+	if (direct_telegrams.size() == 0)return true;
+	//現在時間
+	double current_time = Setting::stopwatch.ms();
+
 	//配達時間を過ぎたメッセージを送信する
 	while (direct_telegrams.begin()->dispatch_time < current_time&&direct_telegrams.begin()->dispatch_time>0)
 	{
@@ -104,7 +113,6 @@ bool MessageDispatcher::dispatch_delayed_message()
 		//メッセージがなくなると終了
 		if (direct_telegrams.size() == 0)break;
 	}
-	return true;
 }
 
 void MessageDispatcher::discharge(Entity* _receiver, const Telegram& _msg)
@@ -181,5 +189,6 @@ Entity* MessageDispatcher::get_entity_from_id(ID _id)
 
 void MessageDispatcher::debug_draw()
 {
-	Println(L"遅延メッセージ数:" , telegrams.size());
+	Println(L"遅延メッセージ数:", telegrams.size());
+	Println(L"遅延直接メッセージ数:" , direct_telegrams.size());
 }

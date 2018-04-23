@@ -46,9 +46,9 @@ void IkaSink::exit(Ika* _owner)
 void IkaSink::input(Ika* _owner)
 {
 	IkaController* controller = _owner->get_controller();
-	if (!controller->get_key_swim().pressed)
+	if (!controller->is_pressed_swim())
 	{
-		set_next_state(new IkaNormal());
+		set_next_state(IkaStateType::IKA_NORMAL);
 	}
 }
 
@@ -56,6 +56,41 @@ void IkaSink::state(Ika* _owner)
 {
 	if (check_ground_color(_owner) == COLOR_MINE)
 	{
-		set_next_state(new IkaNormal());
+		set_next_state(IkaStateType::IKA_NORMAL);
 	}
+}
+
+bool IkaSink::on_collide(Ika* _owner, Object* _obj)
+{
+	bool ret = false;
+
+	//相手がイカクラスなら
+	if (Ika* other = dynamic_cast<Ika*>(_obj))
+	{
+		typedef IkaStateType IST;
+		//相手のステイトに応じて処理
+		switch (other->get_ika_fsm()->get_now_state())
+		{
+		case IST::IKA_NORMAL:
+			if (other->get_team_type() != _owner->get_team_type())
+			{
+				_owner->damaged(other->get_char_type());
+				_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*3.0);
+			}
+			break;
+		case IST::IKA_SWIM:
+			if (other->get_team_type() != _owner->get_team_type())
+			{
+			_owner->damaged(other->get_char_type());
+			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*3.0);
+			}
+			break;
+		case IST::IKA_SINK:
+			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*2.0);
+			//互いに影響なし
+			break;
+		}
+	}
+
+	return ret;
 }

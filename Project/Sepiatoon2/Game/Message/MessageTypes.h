@@ -11,6 +11,7 @@ namespace msg
 		MAP_PAINT,
 		CHANGE_IKA_STATE,
 		SET_IKA_GLOBAL_STATE,
+		DELETE_IKA_GLOBAL_STATE
 	};
 
 	//デバグ用に表示する名前
@@ -36,6 +37,9 @@ namespace msg
 			break;
 		case TYPE::SET_IKA_GLOBAL_STATE:
 			str = L"IKA_GLOBAL_STATE:GlobalState設定";
+			break;
+		case TYPE::DELETE_IKA_GLOBAL_STATE:
+			str = L"IKA_GLOBAL_STATE:GlobalState削除";
 			break;
 		}
 		return str;

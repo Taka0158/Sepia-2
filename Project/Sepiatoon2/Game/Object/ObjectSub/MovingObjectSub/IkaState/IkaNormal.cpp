@@ -5,8 +5,7 @@ class IkaSwim;
 class IkaSink;
 
 //TODO
-#include"IkaSink.h"
-#include"IkaSwim.h"
+#include"../IkaStateMachine.h"
 
 IkaNormal::IkaNormal():IkaState(IkaStateType::IKA_NORMAL)
 {
@@ -55,11 +54,11 @@ void IkaNormal::exit(Ika* _owner)
 void IkaNormal::input(Ika* _owner)
 {		
 	IkaController* controller = _owner->get_controller();
-	if (controller->get_key_swim().pressed)
+	if (controller->is_pressed_swim())
 	{
 		if (check_ground_color(_owner)==COLOR_MINE)
 		{
-			set_next_state(new IkaSwim());
+			set_next_state(IkaStateType::IKA_SWIM);
 		}
 	}
 }
@@ -68,6 +67,75 @@ void IkaNormal::state(Ika* _owner)
 {
 	if (check_ground_color(_owner) == COLOR_RIVAL)
 	{
-		set_next_state(new IkaSink());
+		set_next_state(IkaStateType::IKA_SINK);
 	}
 }
+
+bool IkaNormal::on_collide(Ika* _owner, Object* _obj)
+{
+	bool ret = false;
+
+	//相手がイカクラスなら
+	if (Ika* other = dynamic_cast<Ika*>(_obj))
+	{
+		typedef IkaStateType IST;
+		//相手のステイトに応じて処理
+		switch (other->get_ika_fsm()->get_now_state())
+		{
+		case IST::IKA_NORMAL:
+			//異なるチームなら
+			if (other->get_team_type() != _owner->get_team_type())
+			{
+				//相手のほうが速い速度なら
+				if (other->get_velocity().length() > _owner->get_velocity().length())
+				{
+					_owner->damaged(other->get_char_type());
+					_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*3.0);
+				}
+				else
+				{
+					_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*1.5);
+				}
+			}
+			else
+			{
+				_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*1.5);
+			}
+			break;
+		case IST::IKA_SWIM:
+			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*1.0);
+			//自分には影響なし
+			break;
+		case IST::IKA_SINK:
+			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*1.0);
+			//自分には影響なし
+			break;
+		}
+	}
+
+	return ret;
+}
+
+/*
+//同じクラスとの衝突
+if (is_same_class(_obj->get_id(), get_id()))
+{
+Ika* ika = dynamic_cast<Ika*>(_obj);
+//異なるチームなら
+if(ika->get_team_type()!=get_team_type())
+{
+//相手のほうが早ければ
+if (ika->get_velocity().length() - get_velocity().length() >= VELOCITY_THRESHOLD)
+{
+damaged(ika->get_char_type());
+burst(get_Vec2(ika->get_p(), get_p())*3.0);
+}
+}
+else
+{
+burst(get_Vec2(ika->get_p(), get_p())*1.5);
+}
+ret = true;
+}
+
+*/

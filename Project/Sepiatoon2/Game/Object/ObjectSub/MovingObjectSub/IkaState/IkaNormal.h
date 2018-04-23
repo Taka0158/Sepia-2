@@ -14,5 +14,6 @@ public:
 	void draw(Ika* _owner)override;
 	void exit(Ika* _owner)override;
 
+	bool on_collide(Ika* _owner, Object* _obj);
 private:
 };

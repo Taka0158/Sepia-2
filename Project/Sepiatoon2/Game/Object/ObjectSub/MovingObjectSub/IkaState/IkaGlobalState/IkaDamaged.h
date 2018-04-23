@@ -14,9 +14,7 @@ public:
 	void exit(Ika* _owner)override;
 
 private:
-	int timer = 0;
-
-	static int m_invincible_time;
+	static double m_invincible_time;
 };
 
-int IkaDamaged::m_invincible_time = 100;
+double IkaDamaged::m_invincible_time = 3.0;

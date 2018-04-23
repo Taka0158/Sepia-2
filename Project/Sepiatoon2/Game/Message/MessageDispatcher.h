@@ -21,6 +21,7 @@ public:
 
 	//遅延メッセージの送信
 	bool dispatch_delayed_message();
+	bool dispatch_delayed_direct_message();
 
 	//全てのメッセージの破棄をするメソッド
 	void destroy_all_message();

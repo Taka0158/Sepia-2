@@ -123,6 +123,8 @@ void Ika::debug_draw()
 {
 	m_mask.drawFrame(1.0,0.0,Palette::Red);
 	FONT_DEBUG_8(L"HP:", m_hp).drawCenter(get_p());
+	Println(L"m_velocity", m_velocity);
+	Println(L"m_heading", m_heading);
 }
 
 void Ika::set_id()
@@ -148,7 +150,7 @@ void Ika::set_moving_parm()
 		m_init_max_speed = 6.0;
 		m_init_max_force = 5.0;
 		m_init_max_turn_rate = 0.02;
-		m_init_friction = 1.0;
+		m_init_friction = 0.05;
 		break;
 	}
 	set_moving_parm(m_init_mass, m_init_max_speed, m_init_max_force, m_init_max_turn_rate, m_init_friction);
@@ -159,8 +161,8 @@ void Ika::set_moving_parm(double _mass,double _max_speed,double _max_force,doubl
 	m_mass = _mass;
 	m_max_speed = _max_speed;
 	m_max_force = _max_force;
-	m_max_turn_rate = m_max_turn_rate;
-	m_friction = m_friction;
+	m_max_turn_rate = _max_turn_rate;
+	m_friction = _friction;
 }
 
 void Ika::set_moving_parm(IkaStateType _type)
@@ -171,7 +173,7 @@ void Ika::set_moving_parm(IkaStateType _type)
 		set_moving_parm(m_init_mass, m_init_max_speed, m_init_max_force, m_init_max_turn_rate, m_init_friction);
 		break;
 	case IkaStateType::IKA_SWIM:
-		set_moving_parm(m_init_mass, m_init_max_speed*1.5, m_init_max_force, m_init_max_turn_rate, m_init_friction);
+		set_moving_parm(m_init_mass, m_init_max_speed*1.5, m_init_max_force, m_init_max_turn_rate, m_init_friction*0.5);
 		break;
 	case IkaStateType::IKA_SINK:
 		set_moving_parm(m_init_mass, m_init_max_speed*0.5, m_init_max_force, m_init_max_turn_rate, m_init_friction);
@@ -191,7 +193,7 @@ void Ika::behavior_update()
 	Vec2 steering_force;
 
 	//移動する方向への力を入力(AI:計算)する
-	steering_force = m_controller->calculate();
+	steering_force = m_controller->calculate(this);
 
 	//加速度の算出
 	Vec2 acceleration = steering_force / m_mass;
@@ -200,8 +202,7 @@ void Ika::behavior_update()
 	m_velocity += acceleration;
 
 	//摩擦による速度の減算
-	m_velocity.x -= m_velocity.x*m_friction;
-	m_velocity.y -= m_velocity.y*m_friction;
+	m_velocity -= m_velocity*m_friction;
 
 	//速度の制限
 	if (m_velocity.length() > m_max_speed)
@@ -241,17 +242,20 @@ bool Ika::handle_message(const Telegram& _msg)
 bool Ika::on_message(const Telegram& _msg)
 {
 	bool ret = false;
-	IkaState* new_state;
+	IkaStateType* new_state_type;
 
 	switch (_msg.msg)
 	{
 	case msg::TYPE::CHANGE_IKA_STATE:
-		new_state = (IkaState*)_msg.extraInfo;
-		m_ika_fsm->change_state(new_state);
+		new_state_type = (IkaStateType*)_msg.extraInfo;
+		set_state(*new_state_type);
 		break;
 	case msg::TYPE::SET_IKA_GLOBAL_STATE:
-		new_state = (IkaState*)_msg.extraInfo;
-		m_ika_fsm->set_global_state(new_state);
+		new_state_type = (IkaStateType*)_msg.extraInfo;
+		set_global_state(*new_state_type);
+		break;
+	case msg::TYPE::DELETE_IKA_GLOBAL_STATE:
+		m_ika_fsm->delete_global_state();
 		break;
 	}
 
@@ -285,6 +289,7 @@ void Ika::calc_angle()
 void Ika::damaged(double _damage)
 {
 	m_hp -= _damage;
+	set_global_state(IkaStateType::IKA_DAMAGED);
 }
 
 void Ika::damaged(CharType _type)
@@ -316,25 +321,39 @@ bool Ika::handle_collide(Object* _obj)
 bool Ika::on_collide(Object* _obj)
 {
 	bool ret = false;
-	//同じクラスとの衝突
-	if (is_same_class(_obj->get_id(), get_id()))
-	{
-		Ika* ika = dynamic_cast<Ika*>(_obj);
-		//異なるチームなら
-		if(ika->get_team_type()==get_team_type())
-		{
-			//相手のほうが早ければ
-			if (ika->get_velocity().length() - get_velocity().length() >= VELOCITY_THRESHOLD)
-			{
-				damaged(ika->get_char_type());
-				burst(get_Vec2(ika->get_p(), get_p())*2.0);
-			}
-		}
-		else
-		{
-			burst(get_Vec2(ika->get_p(), get_p())*1.5);
-		}
-		ret = true;
-	}
+
+	//FSMに丸投げ
+	ret = m_ika_fsm->on_collide(_obj);
+
 	return ret;
+}
+
+void Ika::set_state(IkaStateType _type)
+{
+	switch (_type)
+	{
+	case IkaStateType::IKA_NORMAL:
+		m_ika_fsm->change_state(new IkaNormal());
+		break;
+	case IkaStateType::IKA_SINK:
+		m_ika_fsm->change_state(new IkaSink());
+		break;
+	case IkaStateType::IKA_SWIM:
+		m_ika_fsm->change_state(new IkaSwim());
+		break;
+	}
+}
+
+void Ika::set_global_state(IkaStateType _type)
+{
+	switch (_type)
+	{
+	case IkaStateType::IKA_DAMAGED:
+		m_ika_fsm->set_global_state(new IkaDamaged());
+		break;
+	case IkaStateType::IKA_SPECIAL:
+		//未実装
+		//m_ika_fsm->set_global_state(new IkaSpecial());
+		break;
+	}
 }

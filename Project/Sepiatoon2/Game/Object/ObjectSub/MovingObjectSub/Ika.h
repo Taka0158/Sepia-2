@@ -1,6 +1,7 @@
 #pragma once
 
 enum class IkaStateType {
+	IKA_UNDEFINED,
 	IKA_NORMAL,
 	IKA_SWIM,
 	IKA_SINK,
@@ -83,6 +84,14 @@ public:
 	bool handle_message(const Telegram&)override;
 	bool handle_collide(Object* _obj)override;
 
+	//ダメージを受けた時呼ぶ
+	void damaged(double);
+	//相手のキャラタイプに応じてダメージ量変動
+	void damaged(CharType);
+	//HPが0の時呼び出す
+	void destroy();
+	//吹っ飛ぶ関数
+	void burst(Vec2);
 private:
 	bool on_message(const Telegram&)override;
 	bool on_collide(Object* _obj)override;
@@ -94,14 +103,9 @@ private:
 	void set_rival_color();
 	//パラメータ変更
 	void set_moving_parm(double _mass, double _max_speed, double _max_force, double _max_turn_rate, double _friction);
-	//ダメージを受けた時呼ぶ
-	void damaged(double);
-	//相手のキャラタイプに応じてダメージ量変動
-	void damaged(CharType);
-	//HPが0の時呼び出す
-	void destroy();
-	//吹っ飛ぶ関数
-	void burst(Vec2);
+	//Stateのセット
+	void set_state(IkaStateType);
+	void set_global_state(IkaStateType);
 protected:
 	Vec2 m_target_pos;
 private:
