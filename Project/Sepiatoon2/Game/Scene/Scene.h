@@ -1,6 +1,7 @@
 #pragma once
 
 class SceneManager;
+class CutScene;
 
 class Scene
 {
@@ -19,6 +20,22 @@ public:
 	virtual void debug_update() = 0;
 	virtual void debug_draw() = 0;
 
+	//使用するStateでオーバーライド
+	virtual void set_cut_scene(CutScene*) {};
+
+	virtual void delete_cut_scene() 
+	{
+		if (m_cut_scene==nullptr)
+		{
+
+		}
+		else
+		{
+			delete m_cut_scene;
+			m_cut_scene = nullptr;
+		}
+	};
+
 	virtual ~Scene() {};
 
 	String get_scene_name() { return scene_name; };
@@ -31,4 +48,8 @@ protected:
 	//UIが存在しないSceneは　nullptr
 	//		  する			 UIManager
 	UIManager* m_ui = nullptr;
+
+	CutScene* m_cut_scene = nullptr;
 };
+
+#include"CutScene\CutScene.cpp"

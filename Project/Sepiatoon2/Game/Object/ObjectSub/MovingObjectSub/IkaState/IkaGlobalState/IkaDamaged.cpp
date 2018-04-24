@@ -28,8 +28,6 @@ void IkaDamaged::update(Ika* _owner)
 
 	state(_owner);
 
-	//State‘JˆÚˆ—
-	execute_change_state(_owner);
 }
 
 void IkaDamaged::draw(Ika* _owner)

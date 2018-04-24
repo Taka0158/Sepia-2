@@ -92,8 +92,8 @@ void Map::paint(Paint _p)
 Color Map::get_color(Point _p)
 {
 	Clamp(_p, Point(0, 0), Point(m_map_w - 1, m_map_h - 1));
-	Println(L"地面の場所", _p);
-	Println(L"地面の色", m_im_background.getPixel(_p.y, _p.x));
+	//Println(L"地面の場所", _p);
+	//Println(L"地面の色", m_im_background.getPixel(_p.y, _p.x));
 	return m_im_background.getPixel(_p.y,_p.x);
 }
 

@@ -40,10 +40,17 @@ void TestWorld::exit()
 
 void TestWorld::update()
 {
+	if (m_cut_scene)
+	{
+		m_cut_scene->update(this);
+	}
+	else 
+	{
+	SCENE_CAMERA->update_sub();
 	OBJ_MGR->update();
 	//EFFECT_MGR->update();
 	OBJ_MGR->debug_update();
-
+	}
 }
 
 void TestWorld::draw()
@@ -58,23 +65,28 @@ void TestWorld::draw()
 		OBJ_MGR->debug_draw();
 	}
 
+	if (m_cut_scene)m_cut_scene->draw(this);
+
 }
 
 void TestWorld::debug_update()
 {
 
-	if (Input::KeyF5.clicked)
+	if (Input::KeyZ.clicked)
 	{
-		OBJ_MGR->create_Ika();
+		OBJ_MGR->create_Ika(1, Vec2(160, 160));
 	}
-	if (Input::KeyF6.clicked)
+	if (Input::KeyX.clicked)
 	{
-		OBJ_MGR->create_Ika(Vec2(400,400),
-			Setting::get_controller_3(),
-			Setting::get_color_B(),
-			Setting::get_ika_3_team(),
-			Setting::get_char_3(),
-			Setting::get_special_3());
+		OBJ_MGR->create_Ika(2, Vec2(1920-160,1080 -160));
+	}
+	if (Input::KeyC.clicked)
+	{
+		OBJ_MGR->create_Ika(3, Vec2(160,1080- 160));
+	}
+	if (Input::KeyV.clicked)
+	{
+		OBJ_MGR->create_Ika(4, Vec2(1920-160, 160));
 	}
 	if (Input::MouseM.pressed)
 	{
@@ -86,7 +98,7 @@ void TestWorld::debug_update()
 		{
 			if (OBJ_MGR->get_entity_from_id(UID_OBJ_MAP))
 			{
-				std::unique_ptr<Paint> p = std::make_unique<Paint>(Paint(SCENE_CAMERA->get_mouse_posP(), Setting::get_color_A()));
+				std::unique_ptr<Paint> p = std::make_unique<Paint>(Paint(SCENE_CAMERA->get_mouse_posP(), Setting::get_color(TeamType::TEAM_A)));
 				MSG_DIS->dispatch_message(0, UID_UNKNOWN, UID_OBJ_MAP, msg::TYPE::MAP_PAINT, p.get());
 			}
 		}
@@ -94,7 +106,7 @@ void TestWorld::debug_update()
 		{
 			if (OBJ_MGR->get_entity_from_id(UID_OBJ_MAP))
 			{
-				std::unique_ptr<Paint> p = std::make_unique<Paint>(Paint(SCENE_CAMERA->get_mouse_posP(), Setting::get_color_B()));
+				std::unique_ptr<Paint> p = std::make_unique<Paint>(Paint(SCENE_CAMERA->get_mouse_posP(), Setting::get_color(TeamType::TEAM_B)));
 				MSG_DIS->dispatch_message(0, UID_UNKNOWN, UID_OBJ_MAP, msg::TYPE::MAP_PAINT, p.get());
 			}
 		}
@@ -115,9 +127,22 @@ void TestWorld::debug_update()
 		OBJ_MGR->destroy_map();
 	}
 
+	if (Input::KeyF7.clicked)
+	{
+		set_cut_scene(new IkaCutin());
+	}
+
 }
 
 void TestWorld::debug_draw()
 {
 
+}
+
+void TestWorld::set_cut_scene(CutScene* _scene)
+{
+	if (m_cut_scene == nullptr)
+	{
+		m_cut_scene = _scene;
+	}
 }

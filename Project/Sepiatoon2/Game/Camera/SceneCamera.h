@@ -12,6 +12,8 @@ public:
 	void initialize();
 	void finalize();
 
+	void update_sub();
+
 	void debug_draw();
 	bool handle_message(const Telegram& _msg)override;
 
@@ -19,6 +21,8 @@ public:
 	void set_center(Object*,bool);
 	//カメラ中心を引数にあわせる
 	void set_center(Vec2,bool);
+
+
 
 	Vec2 get_center_pos()const { return m_pos; };
 
@@ -35,7 +39,27 @@ public:
 		return Mouse::Pos() + temp;
 	}
 private:
+	//スケールを設定する
+	void set_scale();
+	//被写体リストに登録する
+	void regist_subject(MovingObject*);
+
+	//被写体リストから省く
+	void reset_subject(MovingObject*);
+
+	//カメラを揺らす
+	void shake_screen(Vec2 _vec);
+private:
 	bool on_message(const Telegram&);
+
+	//被写体
+	std::vector<MovingObject*> m_subjects;
+
+	//揺らす時の補正値
+	Vec2 m_shake_direction = Vec2(0.0, 0.0);
+
+	//もとに戻る速さ係数
+	double m_friction = 0.02;
 };
 
 SceneCamera* Singleton<SceneCamera>::instance = nullptr;

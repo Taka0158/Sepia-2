@@ -191,3 +191,17 @@ Texture& AssetFactory::get_tex(ImageType _type)
 	}
 	return *ret;
 }
+
+/*
+VideoPlayer& AssetFactory::get_video(MovieType _type)
+{
+	VideoPlayer* ret = nullptr;
+	switch (_type)
+	{
+	case MovieType::CUTIN_IKA:
+		ret = (m_cutin_ika!= nullptr) ? m_cutin_ika: m_cutin_ika = new VideoPlayer(PASS_CUTIN_MOVIE);
+		break;
+	}
+	return *ret;
+}
+*/

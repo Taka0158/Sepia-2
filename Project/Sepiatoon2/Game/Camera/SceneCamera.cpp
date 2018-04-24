@@ -24,12 +24,11 @@ void SceneCamera::initialize()
 	setTargetPos(Vec2(Setting::sc_w / 2, Setting::sc_h / 2));
 	setScale(1);
 	setTargetScale(1);
-
 }
 
 void SceneCamera::finalize()
 {
-
+	m_subjects.clear();
 }
 
 void SceneCamera::debug_draw()
@@ -41,8 +40,9 @@ void SceneCamera::debug_draw()
 	String str = L"Camera: ";
 	Println(str, L"m_pos", m_pos);
 	Println(str, L"m_targetPos", m_targetPos);
-	Println(str, L"m_grabPos", m_grabPos);
+	Println(str, L"m_scale", m_scale);
 	Println(str, L"CameraArea", getCameraArea());
+	Println(str, L"被写体の数", m_subjects.size());
 
 }
 
@@ -84,6 +84,87 @@ bool SceneCamera::on_message(const Telegram& _msg)
 		set_center((TestObj*)_msg.extraInfo );
 		ret = true;
 		break;
+	case msg::TYPE::REGIST_CAMERA_SUBJECT:
+		regist_subject((MovingObject*)_msg.extraInfo);
+		ret = true;
+		break;
+	case msg::TYPE::RESET_CAMERA_SUBJECT:
+		reset_subject((MovingObject*)_msg.extraInfo);
+		ret = true;
+		break;
+	case msg::TYPE::SHAKE_CAMERA:
+		Vec2 direction = (*((Vec2*)_msg.extraInfo))*2;
+		shake_screen(direction);
+		ret = true;
+		break;
 	}
 	return ret;
+}
+
+void SceneCamera::update_sub()
+{
+	m_shake_direction.x -= m_shake_direction.x*m_friction;
+	m_shake_direction.y -= m_shake_direction.y*m_friction;
+
+	//被写体がいないなら終了
+	if (m_subjects.empty())return;
+
+	Vec2 desired_camera_center = Vec2(0.0,0.0);
+
+	for (auto itr : m_subjects)
+	{
+		desired_camera_center += itr->get_p() + itr->get_velocity()*3;
+	}
+
+	desired_camera_center /= double(m_subjects.size());
+
+	setTargetPos(desired_camera_center+m_shake_direction);
+
+	set_scale();
+}
+
+
+void SceneCamera::regist_subject(MovingObject* _obj)
+{
+	m_subjects.push_back(_obj);
+}
+
+void SceneCamera::reset_subject(MovingObject* _obj)
+{
+	auto is_same = [&](MovingObject* obj)
+	{
+		return obj == _obj;
+	};
+	auto rmv_itr = std::remove_if(m_subjects.begin(), m_subjects.end(), is_same);
+	m_subjects.erase(rmv_itr, m_subjects.end());
+}
+
+void SceneCamera::shake_screen(Vec2 _vec)
+{
+	m_shake_direction = _vec;
+}
+
+void SceneCamera::set_scale()
+{
+	Vec2 current_pos = getPos();
+
+	//カメラ中心座標から一番遠いオブジェクトの位置を記録
+	Vec2 far_pos=Vec2(0.0,0.0);
+	double far_length = 0.0;
+	for (auto itr : m_subjects)
+	{
+		double dif = (current_pos - (itr->get_p()+itr->get_velocity() * 3)).length();
+		if (far_length <= dif)
+		{
+			far_pos = itr->get_p();
+			far_length = dif;
+		}
+	}
+	//半径 r　以内に　被写体が映るようにする
+	double r = (Setting::get_sc().y/2 );
+	double desired_scale = r/far_length;
+
+	desired_scale = clamp(desired_scale, CAMERA_MIN_SCALE, CAMERA_MAX_SCALE);
+
+	setTargetScale(desired_scale);
 }

@@ -181,6 +181,56 @@ void ObjectManager::create_Ika(Vec2 _init_p,ControllerType _contoroller_type,Col
 	regist_object(new_obj);
 }
 
+void ObjectManager::create_Ika(int _index,Vec2 _pos)
+{
+	if (m_map == nullptr)return;
+	Vec2 init_pos = _pos;
+	ControllerType controller;
+	TeamType team_type;
+	Color color;
+	CharType char_type;
+	SpecialType special_type;
+
+	Ika* new_obj;
+
+	switch (_index)
+	{
+	case 1:
+		controller = Setting::get_controller_1();
+		team_type = Setting::get_ika_1_team();
+		color = Setting::get_color(team_type);
+		char_type = Setting::get_char_1();
+		special_type = Setting::get_special_1();
+		break;
+	case 2:
+		controller = Setting::get_controller_2();
+		team_type = Setting::get_ika_2_team();
+		color = Setting::get_color(team_type);
+		char_type = Setting::get_char_2();
+		special_type = Setting::get_special_2();
+		break;
+	case 3:
+		controller = Setting::get_controller_3();
+		team_type = Setting::get_ika_3_team();
+		color = Setting::get_color(team_type);
+		char_type = Setting::get_char_3();
+		special_type = Setting::get_special_3();
+		break;
+	case 4:
+		controller = Setting::get_controller_4();
+		team_type = Setting::get_ika_4_team();
+		color = Setting::get_color(team_type);
+		char_type = Setting::get_char_4();
+		special_type = Setting::get_special_4();
+		break;
+	}
+
+	new_obj = new Ika(m_map, controller, init_pos, color, team_type, char_type, special_type);
+
+	regist_object(new_obj);
+
+}
+
 void ObjectManager::destroy_all_object()
 {
 	for (auto itr : m_objects)

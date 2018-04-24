@@ -21,10 +21,15 @@ Ika::Ika(Map* _map, ControllerType _controller_type,Vec2 _init_p, Color _color, 
 	m_ika_fsm->set_current_state(new IkaNormal());
 	m_ika_fsm->set_global_state(nullptr);
 
+	//イカを被写体に追加
+	MSG_DIS->dispatch_message(0, m_id, UID_SCENE_CAMERA, msg::TYPE::REGIST_CAMERA_SUBJECT, this);
+
 }
 Ika::~Ika()
 {
 	finalize();
+	//イカを被写体から削除
+	MSG_DIS->dispatch_message(0, m_id, UID_SCENE_CAMERA, msg::TYPE::RESET_CAMERA_SUBJECT, this);
 }
 
 void Ika::initialize()
@@ -61,6 +66,8 @@ void Ika::update()
 	//behavior_update();
 
 	calc_angle();
+
+	if (m_hp < 0.0)m_is_alive = false;
 }
 
 void Ika::draw()
@@ -88,8 +95,8 @@ void Ika::regist_texture(CharType _type)
 
 void Ika::set_rival_color()
 {
-	Color c1 = Setting::get_color_A();
-	Color c2 = Setting::get_color_B();
+	Color c1 = Setting::get_color(TeamType::TEAM_A);
+	Color c2 = Setting::get_color(TeamType::TEAM_B);
 	if (m_color == c1)
 	{
 		m_rival_color = c2;
@@ -123,8 +130,8 @@ void Ika::debug_draw()
 {
 	m_mask.drawFrame(1.0,0.0,Palette::Red);
 	FONT_DEBUG_8(L"HP:", m_hp).drawCenter(get_p());
-	Println(L"m_velocity", m_velocity);
-	Println(L"m_heading", m_heading);
+	//Println(L"m_velocity", m_velocity);
+	//Println(L"m_heading", m_heading);
 }
 
 void Ika::set_id()
@@ -179,7 +186,9 @@ void Ika::set_moving_parm(IkaStateType _type)
 		set_moving_parm(m_init_mass, m_init_max_speed*0.5, m_init_max_force, m_init_max_turn_rate, m_init_friction);
 		break;
 	case IkaStateType::IKA_DAMAGED:
-	case IkaStateType::IKA_SPECIAL:
+	case IkaStateType::IKA_SPECIAL_TYPHOON:
+	case IkaStateType::IKA_SPECIAL_DASH:
+	case IkaStateType::IKA_SPECIAL_SUPERNOVA:
 		set_moving_parm(m_init_mass, m_init_max_speed, m_init_max_force, m_init_max_turn_rate, m_init_friction);
 		break;
 	}
@@ -249,13 +258,20 @@ bool Ika::on_message(const Telegram& _msg)
 	case msg::TYPE::CHANGE_IKA_STATE:
 		new_state_type = (IkaStateType*)_msg.extraInfo;
 		set_state(*new_state_type);
+		ret = true;
 		break;
 	case msg::TYPE::SET_IKA_GLOBAL_STATE:
 		new_state_type = (IkaStateType*)_msg.extraInfo;
 		set_global_state(*new_state_type);
+		ret = true;
 		break;
 	case msg::TYPE::DELETE_IKA_GLOBAL_STATE:
 		m_ika_fsm->delete_global_state();
+		ret = true;
+		break;
+	case msg::TYPE::EXECUTE_IKA_SPECIAL:
+		execute_special();
+		ret = true;
 		break;
 	}
 
@@ -351,9 +367,30 @@ void Ika::set_global_state(IkaStateType _type)
 	case IkaStateType::IKA_DAMAGED:
 		m_ika_fsm->set_global_state(new IkaDamaged());
 		break;
-	case IkaStateType::IKA_SPECIAL:
-		//未実装
-		//m_ika_fsm->set_global_state(new IkaSpecial());
+	case IkaStateType::IKA_SPECIAL_TYPHOON:
+		m_ika_fsm->set_global_state(new IkaSpecialTyphoon());
+		break;
+	case IkaStateType::IKA_SPECIAL_DASH:
+		m_ika_fsm->set_global_state(new IkaSpecialDash());
+		break;
+	case IkaStateType::IKA_SPECIAL_SUPERNOVA:
+		m_ika_fsm->set_global_state(new IkaSpecialSupernova());
+		break;
+	}
+}
+
+void Ika::execute_special()
+{
+	switch (m_special_type)
+	{
+	case SpecialType::DASH:
+		set_global_state(IkaStateType::IKA_SPECIAL_DASH);
+		break;
+	case SpecialType::TYPHOON:
+		set_global_state(IkaStateType::IKA_SPECIAL_TYPHOON);
+		break;
+	case SpecialType::SUPERNOVA:
+		set_global_state(IkaStateType::IKA_SPECIAL_SUPERNOVA);
 		break;
 	}
 }

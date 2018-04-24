@@ -18,6 +18,11 @@ enum class ImageType{
 	SCENESWITCH_IKA,
 };
 
+enum class MovieType
+{
+	//CUTIN_IKA
+};
+
 class AssetFactory :public Singleton<AssetFactory>
 {
 	friend class Singleton<AssetFactory>;
@@ -41,6 +46,8 @@ public:
 
 	//テクスチャ取得メソッド（生成コストなし
 	Texture& get_tex(ImageType);
+
+	VideoPlayer& get_video(MovieType);
 
 private:
 	Image* m_im_map_simple_1920_1080 = nullptr;
@@ -76,5 +83,7 @@ private:
 	Texture* m_tex_scene_switch_1_bg = nullptr;
 
 	std::vector<Image*> m_images;
+
+	//VideoPlayer* m_cutin_ika= nullptr;
 };
 AssetFactory* Singleton<AssetFactory>::instance = nullptr;

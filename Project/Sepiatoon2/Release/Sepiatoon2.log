@@ -1,9 +1,10 @@
 ﻿     ライブラリ C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.lib とオブジェクト C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.exp を作成中
   コード生成しています。
-  0 of 1878 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  2 of 2023 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    10 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   Sepiatoon2.vcxproj -> C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.exe
   Sepiatoon2.vcxproj -> C:\Users\tomoki\Desktop\Sepiatoon2\Project\Release\Sepiatoon2.pdb (Full PDB)
 c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectsub\movingobject.h(64): warning C6001: 初期化されていないメモリ 'rotation_matrix' を使用しています。
+c:\users\tomoki\desktop\sepiatoon2\project\sepiatoon2\game\object\objectmanager.cpp(228): warning C6001: 初期化されていないメモリ 'controller' を使用しています。

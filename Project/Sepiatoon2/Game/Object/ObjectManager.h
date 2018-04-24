@@ -26,10 +26,11 @@ public:
 
 	void create_Ika(Vec2 _init_p=Vec2(240.0,240.0),
 		ControllerType _contoroller_type=ControllerType::PLAYER_1,
-		Color _color=Setting::get_color_A(),
+		Color _color=Setting::get_color(Setting::get_ika_1_team()),
 		TeamType _team_type=Setting::get_ika_1_team(),
 		CharType _char_type=Setting::get_char_1(),
 		SpecialType _special_type=Setting::get_special_1());
+	void create_Ika(int _index,Vec2 _pos);
 
 	//-----------------------------------------------Createä÷êî--------------------------------------------------------------------------
 

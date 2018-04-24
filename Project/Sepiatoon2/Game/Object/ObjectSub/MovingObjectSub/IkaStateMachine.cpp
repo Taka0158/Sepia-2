@@ -59,7 +59,9 @@ bool IkaStateMachine::on_collide(Object* _obj)
 IkaStateType IkaStateMachine::get_now_state()
 {
 	IkaStateType ret = IkaStateType::IKA_UNDEFINED;
-	if (m_global_state)ret = m_global_state->get_state_type();	else if (m_current_state)ret = m_current_state->get_state_type();	return ret;
+	if (m_global_state)ret = m_global_state->get_state_type();
+	else if (m_current_state)ret = m_current_state->get_state_type();
+	return ret;
 }
 
 void IkaStateMachine::set_global_state(IkaState* _state)

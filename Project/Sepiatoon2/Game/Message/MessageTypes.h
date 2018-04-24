@@ -11,7 +11,11 @@ namespace msg
 		MAP_PAINT,
 		CHANGE_IKA_STATE,
 		SET_IKA_GLOBAL_STATE,
-		DELETE_IKA_GLOBAL_STATE
+		DELETE_IKA_GLOBAL_STATE,
+		REGIST_CAMERA_SUBJECT,
+		RESET_CAMERA_SUBJECT,
+		SHAKE_CAMERA,
+		EXECUTE_IKA_SPECIAL
 	};
 
 	//デバグ用に表示する名前
@@ -20,6 +24,9 @@ namespace msg
 		String str;
 		switch (_type)
 		{
+		default:
+			str = L"---";
+			break;
 		case TYPE::UNKNOWN:
 			str = L"UNKNOWN";
 			break;
@@ -40,6 +47,18 @@ namespace msg
 			break;
 		case TYPE::DELETE_IKA_GLOBAL_STATE:
 			str = L"IKA_GLOBAL_STATE:GlobalState削除";
+			break;
+		case TYPE::REGIST_CAMERA_SUBJECT:
+			str = L"CAMERA:被写体に追加";
+			break;
+		case TYPE::RESET_CAMERA_SUBJECT:
+			str = L"CAMERA:被写体から削除";
+			break;
+		case TYPE::SHAKE_CAMERA:
+			str = L"CAMERA:画面を揺らす";
+			break;
+		case TYPE::EXECUTE_IKA_SPECIAL:
+			str = L"イカスペシャル発動！";
 			break;
 		}
 		return str;

@@ -23,11 +23,22 @@
 #define PASS_SCENESWITCH_1 L"Assets/Images/SceneSwitch/scene_switch_1.png"
 #define PASS_SCENESWITCH_IKA L"Assets/Images/SceneSwitch/scene_switch_ika.png"
 #define PASS_SCENESWITCH_1_BG L"Assets/Images/SceneSwitch/scene_switch_1_bg.png"
+
+#define OPEN_MOVIE_IKA_CUTIN experimental::MediaPlayer::Open(L"Assets/Movies/cutin.avi")
+#define PLAY_MOVIE_IKA_CUTIN(rect) experimental::MediaPlayer::Play((rect))
+#define ISPLAYING_MOVIE_IKA_CUTIN experimental::MediaPlayer::IsPlaying()
+#define STOP_MOVIE_IKA_CUTIN experimental::MediaPlayer::Stop()
 //--------------------------当たり判定------------------------------------
 //高さの差がこの値以下なら衝突
 #define HEIGHT_THRESHOLD 5.0
 //速さの差がこの値以下なら同じ
 #define VELOCITY_THRESHOLD 0.5
+
+
+//--------------------------カメラパラメータ------------------------------------
+//最大/最小scale値
+#define CAMERA_MAX_SCALE 1.3
+#define CAMERA_MIN_SCALE 0.8
 
 
 //--------------------------簡易色識別------------------------------------

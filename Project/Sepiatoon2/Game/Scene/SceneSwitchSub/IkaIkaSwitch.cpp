@@ -29,23 +29,23 @@ void IkaIkaSwitch::draw()
 			if (i % 2 == 0)
 			{
 				int x = easing - double(Setting::sc_w);
-				m_rect[i].setPos(x,i*temp).draw(Setting::get_color_A()).drawFrame(1.0, 1.0);
+				m_rect[i].setPos(x,i*temp).draw(Setting::get_color(TeamType::TEAM_A)).drawFrame(1.0, 1.0);
 			}
 			else
 			{
 				int x = easing - double(Setting::sc_w);
-				m_rect[i].setPos(x, i*temp).draw(Setting::get_color_B()).drawFrame(1.0, 1.0);
+				m_rect[i].setPos(x, i*temp).draw(Setting::get_color(TeamType::TEAM_B)).drawFrame(1.0, 1.0);
 			}
 		}
 		for (int i = 0; i < m_ika_num; i++)
 		{
 			if (i % 2 == 0)
 			{
-				m_ika.scale(0.5*Setting::get_sc_scale()).rotate(Pi*0.5).drawAt(easing, (i + 0.5)*Setting::sc_h / m_ika_num, Setting::get_color_A());
+				m_ika.scale(0.5*Setting::get_sc_scale()).rotate(Pi*0.5).drawAt(easing, (i + 0.5)*Setting::sc_h / m_ika_num, Setting::get_color(TeamType::TEAM_A));
 			}
 			else
 			{
-				m_ika.scale(0.5*Setting::get_sc_scale()).rotate(Pi*0.5).drawAt(easing, (i + 0.5)*Setting::sc_h / m_ika_num, Setting::get_color_B());
+				m_ika.scale(0.5*Setting::get_sc_scale()).rotate(Pi*0.5).drawAt(easing, (i + 0.5)*Setting::sc_h / m_ika_num, Setting::get_color(TeamType::TEAM_B));
 			}
 		}
 	}
@@ -57,23 +57,23 @@ void IkaIkaSwitch::draw()
 			if (i % 2 == 0)
 			{
 				int x = easing - double(Setting::sc_w);
-				m_rect[i].setPos(x, i*temp).draw(Setting::get_color_A()).drawFrame(1.0,1.0);
+				m_rect[i].setPos(x, i*temp).draw(Setting::get_color(TeamType::TEAM_A)).drawFrame(1.0,1.0);
 			}
 			else
 			{
 				int x = easing - double(Setting::sc_w);
-				m_rect[i].setPos(x, i*temp).draw(Setting::get_color_B()).drawFrame(1.0, 1.0);
+				m_rect[i].setPos(x, i*temp).draw(Setting::get_color(TeamType::TEAM_B)).drawFrame(1.0, 1.0);
 			}
 		}
 		for (int i = 0; i < m_ika_num; i++)
 		{
 			if (i % 2 == 0)
 			{
-				m_ika.scale(0.5*Setting::get_sc_scale()).rotate(-Pi*0.5).drawAt(easing, (i + 0.5)*Setting::sc_h / m_ika_num, Setting::get_color_A());
+				m_ika.scale(0.5*Setting::get_sc_scale()).rotate(-Pi*0.5).drawAt(easing, (i + 0.5)*Setting::sc_h / m_ika_num, Setting::get_color(TeamType::TEAM_A));
 			}
 			else
 			{
-				m_ika.scale(0.5*Setting::get_sc_scale()).rotate(-Pi*0.5).drawAt(easing, (i + 0.5)*Setting::sc_h / m_ika_num, Setting::get_color_B());
+				m_ika.scale(0.5*Setting::get_sc_scale()).rotate(-Pi*0.5).drawAt(easing, (i + 0.5)*Setting::sc_h / m_ika_num, Setting::get_color(TeamType::TEAM_B));
 			}
 		}
 	}

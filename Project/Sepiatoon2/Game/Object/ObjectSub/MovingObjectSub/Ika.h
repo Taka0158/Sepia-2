@@ -6,7 +6,9 @@ enum class IkaStateType {
 	IKA_SWIM,
 	IKA_SINK,
 	IKA_DAMAGED,
-	IKA_SPECIAL
+	IKA_SPECIAL_TYPHOON,
+	IKA_SPECIAL_DASH,
+	IKA_SPECIAL_SUPERNOVA
 };
 
 class Map;
@@ -71,6 +73,9 @@ public:
 	IkaController* get_controller() { return m_controller.get(); }
 	IkaStateMachine* get_ika_fsm() { return m_ika_fsm.get(); }
 
+	double get_hp() { return m_hp; }
+	double get_special_gauge() { return m_special_gauge; }
+
 
 	Vec2 get_init_pos() { return m_init_pos; }
 	Vec2 get_target_pos() { return m_target_pos; }
@@ -106,6 +111,9 @@ private:
 	//Stateのセット
 	void set_state(IkaStateType);
 	void set_global_state(IkaStateType);
+	//スペシャルの発動
+	void execute_special();
+	
 protected:
 	Vec2 m_target_pos;
 private:
@@ -148,7 +156,8 @@ private:
 	static int m_next_valid_id;
 
 	//------------------GAME内で利用するパラメータ
-	double m_hp = 100;
+	double m_hp = 100.0;
+	double m_special_gauge = 0.0;
 
 };
 

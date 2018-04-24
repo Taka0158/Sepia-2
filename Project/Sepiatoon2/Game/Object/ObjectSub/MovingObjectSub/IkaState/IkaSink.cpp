@@ -74,6 +74,7 @@ bool IkaSink::on_collide(Ika* _owner, Object* _obj)
 		case IST::IKA_NORMAL:
 			if (other->get_team_type() != _owner->get_team_type())
 			{
+				MSG_DIS->dispatch_message(0.0, _owner->get_id(), UID_SCENE_CAMERA, msg::TYPE::SHAKE_CAMERA, &get_Vec2(other->get_p(), _owner->get_p()));
 				_owner->damaged(other->get_char_type());
 				_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*3.0);
 			}
@@ -81,8 +82,9 @@ bool IkaSink::on_collide(Ika* _owner, Object* _obj)
 		case IST::IKA_SWIM:
 			if (other->get_team_type() != _owner->get_team_type())
 			{
-			_owner->damaged(other->get_char_type());
-			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*3.0);
+				MSG_DIS->dispatch_message(0.0, _owner->get_id(), UID_SCENE_CAMERA, msg::TYPE::SHAKE_CAMERA, &get_Vec2(other->get_p(), _owner->get_p()));
+				_owner->damaged(other->get_char_type());
+				_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*3.0);
 			}
 			break;
 		case IST::IKA_SINK:
