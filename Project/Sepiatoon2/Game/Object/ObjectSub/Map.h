@@ -21,6 +21,7 @@ public:
 
 	//単一オブジェクトよりidはマクロ指定
 	virtual void set_id() {};
+	void init_id()override {};
 
 	bool handle_message(const Telegram&)override;
 	bool on_message(const Telegram&)override;

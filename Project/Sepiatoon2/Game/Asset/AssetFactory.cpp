@@ -73,6 +73,15 @@ Image& AssetFactory::get_image(ImageType _type)
 	case ImageType::SCENESWITCH_IKA:
 		ret = (m_im_scene_switch_ika!= nullptr) ? m_im_scene_switch_ika: m_im_scene_switch_ika= new Image(PASS_SCENESWITCH_1_BG);
 		break;
+	case ImageType::IKA_CUTIN:
+		ret = (m_im_ika_cutin != nullptr) ? m_im_ika_cutin : m_im_ika_cutin = new Image(PASS_IKA_CUTIN);
+		break;
+	case ImageType::SHADOW_64:
+		ret = (m_im_shadow_64 != nullptr) ? m_im_shadow_64 : m_im_shadow_64 = new Image(PASS_SHADOW_64);
+		break;
+	case ImageType::TIRE_64:
+		ret = (m_im_tire_64 != nullptr) ? m_im_tire_64 : m_im_tire_64 = new Image(PASS_TIRE_64);
+		break;
 	}
 	return *ret;
 }
@@ -100,6 +109,9 @@ Image AssetFactory::get_image_copy(ImageType _type)
 	case ImageType::SCENESWITCH_1:
 	case ImageType::SCENESWITCH_1_BG:
 	case ImageType::SCENESWITCH_IKA:
+	case ImageType::IKA_CUTIN:
+	case ImageType::SHADOW_64:
+	case ImageType::TIRE_64:
 		ret=get_image(_type).clone();
 		break;
 	}
@@ -129,6 +141,9 @@ Texture AssetFactory::get_tex_copy(ImageType _type)
 	case ImageType::SCENESWITCH_1:
 	case ImageType::SCENESWITCH_1_BG:
 	case ImageType::SCENESWITCH_IKA:
+	case ImageType::IKA_CUTIN:
+	case ImageType::SHADOW_64:
+	case ImageType::TIRE_64:
 		ret = Texture(get_tex(_type));
 		break;
 	}
@@ -187,6 +202,15 @@ Texture& AssetFactory::get_tex(ImageType _type)
 		break;
 	case ImageType::SCENESWITCH_IKA:
 		ret = (m_tex_scene_switch_ika != nullptr) ? m_tex_scene_switch_ika : m_tex_scene_switch_ika = new Texture(get_image(_type));
+		break;
+	case ImageType::IKA_CUTIN:
+		ret = (m_tex_ika_cutin != nullptr) ? m_tex_ika_cutin : m_tex_ika_cutin = new Texture(get_image(_type));
+		break;
+	case ImageType::SHADOW_64:
+		ret = (m_tex_shadow_64 != nullptr) ? m_tex_shadow_64 : m_tex_shadow_64 = new Texture(get_image(_type));
+		break;
+	case ImageType::TIRE_64:
+		ret = (m_tex_tire_64 != nullptr) ? m_tex_tire_64 : m_tex_tire_64 = new Texture(get_image(_type));
 		break;
 	}
 	return *ret;

@@ -2,6 +2,7 @@
 
 Ika::Ika(Map* _map, ControllerType _controller_type,Vec2 _init_p, Color _color, TeamType _team_type, CharType _char_type, SpecialType _special_type):MovingObject(ID(ID_OBJ_IKA))
 {
+	set_id();
 	m_map = _map;
 	m_color = _color;
 	m_team_type = _team_type;
@@ -42,6 +43,7 @@ void Ika::initialize()
 
 	m_depth = 5;
 	m_angle = 0.0;
+	m_height = 100.0;
 
 	m_mask_radius = 32.0;
 }
@@ -50,7 +52,7 @@ void Ika::finalize()
 {
 	m_is_alive = false;
 
-	m_ika_fsm.release();
+	//m_ika_fsm.release();
 }
 
 void Ika::update()
@@ -67,11 +69,18 @@ void Ika::update()
 
 	calc_angle();
 
-	if (m_hp < 0.0)m_is_alive = false;
+	gravity();
+
+	if (m_hp < 0.0)
+	{
+		m_is_alive = false;
+		finalize();
+	}
 }
 
 void Ika::draw()
 {
+	draw_shadow();
 	m_ika_fsm->draw();
 }
 
@@ -129,7 +138,10 @@ void Ika::debug_update()
 void Ika::debug_draw()
 {
 	m_mask.drawFrame(1.0,0.0,Palette::Red);
-	FONT_DEBUG_8(L"HP:", m_hp).drawCenter(get_p());
+	FONT_DEBUG_8(L"HP:", m_hp).drawCenter(get_p(),Palette::Black);
+	FONT_DEBUG_8(L"GAUGE:", m_special_gauge).drawCenter(Vec2(get_p().x, get_p().y + 8.0), Palette::Black);
+	FONT_DEBUG_8(L"depth:", m_depth).drawCenter(Vec2(get_p().x, get_p().y + 16.0), Palette::Black);
+	FONT_DEBUG_8(L"height:", m_height).drawCenter(Vec2(get_p().x, get_p().y + 24.0), Palette::Black);
 	//Println(L"m_velocity", m_velocity);
 	//Println(L"m_heading", m_heading);
 }
@@ -145,6 +157,11 @@ void Ika::set_id()
 	{
 		ASSERT(L"オブジェクトのID割り当てが上限を超えました");
 	}
+}
+
+void Ika::init_id()
+{
+	m_next_valid_id = 0;
 }
 
 void Ika::set_moving_parm()
@@ -211,7 +228,7 @@ void Ika::behavior_update()
 	m_velocity += acceleration;
 
 	//摩擦による速度の減算
-	m_velocity -= m_velocity*m_friction;
+	if(m_height<=0.2)m_velocity -= m_velocity*m_friction;
 
 	//速度の制限
 	if (m_velocity.length() > m_max_speed)
@@ -238,7 +255,7 @@ void Ika::paint()
 
 	Paint p = Paint(pos, m_color);
 
-	MSG_DIS->dispatch_message(0.0, m_id, m_map->get_id(), msg::TYPE::MAP_PAINT, &p);
+	MSG_DIS->dispatch_message(0.0, m_id, m_map->get_id(), msg::TYPE::MAP_PAINT, &p,false);
 
 }
 
@@ -338,8 +355,16 @@ bool Ika::on_collide(Object* _obj)
 {
 	bool ret = false;
 
-	//FSMに丸投げ
-	ret = m_ika_fsm->on_collide(_obj);
+	//タイヤとの接触なら
+	if (is_same_class(_obj->get_id(), ID_MAPGIMMCIK_TIRE))
+	{
+		burst(get_Vec2(_obj->get_p(), m_pos)*5.0);
+	}
+	else
+	{
+		//FSMに丸投げ
+		ret = m_ika_fsm->on_collide(_obj);
+	}
 
 	return ret;
 }

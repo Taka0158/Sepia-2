@@ -22,7 +22,7 @@ public:
 
 	//-----------------------------------------------Create関数--------------------------------------------------------------------------
 	//テスト用
-	void create_TestObj(Vec2 _p);
+	//void create_TestObj(Vec2 _p);
 
 	void create_Ika(Vec2 _init_p=Vec2(240.0,240.0),
 		ControllerType _contoroller_type=ControllerType::PLAYER_1,
@@ -31,6 +31,8 @@ public:
 		CharType _char_type=Setting::get_char_1(),
 		SpecialType _special_type=Setting::get_special_1());
 	void create_Ika(int _index,Vec2 _pos);
+
+	void create_Tire(Vec2 _pos);
 
 	//-----------------------------------------------Create関数--------------------------------------------------------------------------
 
@@ -83,9 +85,10 @@ private:
 	std::vector<Object*> m_objects;
 
 	//<そのObjectのdepth	,	そのObjectのポインタ>
-	typedef std::pair<int, Object*> Drawer;
+	typedef std::pair<int&, Object*> Drawer;
 
 	//object.m_depth基準で並び替える
+	//値が大きいほど手前に描画される
 	std::set<Drawer> m_objects_drawer;
 
 	//mapインスタンス

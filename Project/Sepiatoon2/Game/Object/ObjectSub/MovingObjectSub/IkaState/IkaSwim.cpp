@@ -37,7 +37,7 @@ void IkaSwim::draw(Ika* _owner)
 	Println(L"IkaSwim");
 	double angle = _owner->get_angle();
 	double scale = _owner->get_tex_scale();
-	_owner->get_tex_s().scale(scale).rotate(angle).drawAt(_owner->get_p(), _owner->get_color());
+	_owner->get_tex_s().scale(scale).rotate(angle).drawAt(_owner->get_pos_height(), _owner->get_color());
 }
 
 void IkaSwim::exit(Ika* _owner)

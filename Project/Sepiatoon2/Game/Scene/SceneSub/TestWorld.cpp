@@ -88,9 +88,9 @@ void TestWorld::debug_update()
 	{
 		OBJ_MGR->create_Ika(4, Vec2(1920-160, 160));
 	}
-	if (Input::MouseM.pressed)
+	if (Input::MouseM.clicked)
 	{
-		OBJ_MGR->create_TestObj(SCENE_CAMERA->get_mouse_pos());
+		OBJ_MGR->create_Tire(SCENE_CAMERA->get_mouse_pos());
 	}
 	if (Input::MouseL.pressed)
 	{
@@ -129,7 +129,7 @@ void TestWorld::debug_update()
 
 	if (Input::KeyF7.clicked)
 	{
-		set_cut_scene(new IkaCutin());
+		set_cut_scene(new IkaCutin(Setting::get_color(Setting::get_ika_1_team())));
 	}
 
 }

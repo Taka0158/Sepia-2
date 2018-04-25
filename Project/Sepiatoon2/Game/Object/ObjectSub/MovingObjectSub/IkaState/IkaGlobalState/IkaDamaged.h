@@ -17,4 +17,4 @@ private:
 	static double m_invincible_time;
 };
 
-double IkaDamaged::m_invincible_time = 3.0;
+double IkaDamaged::m_invincible_time = 2.0;

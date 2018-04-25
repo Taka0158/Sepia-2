@@ -16,6 +16,9 @@ enum class ImageType{
 	SCENESWITCH_1,
 	SCENESWITCH_1_BG,
 	SCENESWITCH_IKA,
+	IKA_CUTIN,
+	SHADOW_64,
+	TIRE_64
 };
 
 enum class MovieType
@@ -47,7 +50,7 @@ public:
 	//テクスチャ取得メソッド（生成コストなし
 	Texture& get_tex(ImageType);
 
-	VideoPlayer& get_video(MovieType);
+	//VideoPlayer& get_video(MovieType);
 
 private:
 	Image* m_im_map_simple_1920_1080 = nullptr;
@@ -65,6 +68,9 @@ private:
 	Image* m_im_scene_switch_1 = nullptr;
 	Image* m_im_scene_switch_ika = nullptr;
 	Image* m_im_scene_switch_1_bg = nullptr;
+	Image* m_im_ika_cutin = nullptr;
+	Image* m_im_shadow_64 = nullptr;
+	Image* m_im_tire_64 = nullptr;
 
 	Texture* m_tex_map_simple_1920_1080 = nullptr;
 	Texture* m_tex_ink_0_128 = nullptr;
@@ -81,6 +87,9 @@ private:
 	Texture* m_tex_scene_switch_1 = nullptr;
 	Texture* m_tex_scene_switch_ika = nullptr;
 	Texture* m_tex_scene_switch_1_bg = nullptr;
+	Texture* m_tex_ika_cutin = nullptr;
+	Texture* m_tex_shadow_64 = nullptr;
+	Texture* m_tex_tire_64 = nullptr;
 
 	std::vector<Image*> m_images;
 

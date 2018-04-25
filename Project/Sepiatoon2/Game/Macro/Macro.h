@@ -23,6 +23,9 @@
 #define PASS_SCENESWITCH_1 L"Assets/Images/SceneSwitch/scene_switch_1.png"
 #define PASS_SCENESWITCH_IKA L"Assets/Images/SceneSwitch/scene_switch_ika.png"
 #define PASS_SCENESWITCH_1_BG L"Assets/Images/SceneSwitch/scene_switch_1_bg.png"
+#define PASS_IKA_CUTIN L"Assets/Images/Cutin/cutin.png"
+#define PASS_SHADOW_64 L"Assets/Images/Utility/shadow_64.png"
+#define PASS_TIRE_64 L"Assets/Images/MapGimmick/tire_64.png"
 
 #define OPEN_MOVIE_IKA_CUTIN experimental::MediaPlayer::Open(L"Assets/Movies/cutin.avi")
 #define PLAY_MOVIE_IKA_CUTIN(rect) experimental::MediaPlayer::Play((rect))
@@ -30,9 +33,11 @@
 #define STOP_MOVIE_IKA_CUTIN experimental::MediaPlayer::Stop()
 //--------------------------当たり判定------------------------------------
 //高さの差がこの値以下なら衝突
-#define HEIGHT_THRESHOLD 5.0
+#define HEIGHT_THRESHOLD 1.0
 //速さの差がこの値以下なら同じ
 #define VELOCITY_THRESHOLD 0.5
+//マスク半径が0とみなされる値
+#define MASK_RADIUS_NULL 0.001
 
 
 //--------------------------カメラパラメータ------------------------------------
@@ -73,6 +78,7 @@
 #define UID_OBJ_MAP				0x02000001
 #define ID_OBJ_TEST				0x02010000
 #define ID_OBJ_IKA				0x02020000
+#define ID_MAPGIMMCIK_TIRE		0x02100000
 
 #define UID_MGR_EFFECT			0x04000000
 #define UID_MGR_AUDIO			0x08000000

@@ -43,7 +43,7 @@ void IkaNormal::draw(Ika* _owner)
 	Println(L"IkaNormal");
 	double angle = _owner->get_angle();
 	double scale = _owner->get_tex_scale();
-	_owner->get_tex_n().scale(scale).rotate(angle).drawAt(_owner->get_p(), _owner->get_color());
+	_owner->get_tex_n().scale(scale).rotate(angle).drawAt(_owner->get_pos_height(), _owner->get_color());
 }
 
 void IkaNormal::exit(Ika* _owner)

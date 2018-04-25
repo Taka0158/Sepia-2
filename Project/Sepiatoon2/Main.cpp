@@ -63,10 +63,17 @@ void Main()
 		SCENE_MGR->debug_draw();
 
 		DEBUG->update();
-		//DEBUG->show();
+		DEBUG->show();
 		MSG_DIS->debug_draw();
 	}
 }
+
+/*
+TODOIST
+
+カメラバグ
+*/
+
 /*
 TODOIST20180423
 
@@ -76,7 +83,7 @@ TODOIST20180423
 //摩擦が機能していないのを修正
 //ただの変数名ミス
 
-Collide関係(Ika同士の衝突)の処理を正確に
+//Collide関係(Ika同士の衝突)の処理を正確に
 */
 
 

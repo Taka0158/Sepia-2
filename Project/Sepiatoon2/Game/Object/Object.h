@@ -20,6 +20,7 @@ public:
 	bool get_is_alive()const { return m_is_alive; };
 	Vec2 get_p()const { return m_pos; };
 	int get_depth()const { return m_depth; };
+	int& get_depth_ref() { return m_depth; };
 	void set_is_alive(bool _b) { m_is_alive = _b; };
 	Circle& get_mask() { return m_mask; };
 	double get_mask_radius() { return m_mask_radius; };
@@ -27,9 +28,15 @@ public:
 
 	//IDを設定する
 	virtual void set_id() = 0;
+
+	//IDを初期化する
+	virtual void init_id() = 0;
 	
 	//衝突判定の受け取りを行う
 	virtual bool handle_collide(Object*  _obj) { return false; };
+
+	//高さ考慮の描画中心座標
+	Vec2 get_pos_height() { return Vec2(m_pos.x, m_pos.y - m_height); }
 
 protected:
 	//メッセージ処理を行う関数
@@ -50,14 +57,21 @@ protected:
 	//地面からの高さ
 	double m_height = 0.0;
 
+	int m_init_depth = 5;
+
 	//コリジョンマスク
 	Circle m_mask = Circle(0, 0, 0);
 
 	//コリジョンマスクの大きさ
 	double m_mask_radius;
+
+
 };
+
+
 #include"ObjectSub\Map.cpp"
 #include"ObjectSub\TestObj.cpp"
+#include"ObjectSub\MapGimmick.h"
 #include"ObjectSub\MovingObject.h"
 
 /*

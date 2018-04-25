@@ -39,7 +39,7 @@ private:
 		void draw()
 		{
 			int sc_w = Setting::sc_w;
-			FONT_IKA_ALPHABET_32.drawCenter(ToString(sec), Vec2(sc_w / 2, 64));
+			FONT_IKA_ALPHABET_32.drawCenter(ToString(sec), Vec2(sc_w / 2, 64), Palette::Black);
 		}
 	private:
 		int timer;

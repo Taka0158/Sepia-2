@@ -43,6 +43,10 @@ void SceneCamera::debug_draw()
 	Println(str, L"m_scale", m_scale);
 	Println(str, L"CameraArea", getCameraArea());
 	Println(str, L"”íŽÊ‘Ì‚Ì”", m_subjects.size());
+	for (auto itr : m_subjects)
+	{
+		Println(L"”íŽÊ‘Ì‚ÌID:",to_hex(itr->get_id()));
+	}
 
 }
 
@@ -133,10 +137,9 @@ void SceneCamera::reset_subject(MovingObject* _obj)
 {
 	auto is_same = [&](MovingObject* obj)
 	{
-		return obj == _obj;
+		return _obj->get_id() == obj->get_id();
 	};
-	auto rmv_itr = std::remove_if(m_subjects.begin(), m_subjects.end(), is_same);
-	m_subjects.erase(rmv_itr, m_subjects.end());
+	m_subjects.erase(remove_if(m_subjects.begin(), m_subjects.end(), is_same), m_subjects.end());
 }
 
 void SceneCamera::shake_screen(Vec2 _vec)
@@ -153,7 +156,7 @@ void SceneCamera::set_scale()
 	double far_length = 0.0;
 	for (auto itr : m_subjects)
 	{
-		double dif = (current_pos - (itr->get_p()+itr->get_velocity() * 3)).length();
+		double dif = (current_pos - (itr->get_p()+itr->get_velocity() * 5)).length();
 		if (far_length <= dif)
 		{
 			far_pos = itr->get_p();

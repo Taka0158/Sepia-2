@@ -11,13 +11,15 @@ public:
 		ID _sender_id,
 		ID _receiver_id,
 		msg::TYPE _msg,
-		void* _exinfo = nullptr);
+		void* _exinfo = nullptr,
+		bool _use_debug_text = true);
 	//相手を直指名　即時配達
 	void dispatch_message(double _dispatch_time,
 		Entity* _sender_id,
 		Entity* _receiver_id,
 		msg::TYPE _msg,
-		void* _exinfo = nullptr);
+		void* _exinfo = nullptr,
+		bool _use_debug_text=true);
 
 	//遅延メッセージの送信
 	bool dispatch_delayed_message();
@@ -30,6 +32,9 @@ public:
 	Entity* get_entity_from_id(ID _id);
 
 	void debug_draw();
+
+	//receiverがdeleteされるときに呼び出す
+	void delete_direct_message(Entity*);
 
 protected:
 	//このメソッドはdispatch_message,dispatch_delayed_messageが利用する

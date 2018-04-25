@@ -8,7 +8,7 @@ TODO
 class IkaCutin :public CutScene
 {
 public:
-	IkaCutin();
+	IkaCutin(Color _color);
 	~IkaCutin();
 
 	void enter(Scene*)override;
@@ -16,12 +16,12 @@ public:
 	void draw_sub(Scene*)override;
 	void exit(Scene*)override;
 private:
-	//使用する動画のポインタ
-	VideoPlayer* m_using_video=nullptr;
+	//使用する画像のポインタ
+	Texture m_using_texture;
 	
 	//スタート座標　中央からどれだけ離れているか
-	int m_start_pos = 300;
+	int m_start_pos = 2000;
 
-	//表示領域
-	Rect m_region = Rect(Point(0.0, 0.0), Vec2_to_Point(Setting::get_sc()));
+	Color m_color;
+
 };

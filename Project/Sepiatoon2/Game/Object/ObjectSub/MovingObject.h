@@ -27,6 +27,43 @@ public:
 
 	//MovingObjectのパラメータを設定する
 	virtual void set_moving_parm() = 0;
+
+	//重力を適応する
+	void gravity()
+	{
+		if (m_height >= 0.1)
+		{
+			m_gravity_force += m_gravity;
+			m_height -= m_gravity_force;
+			
+			//描画深度を高さに応じて変化させる
+			m_depth -= int(m_height);
+		}
+		else
+		{
+			//描画深度を高さに応じて変化させる
+			m_depth = m_init_depth;
+		
+			m_height = 0.0;
+			m_gravity_force = 0.0;
+		}
+	}
+
+	//浮かせる
+	void fly(double _strength=20.0)
+	{
+		m_height = 0.2;
+		m_gravity_force -= _strength;
+	}
+
+	//影を描画する
+	void draw_shadow(double _size = 1.0)
+	{
+		if (m_height > 3.0)
+		{
+			ASSET_FAC->get_tex(ImageType::SHADOW_64).scale(_size).drawAt(m_pos);
+		}
+	}
 protected:
 
 	Vec2 m_velocity =Vec2(0.0,0.0);
@@ -44,7 +81,16 @@ protected:
 	double m_max_force;
 
 	double m_max_turn_rate;
+
+	//重力加速度
+	static double m_gravity;
+
+	//重力による力
+	double m_gravity_force = 0.0;
+
 };
+
+double MovingObject::m_gravity = 0.98;
 
 #include"MovingObjectSub\Ika.cpp"
 

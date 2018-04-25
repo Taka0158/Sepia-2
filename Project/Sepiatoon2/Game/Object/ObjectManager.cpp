@@ -16,6 +16,14 @@ void ObjectManager::initialize()
 {
 	finalize();
 	SCENE_CAMERA->initialize();
+
+	for (auto itr : m_objects)
+	{
+		if (itr != nullptr)
+		{
+			itr->init_id();
+		}
+	}
 }
 
 void ObjectManager::finalize()
@@ -24,6 +32,16 @@ void ObjectManager::finalize()
 	check_alive();
 	reset_object_id();
 	destroy_map();
+
+	//nullptr の要素を削除する
+	auto is_nullptr = [](Object* _obj)
+	{
+		return _obj==nullptr;
+	};
+	//削除すべき要素を最後尾へ
+	auto rmvIter = std::remove_if(m_objects.begin(), m_objects.end(), is_nullptr);
+	//削除すべき最初の要素から最後までを削除する
+	m_objects.erase(rmvIter, m_objects.end());
 }
 
 void ObjectManager::update()
@@ -105,6 +123,27 @@ void ObjectManager::check_alive()
 {
 	if (m_objects.size() == 0)return;
 
+	for (unsigned int i = 0; i < m_objects.size(); i++)
+	{
+		if (m_objects[i] != nullptr)
+		{
+			if (m_objects[i]->get_is_alive() == false)
+			{
+				//描画オブジェクト登録の解除
+				reset_draw_object(m_objects[i]);
+
+				//受取人がdeleteされるメッセージは削除
+				MSG_DIS->delete_direct_message(m_objects[i]);
+
+				delete m_objects[i];
+				m_objects[i] = nullptr;
+			}
+		}
+	}
+
+	/*
+	//正しくdeleteできなかった
+
 	auto isAlive = [](Object* obj)
 	{
 		return !obj->get_is_alive();
@@ -121,6 +160,7 @@ void ObjectManager::check_alive()
 
 	//削除すべき最初の要素から最後までを削除する
 	m_objects.erase(rmvIter, m_objects.end());
+	*/
 }
 
 bool ObjectManager::handle_message(const Telegram& _msg)
@@ -156,7 +196,8 @@ Entity* ObjectManager::get_entity_from_id(ID _id)
 	//最適な探索アルゴリズム（二部探索）TODO
 	for (auto itr : m_objects)
 	{
-		if (itr->get_id() == _id)
+		if (itr == nullptr)continue;
+		else if (itr->get_id() == _id)
 		{
 			return itr;
 		}
@@ -165,9 +206,18 @@ Entity* ObjectManager::get_entity_from_id(ID _id)
 	return ret;
 }
 
+/*
 void ObjectManager::create_TestObj(Vec2 _p)
 {
 	Object* new_obj = new TestObj(_p);
+
+	regist_object(new_obj);
+}
+*/
+
+void ObjectManager::create_Tire(Vec2 _pos)
+{
+	Tire* new_obj = new Tire(_pos);
 
 	regist_object(new_obj);
 }
@@ -235,6 +285,7 @@ void ObjectManager::destroy_all_object()
 {
 	for (auto itr : m_objects)
 	{
+		if (itr == nullptr)continue;
 		itr->set_is_alive(false);
 	}
 }
@@ -246,25 +297,28 @@ void ObjectManager::reset_object_id()
 
 void ObjectManager::regist_draw_object(Object* _obj)
 {
-	Drawer d = Drawer(_obj->get_depth(), _obj);
+	Drawer d = Drawer(_obj->get_depth_ref(), _obj);
 
 	m_objects_drawer.insert(d);
 }
 
 void ObjectManager::reset_draw_object(Object* _obj)
 {									 
-	Drawer d = Drawer(_obj->get_depth(), _obj);
-	
-	if (_obj == nullptr)
+	if (m_objects_drawer.size() == 0)return;
+
+	std::vector<std::set<Drawer>::iterator> delete_drawer;
+
+	for (std::set<Drawer>::iterator itr = m_objects_drawer.begin(); itr != m_objects_drawer.end(); itr++)
 	{
-		ASSERT(L"regist_draw_object() : 削除済みのオブジェクトをresetしました");
+		if (itr->second == _obj)
+		{
+			delete_drawer.push_back(itr);
+		}
 	}
 
-	int temp = m_objects_drawer.erase(d);
-
-	if (temp == 0)
+	for (auto itr : delete_drawer)
 	{
-		ASSERT(L"regist_draw_object() : resetに失敗しました");
+		m_objects_drawer.erase(itr);
 	}
 }
 
@@ -316,10 +370,12 @@ void ObjectManager::check_collide()
 	for (int i = 0; i < m_objects.size(); i++)
 	{
 		//コリジョン半径が0に近いと判定をスキップ
+		if (m_objects[i] == nullptr)continue;
 		if (m_objects[i]->get_mask_radius() < 0.1)continue;
 
 		for (int j = i+1; j < m_objects.size(); j++)
 		{
+			if (m_objects[j] == nullptr)continue;
 			if (m_objects[j]->get_mask_radius() < 0.1)continue;
 
 			//衝突しているなら

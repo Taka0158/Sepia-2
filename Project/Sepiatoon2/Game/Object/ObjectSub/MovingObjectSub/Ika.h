@@ -34,7 +34,8 @@ public:
 	void debug_draw();
 
 	void set_id();
-	
+	void init_id()override;
+
 	//Charに応じてのMovingObjectのパラメータ設定
 	void set_moving_parm();
 
@@ -156,12 +157,12 @@ private:
 	static int m_next_valid_id;
 
 	//------------------GAME内で利用するパラメータ
-	double m_hp = 100.0;
+	double m_hp = 40.0;
 	double m_special_gauge = 0.0;
 
 };
 
-int Ika::m_next_valid_id = 0;
+int Ika::m_next_valid_id = 1;
 
 #include"IkaController\IkaController.h"
 #include"IkaStateMachine.cpp"

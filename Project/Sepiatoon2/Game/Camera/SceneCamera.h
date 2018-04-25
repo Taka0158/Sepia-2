@@ -28,12 +28,12 @@ public:
 
 	//カメラ移動に応じたマウス位置を返す
 	//ただし、Scale 1　以外の場合　正常に機能しない
-	static Vec2 get_mouse_pos()
+	Vec2 get_mouse_pos()
 	{
 		Vec2 temp = Vec2(SCENE_CAMERA->getCameraArea().pos);
-		return Mouse::PosF() + temp;
+		return (Mouse::PosF() + temp)*(1.0/m_scale);
 	}
-	static Point get_mouse_posP()
+	Point get_mouse_posP()
 	{
 		Point temp = Vec2_to_Point(SCENE_CAMERA->getCameraArea().pos);
 		return Mouse::Pos() + temp;
@@ -53,13 +53,14 @@ private:
 	bool on_message(const Telegram&);
 
 	//被写体
-	std::vector<MovingObject*> m_subjects;
+	std::list<MovingObject*> m_subjects;
 
 	//揺らす時の補正値
 	Vec2 m_shake_direction = Vec2(0.0, 0.0);
 
 	//もとに戻る速さ係数
 	double m_friction = 0.02;
+
 };
 
 SceneCamera* Singleton<SceneCamera>::instance = nullptr;

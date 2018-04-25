@@ -8,16 +8,17 @@ void MessageDispatcher::dispatch_message(double _dispatch_time,
 	ID _sender_id,
 	ID _receiver_id,
 	msg::TYPE _msg,
-	void* _exInfo)
+	void* _exInfo,
+	bool _use_debug_text)
 {
 	//届け先のポインタを受け取る
 	Entity* receiver = get_entity_from_id(_receiver_id);
 
 	//荷物の作成
-	Telegram telegram(_dispatch_time*MSG_SEC, _sender_id, _receiver_id, _msg, _exInfo);
+	Telegram telegram(_dispatch_time*MSG_SEC, _sender_id, _receiver_id, _msg, _exInfo, _use_debug_text);
 
 	//デバッグ用テキストの追加
-	DEBUG->regist(DebugText(3.0 + _dispatch_time / MSG_SEC,L"送信:"+ to_hex(_sender_id) + L"-->"+ to_hex(_receiver_id) + L"<" + msg::toString(_msg) + L">"));
+	if(_use_debug_text)DEBUG->regist(DebugText(3.0 + _dispatch_time / MSG_SEC,L"送信:"+ to_hex(_sender_id) + L"-->"+ to_hex(_receiver_id) + L"<" + msg::toString(_msg) + L">"));
 
 	//即時配達の場合
 	if (_dispatch_time <= 0.0)
@@ -36,16 +37,17 @@ void MessageDispatcher::dispatch_message(double _dispatch_time,
 	Entity* _sender,
 	Entity* _receiver,
 	msg::TYPE _msg,
-	void* _exInfo)
+	void* _exInfo,
+	bool _use_debug_text)
 {
 	//届け先のポインタを受け取る
 	Entity* receiver = _receiver;
 
 	//荷物の作成
-	DirectTelegram direct_telegram(_dispatch_time,_sender, _receiver, _msg, _exInfo);
+	DirectTelegram direct_telegram(_dispatch_time,_sender, _receiver, _msg, _exInfo,_use_debug_text);
 
 	//デバッグ用テキストの追加
-	DEBUG->regist(DebugText(3.0 + _dispatch_time / MSG_SEC, L"送信:" + to_hex(_sender->get_id()) + L"-->" + to_hex(_receiver->get_id()) + L"<" + msg::toString(_msg) + L">"));
+	if(_use_debug_text)DEBUG->regist(DebugText(3.0 + _dispatch_time / MSG_SEC, L"送信:" + to_hex(_sender->get_id()) + L"-->" + to_hex(_receiver->get_id()) + L"<" + msg::toString(_msg) + L">"));
 
 	//即時配達の場合
 	if (_dispatch_time <= 0.0)
@@ -117,20 +119,38 @@ bool MessageDispatcher::dispatch_delayed_direct_message()
 
 void MessageDispatcher::discharge(Entity* _receiver, const Telegram& _msg)
 {
+	if (_receiver == nullptr)
+	{
+		DEBUG->regist(DebugText(3.0, L"--------------相手先がいないため送信不可-------------"));
+		DEBUG->regist(DebugText(3.0, L"受信:???<--???<" + msg::toString(_msg.msg) + L">"));
+		DEBUG->regist(DebugText(3.0, L"--------------相手先がいないため送信不可-------------"));
+		return;
+	}
+
+
 	//デバッグ用テキストの追加
-	DEBUG->regist(DebugText(3.0, L"受信:" + to_hex(_msg.receiver_id) + L"<--" + to_hex(_msg.sender_id) + L"<" + msg::toString(_msg.msg) + L">"));
+	if(_msg.show_debug_text)DEBUG->regist(DebugText(3.0, L"受信:" + to_hex(_msg.receiver_id) + L"<--" + to_hex(_msg.sender_id) + L"<" + msg::toString(_msg.msg) + L">"));
 	_receiver->handle_message(_msg);
 }
 
 void MessageDispatcher::discharge(Entity* _receiver, const DirectTelegram& _msg)
 {
+	if (_receiver == nullptr)
+	{
+		DEBUG->regist(DebugText(3.0, L"--------------相手先がいないため送信不可-------------"));
+		DEBUG->regist(DebugText(3.0, L"受信:???<--???<" + msg::toString(_msg.msg) + L">"));
+		DEBUG->regist(DebugText(3.0, L"--------------相手先がいないため送信不可-------------"));
+		return;
+	}
+
 	//デバッグ用テキストの追加
-	DEBUG->regist(DebugText(3.0, L"受信:" + to_hex(_msg.receiver->get_id()) + L"<--" + to_hex(_msg.sender->get_id()) + L"<" + msg::toString(_msg.msg) + L">"));
+	if (_msg.show_debug_text)DEBUG->regist(DebugText(3.0, L"受信:" + to_hex(_msg.receiver->get_id()) + L"<--" + to_hex(_msg.sender->get_id()) + L"<" + msg::toString(_msg.msg) + L">"));
 	
 	//通常のTelegramに変換
-	Telegram msg=Telegram(_msg.dispatch_time, _msg.sender->get_id(), _msg.receiver->get_id(), _msg.msg, _msg.extraInfo);
+	Telegram msg=Telegram(_msg.dispatch_time, 0, _msg.receiver->get_id(), _msg.msg, _msg.extraInfo);
 	
 	_receiver->handle_message(msg);
+
 }
 
 void MessageDispatcher::destroy_all_message()
@@ -176,19 +196,33 @@ Entity* MessageDispatcher::get_entity_from_id(ID _id)
 	{
 		ASSERT("宛先が不明なメッセージです");
 	}
-
-	if (ret == nullptr)
-	{
-		ASSERT("宛先が存在しません");
-	}
-	else
-	{
-		return ret;
-	}
+	return ret;
 }
 
 void MessageDispatcher::debug_draw()
 {
 	Println(L"遅延メッセージ数:", telegrams.size());
 	Println(L"遅延直接メッセージ数:" , direct_telegrams.size());
+}
+
+void MessageDispatcher::delete_direct_message(Entity* _entity)
+{
+	if (direct_telegrams.size() == 0)return;
+
+	std::vector<std::set<DirectTelegram>::iterator> delete_messages;
+
+	for (std::set<DirectTelegram>::iterator itr=direct_telegrams.begin();itr!=direct_telegrams.end();itr++)
+	{
+		if (itr->receiver == _entity)
+		{
+			delete_messages.push_back(itr);
+		}
+	}
+
+	for (auto itr : delete_messages)
+	{
+		String msg_type = msg::toString(itr->msg);
+		DEBUG->regist(DebugText(3.0, L"受取人消失 TYPE : " + msg_type));
+		direct_telegrams.erase(itr);
+	}
 }

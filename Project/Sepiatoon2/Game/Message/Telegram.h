@@ -22,16 +22,21 @@ struct Telegram
 
 	//追加情報
 	void* extraInfo = nullptr;
+	
+	//デバッグ表示するかどうか
+	bool show_debug_text = true;
 
 	Telegram(double _dispatch_time,
 		ID _sender_id,
 		ID _receiver_id,
 		msg::TYPE _msg,
-		void* _exInfo = nullptr):dispatch_time(_dispatch_time),
+		void* _exInfo = nullptr,
+		bool _show_debug_text =true):dispatch_time(_dispatch_time),
 								sender_id(_sender_id),
 								receiver_id(_receiver_id),
 								msg(_msg),
-								extraInfo(_exInfo)
+								extraInfo(_exInfo),
+								show_debug_text(_show_debug_text)
 	{
 
 	}
@@ -58,15 +63,21 @@ struct DirectTelegram
 	//追加情報
 	void* extraInfo = nullptr;
 
+	//デバッグ表示するかどうか
+	bool show_debug_text = true;
+
 	DirectTelegram(double _dispatch_time,
 		Entity* _sender,
 		Entity* _receiver,
 		msg::TYPE _msg,
-		void* _exInfo = nullptr) :dispatch_time(_dispatch_time),
+		void* _exInfo = nullptr,
+		bool _show_debug_text = true) :dispatch_time(_dispatch_time),
 		sender(_sender),
 		receiver(_receiver),
 		msg(_msg),
-		extraInfo(_exInfo)
+		extraInfo(_exInfo),
+		show_debug_text(_show_debug_text)
+		
 	{
 
 	}
@@ -101,8 +112,8 @@ inline bool operator==(const DirectTelegram& t1, const DirectTelegram& t2)
 {
 	return (
 		Abs(t1.dispatch_time - t2.dispatch_time) < MSG_DELAY &&
-		(t1.sender == t2.sender) &&
-		(t1.receiver == t2.receiver) &&
+		(t1.sender == t2.sender || t1.sender==nullptr || t2.sender==nullptr) &&
+		(t1.receiver == t2.receiver || t1.receiver == nullptr || t2.receiver == nullptr) &&
 		(t1.msg == t2.msg)
 		);
 }
