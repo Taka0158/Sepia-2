@@ -1,30 +1,6 @@
 #pragma once
 
-enum class ImageType{
-	MAP_SIMPLE = 0,
-	INK_0_128,
-	INK_1_128,
-	INK_2_128,
-	INK_3_128,
-	INK_4_128,
-	INK_5_128,
-	INK_0_600,
-	IKA_N_A,
-	IKA_N_C,
-	IKA_N_N,
-	IKA_N_S,
-	SCENESWITCH_1,
-	SCENESWITCH_1_BG,
-	SCENESWITCH_IKA,
-	IKA_CUTIN,
-	SHADOW_64,
-	TIRE_64
-};
 
-enum class MovieType
-{
-	//CUTIN_IKA
-};
 
 class AssetFactory :public Singleton<AssetFactory>
 {
@@ -39,7 +15,7 @@ public:
 	//各読み込み画像を削除するメソッドがないため読み込みっぱなし
 
 	//動的に画像処理を行わない場合の画像取得メソッド
-	Image& get_image(ImageType);
+	Image& get_image(ImageType,int =0);
 
 	//動的に画像処理を行う場合の画像複製メソッド
 	Image get_image_copy(ImageType);
@@ -48,9 +24,10 @@ public:
 	Texture get_tex_copy(ImageType);
 
 	//テクスチャ取得メソッド（生成コストなし
-	Texture& get_tex(ImageType);
+	Texture& get_tex(ImageType, int = 0);
 
 	//VideoPlayer& get_video(MovieType);
+
 
 private:
 	Image* m_im_map_simple_1920_1080 = nullptr;
@@ -71,6 +48,11 @@ private:
 	Image* m_im_ika_cutin = nullptr;
 	Image* m_im_shadow_64 = nullptr;
 	Image* m_im_tire_64 = nullptr;
+	Image* m_im_typhoon[NUM_OF_ANIM_TYPHOON] = { nullptr };
+	Image* m_im_rumba = nullptr;
+	Image* m_im_inkball = nullptr;
+	Image* m_im_explosion[NUM_OF_ANIM_EXPLOSION] = { nullptr };
+	Image* m_im_explosion_ready[NUM_OF_ANIM_EXPLOSION_READY] = { nullptr };
 
 	Texture* m_tex_map_simple_1920_1080 = nullptr;
 	Texture* m_tex_ink_0_128 = nullptr;
@@ -90,6 +72,11 @@ private:
 	Texture* m_tex_ika_cutin = nullptr;
 	Texture* m_tex_shadow_64 = nullptr;
 	Texture* m_tex_tire_64 = nullptr;
+	Texture* m_tex_typhoon[NUM_OF_ANIM_TYPHOON] = { nullptr };
+	Texture* m_tex_rumba = nullptr;
+	Texture* m_tex_inkball = nullptr;
+	Texture* m_tex_explosion[NUM_OF_ANIM_EXPLOSION] = { nullptr };
+	Texture* m_tex_explosion_ready[NUM_OF_ANIM_EXPLOSION_READY] = { nullptr };
 
 	std::vector<Image*> m_images;
 

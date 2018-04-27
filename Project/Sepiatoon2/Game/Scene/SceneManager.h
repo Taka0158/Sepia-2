@@ -3,19 +3,13 @@
 #include"../Camera/SceneCamera.cpp"
 
 #include"Scene.h"
-//シーン切り替えクラスSceneSwitchの状態を定義
-enum class SwitchType {
-	FIRST,
-	SWITCH,
-	SECOND,
-	END
-};
+
 
 #include"SceneSwitch.h"
 
 namespace mine {
 
-	class SceneManager :public Singleton<SceneManager>
+	class SceneManager :public Singleton<SceneManager>,public Entity
 	{
 		friend class Singleton<SceneManager>;
 		SceneManager();
@@ -29,10 +23,15 @@ namespace mine {
 
 		void change_scene(Scene*, SceneSwitch* = new IkaIkaSwitch());
 		void change_scene();
+
+		bool handle_message(const Telegram& _msg)override;
+														 
 	public:
 		void debug_update();
 		void debug_draw();
+		Scene* get_current_scene() { return m_current_scene.get(); }
 	private:
+		bool on_message(const Telegram& _msg);
 		std::unique_ptr<Scene> m_current_scene = nullptr;
 		std::unique_ptr<Scene> m_next_scene = nullptr;
 		std::unique_ptr<SceneSwitch> m_current_scene_switch = nullptr;

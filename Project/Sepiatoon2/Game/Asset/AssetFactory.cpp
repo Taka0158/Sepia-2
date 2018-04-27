@@ -20,7 +20,7 @@ void AssetFactory::finalize()
 
 }
 
-Image& AssetFactory::get_image(ImageType _type)
+Image& AssetFactory::get_image(ImageType _type, int _index)
 {
 	Image* ret = nullptr;
 	switch (_type)
@@ -71,7 +71,7 @@ Image& AssetFactory::get_image(ImageType _type)
 		ret = (m_im_scene_switch_1_bg != nullptr) ? m_im_scene_switch_1_bg : m_im_scene_switch_1_bg = new Image(PASS_SCENESWITCH_1_BG);
 		break;
 	case ImageType::SCENESWITCH_IKA:
-		ret = (m_im_scene_switch_ika!= nullptr) ? m_im_scene_switch_ika: m_im_scene_switch_ika= new Image(PASS_SCENESWITCH_1_BG);
+		ret = (m_im_scene_switch_ika != nullptr) ? m_im_scene_switch_ika : m_im_scene_switch_ika = new Image(PASS_SCENESWITCH_1_BG);
 		break;
 	case ImageType::IKA_CUTIN:
 		ret = (m_im_ika_cutin != nullptr) ? m_im_ika_cutin : m_im_ika_cutin = new Image(PASS_IKA_CUTIN);
@@ -81,6 +81,21 @@ Image& AssetFactory::get_image(ImageType _type)
 		break;
 	case ImageType::TIRE_64:
 		ret = (m_im_tire_64 != nullptr) ? m_im_tire_64 : m_im_tire_64 = new Image(PASS_TIRE_64);
+		break;
+	case ImageType::ANIM_TYPHOON:
+		ret = (m_im_typhoon[_index] != nullptr) ? m_im_typhoon[_index] : m_im_typhoon[_index] = new Image(PASS_TYPHOON(_index));
+		break;
+	case ImageType::RUMBA:
+		ret = (m_im_rumba != nullptr) ? m_im_rumba  : m_im_rumba = new Image(PASS_RUMBA);
+		break;
+	case ImageType::INKBALL:
+		ret = (m_im_inkball != nullptr) ? m_im_inkball : m_im_inkball = new Image(PASS_INKBALL);
+		break;
+	case ImageType::ANIM_EXPLOSION_READY:
+		ret = (m_im_explosion_ready[_index] != nullptr) ? m_im_explosion_ready[_index] : m_im_explosion_ready[_index] = new Image(PASS_EXPLOSION_READY(_index));
+		break;
+	case ImageType::ANIM_EXPLOSION:
+		ret = (m_im_explosion[_index] != nullptr) ? m_im_explosion[_index] : m_im_explosion[_index] = new Image(PASS_EXPLOSION(_index));
 		break;
 	}
 	return *ret;
@@ -112,6 +127,8 @@ Image AssetFactory::get_image_copy(ImageType _type)
 	case ImageType::IKA_CUTIN:
 	case ImageType::SHADOW_64:
 	case ImageType::TIRE_64:
+	case ImageType::RUMBA:
+	case ImageType::INKBALL:
 		ret=get_image(_type).clone();
 		break;
 	}
@@ -144,13 +161,15 @@ Texture AssetFactory::get_tex_copy(ImageType _type)
 	case ImageType::IKA_CUTIN:
 	case ImageType::SHADOW_64:
 	case ImageType::TIRE_64:
+	case ImageType::RUMBA:
+	case ImageType::INKBALL:
 		ret = Texture(get_tex(_type));
 		break;
 	}
 	return ret;
 }
 
-Texture& AssetFactory::get_tex(ImageType _type)
+Texture& AssetFactory::get_tex(ImageType _type,int _index)
 {
 	Texture* ret = nullptr;
 	switch (_type)
@@ -212,9 +231,27 @@ Texture& AssetFactory::get_tex(ImageType _type)
 	case ImageType::TIRE_64:
 		ret = (m_tex_tire_64 != nullptr) ? m_tex_tire_64 : m_tex_tire_64 = new Texture(get_image(_type));
 		break;
+	case ImageType::ANIM_TYPHOON:
+		ret = (m_tex_typhoon[_index] != nullptr) ? m_tex_typhoon[_index] : new Texture(get_image(_type,_index));
+		break;
+	case ImageType::RUMBA:
+		ret = (m_tex_rumba != nullptr) ? m_tex_rumba: m_tex_rumba = new Texture(get_image(_type));
+		break;
+	case ImageType::INKBALL:
+		ret = (m_tex_inkball != nullptr) ? m_tex_inkball : m_tex_inkball = new Texture(get_image(_type));
+		break;
+	case ImageType::ANIM_EXPLOSION_READY:
+		ret = (m_tex_explosion_ready[_index] != nullptr) ? m_tex_explosion_ready[_index] : new Texture(get_image(_type, _index));
+		break;
+	case ImageType::ANIM_EXPLOSION:
+		ret = (m_tex_explosion[_index] != nullptr) ? m_tex_explosion[_index] : new Texture(get_image(_type, _index));
+		break;
 	}
+
 	return *ret;
 }
+
+
 
 /*
 VideoPlayer& AssetFactory::get_video(MovieType _type)

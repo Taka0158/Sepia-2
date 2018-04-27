@@ -16,8 +16,6 @@ public:
 	void draw_sub(Scene*)override;
 	void exit(Scene*)override;
 private:
-	//使用する画像のポインタ
-	Texture m_using_texture;
 	
 	//スタート座標　中央からどれだけ離れているか
 	int m_start_pos = 2000;

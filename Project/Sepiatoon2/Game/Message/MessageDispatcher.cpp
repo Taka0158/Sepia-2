@@ -1,8 +1,8 @@
 #include"MessageDispatcher.h"
 
 //ãÍèaÇÃinclude
-#include"../Object/ObjectManager.h"
-#include"../Camera/SceneCamera.h"
+//#include"../Object/ObjectManager.h"
+//#include"../Camera/SceneCamera.h"
 
 void MessageDispatcher::dispatch_message(double _dispatch_time,
 	ID _sender_id,
@@ -163,7 +163,7 @@ Entity* MessageDispatcher::get_entity_from_id(ID _id)
 	Entity* ret = nullptr;
 	if ((_id & ID(UID_MGR_SCENE)) != 0)
 	{
-
+		ret = SCENE_MGR;
 	}
 	else if ((_id & ID(UID_MGR_OBJ)) != 0)
 	{

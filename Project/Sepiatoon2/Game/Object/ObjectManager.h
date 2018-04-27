@@ -34,6 +34,10 @@ public:
 
 	void create_Tire(Vec2 _pos);
 
+	void create_Rumba(Vec2 _pos, Color _color);
+
+	void create_Inkball(Vec2 _pos, double _init_height, Vec2 _dir, double _fly_strength, Color _color);
+
 	//-----------------------------------------------Create関数--------------------------------------------------------------------------
 
 	//メッセージの受け取り関数
@@ -85,15 +89,22 @@ private:
 	std::vector<Object*> m_objects;
 
 	//<そのObjectのdepth	,	そのObjectのポインタ>
+	//動的に変化するものは並び替えられない
 	typedef std::pair<int&, Object*> Drawer;
 
 	//object.m_depth基準で並び替える
 	//値が大きいほど手前に描画される
-	std::set<Drawer> m_objects_drawer;
+	std::vector<Drawer> m_objects_drawer;
 
 	//mapインスタンス
 	Map* m_map = nullptr;
 
+	int m_timer = 0;
+
+	//描画順のソート間隔(フレーム)
+	int m_sort_duration = 20;
 };						 
+
+
 
 ObjectManager* Singleton<ObjectManager>::instance = nullptr;

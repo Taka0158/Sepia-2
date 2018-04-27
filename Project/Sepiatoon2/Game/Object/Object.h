@@ -25,6 +25,8 @@ public:
 	Circle& get_mask() { return m_mask; };
 	double get_mask_radius() { return m_mask_radius; };
 	double get_height() { return m_height; }
+	void set_height(double _s) { m_height = _s; }
+	double get_mask_height() { return m_mask_height; };
 
 	//IDを設定する
 	virtual void set_id() = 0;
@@ -37,6 +39,7 @@ public:
 
 	//高さ考慮の描画中心座標
 	Vec2 get_pos_height() { return Vec2(m_pos.x, m_pos.y - m_height); }
+
 
 protected:
 	//メッセージ処理を行う関数
@@ -51,27 +54,28 @@ protected:
 	//自身の中心座標
 	Vec2 m_pos;
 
-	//描画深度　大きいほど後に描画 地面は5
-	int m_depth = 5;
+	//描画深度　大きいほど後に描画 地面は0
+	int m_depth = 0;
 
 	//地面からの高さ
 	double m_height = 0.0;
 
-	int m_init_depth = 5;
+	int m_init_depth = 0;
 
 	//コリジョンマスク
 	Circle m_mask = Circle(0, 0, 0);
 
 	//コリジョンマスクの大きさ
-	double m_mask_radius;
+	double m_mask_radius=1.0;
 
+	//コリジョンマスクの高さ
+	double m_mask_height = 2.0;
 
 };
 
 
 #include"ObjectSub\Map.cpp"
 #include"ObjectSub\TestObj.cpp"
-#include"ObjectSub\MapGimmick.h"
 #include"ObjectSub\MovingObject.h"
 
 /*

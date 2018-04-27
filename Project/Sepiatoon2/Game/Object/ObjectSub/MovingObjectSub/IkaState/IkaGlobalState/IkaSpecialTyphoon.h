@@ -9,15 +9,30 @@ public:
 	~IkaSpecialTyphoon();
 
 	void state(Ika* _owner)override;
+	void input(Ika* _owner)override;
 	void enter(Ika* _owner)override;
 	void update(Ika* _owner)override;
 	void draw(Ika* _owner)override;
 	void exit(Ika* _owner)override;
 
+	IkaStateType get_state_type()override;
+
+	bool on_collide(Ika* _owner, Object* _obj);
 private:
+	int m_timer = 0;
+
+	int m_tex_index = 0;
+	bool m_is_tex_loop = true;
+
+	Ika* m_owner=nullptr;
 
 	//SPECIAL状態の継続時間
-	static double m_duration;
+	static int m_duration;
+
+	//ゲーム内パラメータ
+	double m_paint_scale;
+	double m_mask_radius;
+	double m_draw_scale;
 };
 
-double IkaSpecialTyphoon::m_duration = 3.0;
+int IkaSpecialTyphoon::m_duration = 600;

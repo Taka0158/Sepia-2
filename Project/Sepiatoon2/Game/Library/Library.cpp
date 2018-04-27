@@ -1,3 +1,102 @@
+//--------------------------------------------列挙型-------------------------------------
+
+enum class TeamType
+{
+	TEAM_A,
+	TEAM_B
+};
+
+enum class CharType
+{
+	NORMAL
+};
+
+enum class SpecialType
+{
+	UNKNOWN,
+	TYPHOON,
+	DASH,
+	SUPERNOVA
+};
+
+enum class MapType
+{
+	SIMPLE
+};
+
+enum class PlayModeType
+{
+	ONE_ON_ONE
+};
+
+enum class ControllerType
+{
+	PLAYER_1,
+	PLAYER_2,
+	CPU
+};
+
+
+enum class ImageType {
+	MAP_SIMPLE = 0,
+	INK_0_128,
+	INK_1_128,
+	INK_2_128,
+	INK_3_128,
+	INK_4_128,
+	INK_5_128,
+	INK_0_600,
+	IKA_N_A,
+	IKA_N_C,
+	IKA_N_N,
+	IKA_N_S,
+	SCENESWITCH_1,
+	SCENESWITCH_1_BG,
+	SCENESWITCH_IKA,
+	IKA_CUTIN,
+	SHADOW_64,
+	TIRE_64,
+	ANIM_TYPHOON,
+	RUMBA,
+	INKBALL,
+	ANIM_EXPLOSION_READY,
+	ANIM_EXPLOSION
+};
+
+enum class MovieType
+{
+	//CUTIN_IKA
+};
+
+enum class IkaStateType {
+	IKA_UNDEFINED,
+	IKA_NORMAL,
+	IKA_SWIM,
+	IKA_SINK,
+	IKA_DAMAGED,
+	IKA_SPECIAL_TYPHOON,
+	IKA_SPECIAL_DASH,
+	IKA_SPECIAL_SUPERNOVA
+};
+
+enum class CutInType
+{
+	IKA_CUTIN
+};
+
+
+//シーン切り替えクラスSceneSwitchの状態を定義
+enum class SwitchType {
+	FIRST,
+	SWITCH,
+	SECOND,
+	END
+};
+
+//--------------------------------------------列挙型-------------------------------------
+
+
+
 //TODO
 
 typedef std::bitset<32> ID;
@@ -9,9 +108,25 @@ public:
 	{
 		pos = Point(0.0, 0.0);
 		color = Color(Palette::White);
+		scale = 1.0;
 	}
-	Paint(Point _p, Color _c):pos(_p), color(_c) {};
+	Paint(Point _p, Color _c,double _s=1.0):pos(_p), color(_c),scale(_s) {};
 	Point pos;
+	Color color;
+	double scale;
+};
+
+struct InkballParm
+{
+	InkballParm(Vec2 _pos, double _init_height, Vec2 _dir, double _fly_strength, Color _color) :pos(_pos),
+		init_height(_init_height),
+		dir(_dir),
+		fly_strength(_fly_strength),
+		color(_color) {};
+	Vec2 pos;
+	double init_height;
+	Vec2 dir;
+	double fly_strength;
 	Color color;
 };
 
@@ -87,4 +202,25 @@ bool is_same_class(ID _id1, ID _id2)
 Vec2 get_Vec2(Vec2 _from, Vec2 _to)
 {
 	return Vec2(_to.x - _from.x, _to.y - _from.y);
+}
+
+//エフェクトに使用
+int get_tex_loop_index(int& _now_image_index,int _max_index, int _loop_start_index, int _loop_end_index, bool _is_loop)
+{
+	if (_max_index < _loop_end_index)ASSERT(L"get_tex_loop_index : 無効な引数");
+
+	int next_index = 0;
+
+	next_index = _now_image_index + 1;
+
+	//ループ中なら
+	if (_is_loop)
+	{
+		if (_loop_end_index < next_index)
+		{
+			next_index = _loop_start_index;
+		}
+	}
+	next_index = clamp(next_index, 0, _max_index);
+	return next_index;
 }

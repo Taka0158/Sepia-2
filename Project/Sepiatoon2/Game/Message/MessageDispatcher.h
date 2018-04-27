@@ -43,8 +43,8 @@ protected:
 private:
 	//遅延メッセージのコンテナ
 	//ソートの優先順度はTelegram.hの<演算子参照
-	std::set<Telegram> telegrams;
-	std::set<DirectTelegram> direct_telegrams;
+	std::multiset<Telegram> telegrams;
+	std::multiset<DirectTelegram> direct_telegrams;
 
 };
 

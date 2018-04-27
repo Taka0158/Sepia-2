@@ -3,6 +3,8 @@
 Ika::Ika(Map* _map, ControllerType _controller_type,Vec2 _init_p, Color _color, TeamType _team_type, CharType _char_type, SpecialType _special_type):MovingObject(ID(ID_OBJ_IKA))
 {
 	set_id();
+	set_char_param(_char_type);
+
 	m_map = _map;
 	m_color = _color;
 	m_team_type = _team_type;
@@ -41,9 +43,9 @@ void Ika::initialize()
 	m_pos = m_init_pos;
 	m_target_pos = Vec2(0.0, 0.0);
 
-	m_depth = 5;
+	m_depth = 0;
 	m_angle = 0.0;
-	m_height = 100.0;
+	m_height = 50.0;
 
 	m_mask_radius = 32.0;
 }
@@ -67,7 +69,7 @@ void Ika::update()
 	//この関数はState内で適宜呼ばれたり、よばれなかったり
 	//behavior_update();
 
-	calc_angle();
+	calc_angle(m_angle);
 
 	gravity();
 
@@ -132,7 +134,10 @@ void Ika::regist_controller(ControllerType _c_type)
 
 void Ika::debug_update()
 {
-
+	if (Input::KeyQ.clicked)
+	{
+		execute_special();
+	 }
 }
 
 void Ika::debug_draw()
@@ -172,7 +177,7 @@ void Ika::set_moving_parm()
 		//適当パラメータ
 		m_init_mass = 1.0;
 		m_init_max_speed = 6.0;
-		m_init_max_force = 5.0;
+		m_init_max_force = 10.0;
 		m_init_max_turn_rate = 0.02;
 		m_init_friction = 0.05;
 		break;
@@ -253,7 +258,7 @@ void Ika::paint()
 
 	//if (m_map->get_color(pos) != m_rival_color)return;
 
-	Paint p = Paint(pos, m_color);
+	Paint p = Paint(pos, m_color,m_paint_scale);
 
 	MSG_DIS->dispatch_message(0.0, m_id, m_map->get_id(), msg::TYPE::MAP_PAINT, &p,false);
 
@@ -304,27 +309,20 @@ void Ika::restrain()
 	m_pos = clamp(m_pos, p1, p2);
 }
 
-void Ika::calc_angle()
-{
-	//前作からのコピペ
-	//角度計算
-	if (m_velocity.length() <= m_max_speed*0.2)return;
-	double angletemp = Atan2(m_velocity.y, m_velocity.x);
-	//回転角の小さい方をdiffとする（この部分）
-	double anglediff1 = (abs(angletemp - m_angle)<Pi) ? angletemp - m_angle : 2 * Pi - abs(angletemp - m_angle);
-	double angle_add = Pi / 180 * 3 ;
-	double temp = Sign(anglediff1)*angle_add;
-	m_angle += temp;
-	if (m_angle > 2 * Pi)m_angle -= 2 * Pi;
-	else if (m_angle < -Pi + 1)m_angle += 2 * Pi;
-}
-
 void Ika::damaged(double _damage)
 {
+	//スペシャル中ならダメージを受けない
+	if (m_ika_fsm->get_global_state() != nullptr)
+	{
+		if (m_ika_fsm->get_global_state()->get_state_type() == IkaStateType::IKA_SPECIAL_TYPHOON)return;
+		else if (m_ika_fsm->get_global_state()->get_state_type() == IkaStateType::IKA_SPECIAL_SUPERNOVA)return;
+		else if (m_ika_fsm->get_global_state()->get_state_type() == IkaStateType::IKA_SPECIAL_DASH)return;
+	}
 	m_hp -= _damage;
-	set_global_state(IkaStateType::IKA_DAMAGED);
+	overwrite_global_state(IkaStateType::IKA_DAMAGED);
 }
 
+//相手タイプにより被ダメ増減
 void Ika::damaged(CharType _type)
 {
 	switch (_type)
@@ -335,10 +333,7 @@ void Ika::damaged(CharType _type)
 	}
 }
 
-void Ika::burst(Vec2 _power)
-{
-	m_velocity = _power;
-}
+
 
 void Ika::destroy()
 {
@@ -355,10 +350,14 @@ bool Ika::on_collide(Object* _obj)
 {
 	bool ret = false;
 
+	typedef IkaStateType IST;
 	//タイヤとの接触なら
 	if (is_same_class(_obj->get_id(), ID_MAPGIMMCIK_TIRE))
 	{
-		burst(get_Vec2(_obj->get_p(), m_pos)*5.0);
+		if ( !(m_ika_fsm->get_now_state()== IST::IKA_SPECIAL_TYPHOON))
+		{
+			burst(get_Vec2(_obj->get_p(), m_pos)*5.0);
+		}
 	}
 	else
 	{
@@ -387,6 +386,7 @@ void Ika::set_state(IkaStateType _type)
 
 void Ika::set_global_state(IkaStateType _type)
 {
+	//上書きは行われない
 	switch (_type)
 	{
 	case IkaStateType::IKA_DAMAGED:
@@ -404,8 +404,22 @@ void Ika::set_global_state(IkaStateType _type)
 	}
 }
 
+void Ika::overwrite_global_state(IkaStateType _type)
+{
+	switch (_type)
+	{
+	case IkaStateType::IKA_DAMAGED:
+		m_ika_fsm->overwrite_global_state(new IkaDamaged());
+		break;
+	default:
+		ASSERT(L"global_staetに上書き出来ないIkaStateTypeです");
+		break;
+	}
+}
+
 void Ika::execute_special()
 {
+	MSG_DIS->dispatch_message(0.0, this->m_id, UID_MGR_SCENE, msg::TYPE::SET_CUTIN, this);
 	switch (m_special_type)
 	{
 	case SpecialType::DASH:
@@ -418,4 +432,34 @@ void Ika::execute_special()
 		set_global_state(IkaStateType::IKA_SPECIAL_SUPERNOVA);
 		break;
 	}
+
 }
+
+void Ika::set_char_param(CharType _type)
+{
+	typedef CharType CT;
+	switch (_type)
+	{
+		//TODO
+	case CT::NORMAL:
+		m_init_hp = 100.0;
+		m_init_special_gauge = 0.0;
+		m_init_paint_scale = 1.0;
+		m_init_gauge_rate = 1.0;
+		m_init_mask_radius = 32.0;
+		m_init_mask_height = 2.0;
+		break;
+	}
+	init_param();
+}
+
+void Ika::init_param()
+{
+	m_hp = m_init_hp;
+	m_special_gauge = m_init_special_gauge;
+	m_paint_scale = m_init_paint_scale;
+	m_gauge_rate = m_init_gauge_rate;
+	m_mask_radius = m_init_mask_radius;
+	m_mask_height = m_init_mask_height;
+}
+

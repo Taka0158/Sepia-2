@@ -17,7 +17,7 @@ void IkaStateMachine::update()
 {
 	if (m_global_state)m_global_state->update(m_owner);
 	else if (m_current_state)m_current_state->update(m_owner);
-}
+}								   
 
 void IkaStateMachine::draw()
 {
@@ -85,5 +85,25 @@ void IkaStateMachine::delete_global_state()
 			m_global_state.release();
 			m_global_state = nullptr;
 		}
+	}
+}
+
+
+void IkaStateMachine::overwrite_global_state(IkaState* _new_state)
+{
+	if (m_global_state)
+	{
+		m_global_state->exit(m_owner);
+
+		m_global_state.reset(_new_state);
+
+		m_global_state->enter(m_owner);
+	}
+	else
+	{
+		m_global_state.reset(_new_state);
+
+		m_global_state->enter(m_owner);
+
 	}
 }

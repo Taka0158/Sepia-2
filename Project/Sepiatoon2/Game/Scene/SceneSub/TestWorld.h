@@ -17,7 +17,7 @@ public:
 	void debug_draw();
 	virtual void exit();
 
-	void set_cut_scene(CutScene*)override;
+	void set_cut_scene(CutInType,Color=Palette::White)override;
 private:
 
 };

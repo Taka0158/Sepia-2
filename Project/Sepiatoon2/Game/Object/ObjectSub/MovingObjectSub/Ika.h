@@ -1,15 +1,6 @@
 #pragma once
 
-enum class IkaStateType {
-	IKA_UNDEFINED,
-	IKA_NORMAL,
-	IKA_SWIM,
-	IKA_SINK,
-	IKA_DAMAGED,
-	IKA_SPECIAL_TYPHOON,
-	IKA_SPECIAL_DASH,
-	IKA_SPECIAL_SUPERNOVA
-};
+
 
 class Map;
 class IkaState;
@@ -51,9 +42,6 @@ public:
 	//テクスチャの倍率
 	double get_tex_scale() { return 0.25; };
 
-	//画像の描画角度を計算
-	void calc_angle();
-
 	//Stateによる補正
 	void set_moving_parm(IkaStateType);
 
@@ -75,7 +63,29 @@ public:
 	IkaStateMachine* get_ika_fsm() { return m_ika_fsm.get(); }
 
 	double get_hp() { return m_hp; }
+	double get_init_hp() { return m_init_hp; }
 	double get_special_gauge() { return m_special_gauge; }
+	double get_init_special_gauge() { return m_init_special_gauge; }
+	double get_paint_scale() { return m_paint_scale; }
+
+	//倍率変動
+	void set_special_gauge(double _s) { m_special_gauge = m_init_special_gauge*_s; }
+	void init_special_gauge() { m_special_gauge = m_init_special_gauge; }
+
+	//倍率変動
+	void set_special_gauge_rate(double _s) { m_gauge_rate = m_init_gauge_rate*_s; }
+	void init_special_gauge_rate() { m_gauge_rate = m_init_gauge_rate; }
+	//倍率変動
+	void set_paint_scale(double _s) { m_paint_scale = m_init_paint_scale*_s; }
+	void init_paint_scale() { m_paint_scale = m_init_paint_scale; }	 
+
+	//倍率変動
+	void set_mask_radius(double _s) { m_mask_radius = m_init_mask_radius*_s; }
+	void init_mask_radius() { m_mask_radius = m_init_mask_radius; }
+
+	//倍率変動
+	void set_mask_height(double _s) { m_mask_height = m_init_mask_height*_s; }
+	void init_mask_height() { m_mask_height= m_init_mask_height; }
 
 
 	Vec2 get_init_pos() { return m_init_pos; }
@@ -96,8 +106,8 @@ public:
 	void damaged(CharType);
 	//HPが0の時呼び出す
 	void destroy();
-	//吹っ飛ぶ関数
-	void burst(Vec2);
+	//パラメータの初期化
+	void init_param();
 private:
 	bool on_message(const Telegram&)override;
 	bool on_collide(Object* _obj)override;
@@ -112,8 +122,13 @@ private:
 	//Stateのセット
 	void set_state(IkaStateType);
 	void set_global_state(IkaStateType);
+	void overwrite_global_state(IkaStateType);
 	//スペシャルの発動
 	void execute_special();
+
+	//キャラごとのパラーメタを設定
+	void set_char_param(CharType _type);
+
 	
 protected:
 	Vec2 m_target_pos;
@@ -145,11 +160,13 @@ private:
 	double m_init_max_turn_rate;
 	double m_init_friction;
 
+
 	//画像データ
 	Texture m_tex_n;
 	Texture m_tex_c;
 	Texture m_tex_s;
 	Texture m_tex_a;
+
 
 	//描画角度
 	double m_angle;
@@ -157,9 +174,24 @@ private:
 	static int m_next_valid_id;
 
 	//------------------GAME内で利用するパラメータ
-	double m_hp = 40.0;
-	double m_special_gauge = 0.0;
+	double m_init_hp;
+	double m_hp;
+	double m_init_special_gauge;
+	double m_special_gauge;
 
+	//paintの半径の倍率
+	double m_init_paint_scale;
+	double m_paint_scale;
+
+	//special gauge のたまりやすさ
+	double m_init_gauge_rate;
+	double m_gauge_rate;
+
+	//コリジョン判定
+	double m_init_mask_radius;
+
+	//コリジョンマスクの高さ
+	double m_init_mask_height;
 };
 
 int Ika::m_next_valid_id = 1;

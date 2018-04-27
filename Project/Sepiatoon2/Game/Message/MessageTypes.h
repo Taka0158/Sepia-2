@@ -15,7 +15,9 @@ namespace msg
 		REGIST_CAMERA_SUBJECT,
 		RESET_CAMERA_SUBJECT,
 		SHAKE_CAMERA,
-		EXECUTE_IKA_SPECIAL
+		EXECUTE_IKA_SPECIAL,
+		SET_CUTIN,
+		CREATE_INK_BALL
 	};
 
 	//デバグ用に表示する名前
@@ -59,6 +61,12 @@ namespace msg
 			break;
 		case TYPE::EXECUTE_IKA_SPECIAL:
 			str = L"イカスペシャル発動！";
+			break;
+		case TYPE::SET_CUTIN:
+			str = L"カットイン開始";
+			break;
+		case TYPE::CREATE_INK_BALL:
+			str = L"インクボール生成";
 			break;
 		}
 		return str;

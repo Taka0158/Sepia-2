@@ -37,7 +37,7 @@ public:
 			m_height -= m_gravity_force;
 			
 			//描画深度を高さに応じて変化させる
-			m_depth -= int(m_height);
+			m_depth = m_init_depth+int(m_height);
 		}
 		else
 		{
@@ -49,11 +49,35 @@ public:
 		}
 	}
 
+	void burst(Vec2 _power)
+	{
+		m_velocity = _power;
+	}
+
 	//浮かせる
 	void fly(double _strength=20.0)
 	{
-		m_height = 0.2;
+		m_height += 0.2;
 		m_gravity_force -= _strength;
+	}
+
+	void enable_gravity()
+	{
+		m_gravity = 0.98;
+	}
+
+	void unable_gravity()
+	{
+		m_gravity = 0.0;
+	}
+
+	virtual void init_moving_param()
+	{
+		m_mass = 1.0;
+		m_max_speed = 10.0;
+		m_max_force = 10.0;
+		m_max_turn_rate = 0.01;
+		m_friction = 0.05;
 	}
 
 	//影を描画する
@@ -64,6 +88,22 @@ public:
 			ASSET_FAC->get_tex(ImageType::SHADOW_64).scale(_size).drawAt(m_pos);
 		}
 	}
+
+	void calc_angle(double& _angle)
+	{
+		//前作からのコピペ
+		//角度計算
+		if (m_velocity.length() <= m_max_speed*0.2)return;
+		double angletemp = Atan2(m_velocity.y, m_velocity.x);
+		//回転角の小さい方をdiffとする（この部分）
+		double anglediff1 = (abs(angletemp - _angle)<Pi) ? angletemp - _angle : 2 * Pi - abs(angletemp - _angle);
+		double angle_add = Pi / 180 * 3;
+		double temp = Sign(anglediff1)*angle_add;
+		_angle += temp;
+		if (_angle > 2 * Pi)_angle -= 2 * Pi;
+		else if (_angle < -Pi + 1)_angle += 2 * Pi;
+	}
+
 protected:
 
 	Vec2 m_velocity =Vec2(0.0,0.0);
@@ -83,16 +123,16 @@ protected:
 	double m_max_turn_rate;
 
 	//重力加速度
-	static double m_gravity;
+	double m_gravity = 0.98;
 
 	//重力による力
 	double m_gravity_force = 0.0;
 
 };
 
-double MovingObject::m_gravity = 0.98;
-
 #include"MovingObjectSub\Ika.cpp"
+#include"MovingObjectSub\MapGimmick.h"
+#include"MovingObjectSub\Item.h"
 
 bool MovingObject::rotate_heading_to_face_position(Vec2 _vec)
 {

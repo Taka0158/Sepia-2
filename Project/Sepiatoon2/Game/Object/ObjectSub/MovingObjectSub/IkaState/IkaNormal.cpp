@@ -111,6 +111,14 @@ bool IkaNormal::on_collide(Ika* _owner, Object* _obj)
 			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*1.0);
 			//Ž©•ª‚É‚Í‰e‹¿‚È‚µ
 			break;
+		case IST::IKA_SPECIAL_TYPHOON:
+			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*10.0);
+			_owner->damaged(IKA_TYPHOON_DAMAEG);
+			break;
+		case IST::IKA_SPECIAL_SUPERNOVA:
+			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*10.0);
+			_owner->damaged(IKA_SUPERNOVA_DAMAEG);
+			break;
 		}
 	}
 

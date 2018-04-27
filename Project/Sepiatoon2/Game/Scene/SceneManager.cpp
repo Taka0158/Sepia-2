@@ -1,7 +1,7 @@
 #include"SceneManager.h"
 
 
-mine::SceneManager::SceneManager()
+mine::SceneManager::SceneManager():Entity(UID_MGR_SCENE)
 {
 	initialize();
 }
@@ -157,6 +157,28 @@ void mine::SceneManager::change_scene()
 	{
 		ASSERT("ƒV[ƒ“‚ª‘¶İ‚µ‚È‚¢‚Ì‚É mine::SceneManager::change_scene ‚ªŒÄ‚Î‚ê‚Ü‚µ‚½");
 	}
+}
+
+bool mine::SceneManager::handle_message(const Telegram& _msg)
+{
+	on_message(_msg);
+	return true;
+}
+
+bool mine::SceneManager::on_message(const Telegram& _msg)
+{
+	bool ret = false;
+
+	switch (_msg.msg)
+	{
+	case msg::TYPE::SET_CUTIN:
+		Ika* sender = (Ika*)_msg.extraInfo;
+		//CutInType‚Í‘I‚×‚é‚æ‚¤‚É‚µ‚½‚¢TODO
+		if (m_current_scene)m_current_scene->set_cut_scene(CutInType::IKA_CUTIN, sender->get_color());
+		ret = true;
+		break;
+	}
+	return ret;
 }
 
 

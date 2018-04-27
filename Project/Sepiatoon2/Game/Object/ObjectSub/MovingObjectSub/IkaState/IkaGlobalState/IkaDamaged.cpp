@@ -20,7 +20,6 @@ void IkaDamaged::enter(Ika* _owner)
 {
 	_owner->set_moving_parm(m_state_type);
 	MSG_DIS->dispatch_message(m_invincible_time*MSG_SEC, _owner, _owner, msg::TYPE::DELETE_IKA_GLOBAL_STATE);
-	_owner->fly();
 }
 
 void IkaDamaged::update(Ika* _owner)

@@ -92,6 +92,16 @@ void TestWorld::debug_update()
 	{
 		OBJ_MGR->create_Tire(SCENE_CAMERA->get_mouse_pos());
 	}
+	if (Input::KeyT.clicked)
+	{
+		OBJ_MGR->create_Rumba(SCENE_CAMERA->get_mouse_pos(), Setting::get_color(TeamType::TEAM_A));
+	}
+
+	if (Input::KeyU.clicked)
+	{
+		OBJ_MGR->create_Inkball(SCENE_CAMERA->get_mouse_pos(), 10.0, RandomVec2(1.0), 5.0, Setting::get_color(TeamType::TEAM_A));
+	}
+
 	if (Input::MouseL.pressed)
 	{
 		if(Input::KeyControl.pressed)
@@ -129,7 +139,7 @@ void TestWorld::debug_update()
 
 	if (Input::KeyF7.clicked)
 	{
-		set_cut_scene(new IkaCutin(Setting::get_color(Setting::get_ika_1_team())));
+		//set_cut_scene(new IkaCutin(Setting::get_color(Setting::get_ika_1_team())));
 	}
 
 }
@@ -139,10 +149,12 @@ void TestWorld::debug_draw()
 
 }
 
-void TestWorld::set_cut_scene(CutScene* _scene)
+void TestWorld::set_cut_scene(CutInType _type,Color _color)
 {
-	if (m_cut_scene == nullptr)
+	switch (_type)
 	{
-		m_cut_scene = _scene;
+	case CutInType::IKA_CUTIN:
+		m_cut_scene = new IkaCutin(_color);
+		break;
 	}
 }

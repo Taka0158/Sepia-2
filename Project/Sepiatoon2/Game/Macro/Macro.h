@@ -2,6 +2,7 @@
 
 #define ASSERT(str) assert(false && (str))
 //--------------------------Assets------------------------------------
+#define FONT_DEBUG_16 FontAsset(L"font_debug_16")
 #define FONT_DEBUG_8 FontAsset(L"font_debug_8")
 #define FONT_DEBUG_4 FontAsset(L"font_debug_4")
 #define FONT_DEBUG_2 FontAsset(L"font_debug_2")
@@ -26,6 +27,14 @@
 #define PASS_IKA_CUTIN L"Assets/Images/Cutin/cutin.png"
 #define PASS_SHADOW_64 L"Assets/Images/Utility/shadow_64.png"
 #define PASS_TIRE_64 L"Assets/Images/MapGimmick/tire_64.png"
+#define NUM_OF_ANIM_TYPHOON 36
+#define PASS_TYPHOON(index) L"Assets/Images/Typhoon/typhoon."+ToString(index)+L".png"
+#define PASS_RUMBA L"Assets/Images/Rumba/rumba.png"
+#define PASS_INKBALL L"Assets/Images/Inkball/inkball.png"
+#define PASS_EXPLOSION_READY(index) L"Assets/Images/Supernova/explosion_ready."+ToString(index)+L".png"
+#define NUM_OF_ANIM_EXPLOSION_READY 25
+#define PASS_EXPLOSION(index) L"Assets/Images/Supernova/explosion."+ToString(index)+L".png"
+#define NUM_OF_ANIM_EXPLOSION 17
 
 #define OPEN_MOVIE_IKA_CUTIN experimental::MediaPlayer::Open(L"Assets/Movies/cutin.avi")
 #define PLAY_MOVIE_IKA_CUTIN(rect) experimental::MediaPlayer::Play((rect))
@@ -33,7 +42,8 @@
 #define STOP_MOVIE_IKA_CUTIN experimental::MediaPlayer::Stop()
 //--------------------------当たり判定------------------------------------
 //高さの差がこの値以下なら衝突
-#define HEIGHT_THRESHOLD 1.0
+//m_mask_heightを定義したことによって不要
+#define HEIGHT_THRESHOLD 5.5
 //速さの差がこの値以下なら同じ
 #define VELOCITY_THRESHOLD 0.5
 //マスク半径が0とみなされる値
@@ -45,6 +55,9 @@
 #define CAMERA_MAX_SCALE 1.3
 #define CAMERA_MIN_SCALE 0.8
 
+//--------------------------ゲーム内パラメータ------------------------------------
+#define IKA_TYPHOON_DAMAEG 80
+#define IKA_SUPERNOVA_DAMAEG 200
 
 //--------------------------簡易色識別------------------------------------
 #define COLOR_MINE 0
@@ -78,7 +91,10 @@
 #define UID_OBJ_MAP				0x02000001
 #define ID_OBJ_TEST				0x02010000
 #define ID_OBJ_IKA				0x02020000
-#define ID_MAPGIMMCIK_TIRE		0x02100000
+#define ID_OBJ_TYPHOON			0x02040000
+#define ID_MAPGIMMCIK_TIRE		0x02080000
+#define ID_OBJ_RUMBA		    0x02100000
+#define ID_OBJ_INKBALL		    0x02200000
 
 #define UID_MGR_EFFECT			0x04000000
 #define UID_MGR_AUDIO			0x08000000

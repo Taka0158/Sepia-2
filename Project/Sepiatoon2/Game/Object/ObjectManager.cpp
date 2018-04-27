@@ -1,6 +1,7 @@
 #include"ObjectManager.h"
 
-
+//ãÍèaÇÃinclude
+#include"../Camera/SceneCamera.h"
 
 ObjectManager::ObjectManager():Entity(ID(UID_MGR_OBJ))
 {
@@ -24,6 +25,7 @@ void ObjectManager::initialize()
 			itr->init_id();
 		}
 	}
+	m_timer = 0;
 }
 
 void ObjectManager::finalize()
@@ -46,6 +48,8 @@ void ObjectManager::finalize()
 
 void ObjectManager::update()
 {
+	m_timer++;
+
 	check_alive();
 	
 	check_collide();
@@ -77,7 +81,11 @@ void ObjectManager::draw()
 	*/
 	if (m_map != nullptr)m_map->draw();
 
-	//ÉåÉCÉÑóLÇË
+	//ï`âÊê[ìxÇÊÇËï`âÊèáèòêÆóÒ
+	if(m_timer%m_sort_duration==0)std::sort(m_objects_drawer.begin(), m_objects_drawer.end());
+
+
+	//ìÆìIÇ…m_depthÇ™ë„ÇÌÇÈÇ‡ÇÃÇÕê≥ÇµÇ¢èáèòÇ…Ç»ÇÁÇ»Ç¢
 	for (auto itr : m_objects_drawer)
 	{
 		if (itr.second != nullptr)
@@ -179,6 +187,11 @@ bool ObjectManager::on_message(const Telegram& _msg)
 		destroy_all_object();
 		ret = true;
 		break;
+	case msg::TYPE::CREATE_INK_BALL:
+		InkballParm* ibp=(InkballParm*)_msg.extraInfo;
+		create_Inkball(ibp->pos, ibp->init_height, ibp->dir, ibp->fly_strength, ibp->color);
+		ret = true;
+		break;
 	}
 
 	return ret;
@@ -215,9 +228,29 @@ void ObjectManager::create_TestObj(Vec2 _p)
 }
 */
 
+void ObjectManager::create_Inkball(Vec2 _pos, double _init_height, Vec2 _dir, double _fly_strength, Color _color)
+{
+	if (m_map == nullptr)return;
+
+	Inkball* new_obj = new Inkball(m_map, _pos, _init_height, _dir, _fly_strength, _color);
+
+	regist_object(new_obj);
+}
+
 void ObjectManager::create_Tire(Vec2 _pos)
 {
-	Tire* new_obj = new Tire(_pos);
+	if (m_map == nullptr)return;
+
+	Tire* new_obj = new Tire(m_map,_pos);
+
+	regist_object(new_obj);
+}
+
+void ObjectManager::create_Rumba(Vec2 _pos, Color _color)
+{
+	if (m_map == nullptr)return;
+
+	Rumba* new_obj = new Rumba(m_map, _pos, _color);
 
 	regist_object(new_obj);
 }
@@ -299,16 +332,16 @@ void ObjectManager::regist_draw_object(Object* _obj)
 {
 	Drawer d = Drawer(_obj->get_depth_ref(), _obj);
 
-	m_objects_drawer.insert(d);
+	m_objects_drawer.push_back(d);
 }
 
 void ObjectManager::reset_draw_object(Object* _obj)
 {									 
 	if (m_objects_drawer.size() == 0)return;
 
-	std::vector<std::set<Drawer>::iterator> delete_drawer;
+	std::vector<std::vector<Drawer>::iterator> delete_drawer;
 
-	for (std::set<Drawer>::iterator itr = m_objects_drawer.begin(); itr != m_objects_drawer.end(); itr++)
+	for (std::vector<Drawer>::iterator itr = m_objects_drawer.begin(); itr != m_objects_drawer.end(); itr++)
 	{
 		if (itr->second == _obj)
 		{
@@ -324,6 +357,16 @@ void ObjectManager::reset_draw_object(Object* _obj)
 
 void ObjectManager::regist_object(Object* _obj)
 {
+	//ê¸å`íTçı
+	for (unsigned int i = 0; i < m_objects.size(); i++)
+	{
+		if (m_objects[i] == nullptr)
+		{
+			m_objects[i] = _obj;
+			regist_draw_object(_obj);
+			return;
+		}
+	}
 	m_objects.push_back(_obj);
 	regist_draw_object(_obj);
 }
@@ -381,8 +424,16 @@ void ObjectManager::check_collide()
 			//è’ìÀÇµÇƒÇ¢ÇÈÇ»ÇÁ
 			if (m_objects[i]->get_mask().intersects(m_objects[j]->get_mask()))
 			{
+				double h1 = m_objects[i]->get_height();
+				double h1_bottom = h1 - m_objects[i]->get_mask_height() / 2.0;
+				double h1_top = h1 + m_objects[i]->get_mask_height() / 2.0;
+				double h2 = m_objects[j]->get_height();
+				double h2_bottom = h2 - m_objects[j]->get_mask_height() / 2.0;
+				double h2_top = h2 + m_objects[j]->get_mask_height() / 2.0;
+				double top_max = Max(h1_top, h2_top);
+				double bottom_min = Min(h1_bottom, h2_bottom);
 				//çÇÇ≥Ç™ìØÇ∂Ç»ÇÁÇŒ
-				if(Abs(m_objects[i]->get_height()-m_objects[j]->get_height())<=HEIGHT_THRESHOLD)
+				if(top_max-bottom_min<m_objects[i]->get_mask_height()+ m_objects[j]->get_mask_height())
 				{
 					m_objects[i]->handle_collide(m_objects[j]);
 					m_objects[j]->handle_collide(m_objects[i]);

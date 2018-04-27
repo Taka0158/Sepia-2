@@ -73,8 +73,8 @@ void Map::blend()
 	{
 		Paint p = que.front();
 		Image img = get_random_ink();
-		Size s = Size(img.width, img.height) / 2;
-		rotate_image(img).write(m_im_background, Vec2_to_Point(p.pos) - s, p.color);
+		Size s = Size(img.width*p.scale, img.height*p.scale) / 2;
+		rotate_image(img).scale(p.scale,Interpolation::Nearest).write(m_im_background, Vec2_to_Point(p.pos) - s, p.color);
 		que.pop();
 		m_tex_background.fill(m_im_background);
 	}

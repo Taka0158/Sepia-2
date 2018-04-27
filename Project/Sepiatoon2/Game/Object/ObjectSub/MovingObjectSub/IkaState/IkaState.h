@@ -65,7 +65,7 @@ public:
 
 	virtual bool is_enable_paint(Ika* _owner)
 	{
-		return ((m_old_pos - _owner->get_p()).length() > m_threshold_paint);
+		return ((m_old_pos - _owner->get_p()).length() > m_threshold_paint && _owner->get_height()<1.0);
 	}
 
 	virtual void set_next_state(IkaStateType _type)
@@ -86,7 +86,7 @@ public:
 	virtual bool on_collide(Ika* _owner,Object* _obj) { return false; };
 
 	//自分のStateTypeを返す
-	IkaStateType get_state_type() { return m_state_type; }
+	virtual IkaStateType get_state_type() { return m_state_type; }
 protected:
 	//前のペイントした座標を記録
 	Vec2 m_old_pos=Vec2(0.0,0.0);

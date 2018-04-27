@@ -3,6 +3,8 @@
 class SceneManager;
 class CutScene;
 
+
+
 class Scene
 {
 public:
@@ -21,7 +23,7 @@ public:
 	virtual void debug_draw() = 0;
 
 	//使用するStateでオーバーライド
-	virtual void set_cut_scene(CutScene*) {};
+	virtual void set_cut_scene(CutInType,Color = Palette::White) {};
 
 	virtual void delete_cut_scene() 
 	{

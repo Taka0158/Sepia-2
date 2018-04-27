@@ -1,40 +1,5 @@
 #pragma once
 
-enum class TeamType
-{
-	TEAM_A,
-	TEAM_B
-};
-
-enum class CharType
-{
-	NORMAL
-};
-
-enum class SpecialType
-{
-	UNKNOWN,
-	TYPHOON,
-	DASH,
-	SUPERNOVA
-};
-
-enum class MapType
-{
-	SIMPLE
-};
-
-enum class PlayModeType
-{
-	ONE_ON_ONE
-};
-
-enum class ControllerType
-{
-	PLAYER_1,
-	PLAYER_2,
-	CPU
-};
 
 class Setting :public Singleton<Setting>
 {
@@ -194,7 +159,7 @@ CharType Setting::m_char_4 = CharType::NORMAL;
 //スペシャルタイプ
 SpecialType Setting::m_special_1 = SpecialType::TYPHOON;
 SpecialType Setting::m_special_2 = SpecialType::TYPHOON;
-SpecialType Setting::m_special_3 = SpecialType::TYPHOON;
+SpecialType Setting::m_special_3 = SpecialType::SUPERNOVA;
 SpecialType Setting::m_special_4 = SpecialType::TYPHOON;
 
 //コントローラータイプ

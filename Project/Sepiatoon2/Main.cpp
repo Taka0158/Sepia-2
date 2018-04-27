@@ -25,15 +25,18 @@
 #include"Game\Message\Telegram.h"
 
 #include"Game\UIManager\UIManager.cpp"
-#include"Game\Message\MessageDispatcher.cpp"
+#include"Game\Message\MessageDispatcher.h"
 
 #include"Game\Object\ObjectManager.cpp"
 #include"Game\Scene\SceneManager.cpp"
+
+#include"Game\Message\MessageDispatcher.cpp"
 
 
 void Main()
 {
 	//Siv3Dアセット機能の利用
+	FontAsset::Register(L"font_debug_16", 16, Typeface::Default);
 	FontAsset::Register(L"font_debug_8", 8, Typeface::Default);
 	FontAsset::Register(L"font_debug_4", 4, Typeface::Default);
 	FontAsset::Register(L"font_debug_2", 2, Typeface::Default);
@@ -50,9 +53,13 @@ void Main()
 	SCENE_CAMERA;
 	OBJ_MGR;
 
+
 	while (System::Update())
 	{
+		//経過時間計測
+		Stopwatch stopwatch(true);
 		ClearPrint();
+
 
 		MSG_DIS->dispatch_delayed_message();
 		MSG_DIS->dispatch_delayed_direct_message();
@@ -65,13 +72,31 @@ void Main()
 		DEBUG->update();
 		DEBUG->show();
 		MSG_DIS->debug_draw();
+		FONT_DEBUG_16(stopwatch.ms(), L"msec").draw(320, 32,Palette::Black);
 	}
+
 }
 
-/*
-TODOIST
 
-カメラバグ
+/*
+TODOIST 20180427
+
+Inkball::Initialize()で原因不明のバグ有り
+
+
+
+
+*/
+
+/*
+TODOIST20180426
+
+Typhoon途中（TODO　衝突）
+Cutin修正
+同時にspecialメッセージを送ると片方が消失するバグ修正
+
+
+//カメラバグ
 */
 
 /*
