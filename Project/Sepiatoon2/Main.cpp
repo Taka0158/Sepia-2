@@ -1,4 +1,8 @@
-﻿#include <Siv3D.hpp>
+﻿#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+#include <Siv3D.hpp>
 #include<HamFramework.hpp>
 #include<vector>
 #include<memory>
@@ -32,18 +36,23 @@
 
 #include"Game\Message\MessageDispatcher.cpp"
 
-
 void Main()
 {
+
+	//メモリリーク検出
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+	//int* p = new int(1);
+
+	//フォントのアセット登録
+	FontManager::Register(L"Assets/Fonts/Ika_font.ttf");
+	FontManager::Register(L"Assets/Fonts/Ika_font_kana.ttf");
+
 	//Siv3Dアセット機能の利用
 	FontAsset::Register(L"font_debug_16", 16, Typeface::Default);
 	FontAsset::Register(L"font_debug_8", 8, Typeface::Default);
 	FontAsset::Register(L"font_debug_4", 4, Typeface::Default);
 	FontAsset::Register(L"font_debug_2", 2, Typeface::Default);
-
-	//フォントのアセット登録
-	FontManager::Register(L"Assets/Fonts/Ika_font.ttf");
-	FontManager::Register(L"Assets/Fonts/Ika_font_kana.ttf");
 
 	FontAsset::Register(L"font_ika_alphabet_32", 32, L"Project Paintball");
 	FontAsset::Register(L"font_ika_kana_32", 32, L"イカモドキ");
@@ -52,15 +61,21 @@ void Main()
 	SETTING;
 	SCENE_CAMERA;
 	OBJ_MGR;
+	ASSET_FAC;
+	DEBUG;
+	MSG_DIS;
+	SCENE_MGR;
 
+	System::Sleep(3000);
 
+	//再現　： explosionを複数で行うと　例外
 	while (System::Update())
 	{
 		//経過時間計測
 		Stopwatch stopwatch(true);
 		ClearPrint();
 
-
+		//遅延メッセージを配達
 		MSG_DIS->dispatch_delayed_message();
 		MSG_DIS->dispatch_delayed_direct_message();
 
@@ -69,12 +84,14 @@ void Main()
 		SCENE_MGR->draw();
 		SCENE_MGR->debug_draw();
 
+
+		//デバッグ機構
 		DEBUG->update();
 		DEBUG->show();
 		MSG_DIS->debug_draw();
 		FONT_DEBUG_16(stopwatch.ms(), L"msec").draw(320, 32,Palette::Black);
-	}
-
+	   	}
+	System::Sleep(3000);
 }
 
 
@@ -154,6 +171,9 @@ Map::get_color()関数がSCENE_CAMER部分でバグ？
 IkaStateSubクラスで相互include
 
 IkaStateが挙動不審（Map::get_color()で位置ピクセル分しかとらないのが原因か）
+
+msg::TYPE::CREATE_をOBJMGRに渡す際に
+即時配達にするとたまにバグる
 
 */
 

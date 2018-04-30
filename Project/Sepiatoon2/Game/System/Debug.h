@@ -39,11 +39,11 @@ public:
 		//fps•\Ž¦
 		Println(Profiler::FPS(), L"FPS");
 
-		if (texts.empty())return;
 		check();
 	}
 	void show()
 	{
+		if (texts.empty())return;
 		for (auto itr : texts)
 		{
 			Println(itr.info);

@@ -28,6 +28,7 @@ void Rumba::initialize()
 	m_mask_radius = 48.0;
 	m_speed = 1.0;
 	m_paint_interval = 10;
+	m_mask_height = 5.0;
 }
 
 void Rumba::finalize()

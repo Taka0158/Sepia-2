@@ -1,14 +1,19 @@
 #pragma once
 
 #define ASSERT(str) assert(false && (str))
-//--------------------------Assets------------------------------------
+
+#pragma region Assets
+///-----------------------------------------------Fonts---------------------------------------------------
+
 #define FONT_DEBUG_16 FontAsset(L"font_debug_16")
 #define FONT_DEBUG_8 FontAsset(L"font_debug_8")
 #define FONT_DEBUG_4 FontAsset(L"font_debug_4")
 #define FONT_DEBUG_2 FontAsset(L"font_debug_2")
 #define FONT_IKA_ALPHABET_32 FontAsset(L"font_ika_alphabet_32")
 #define FONT_IKA_KANA_32 FontAsset(L"font_ika_kana_32")
+///-----------------------------------------------Fonts---------------------------------------------------
 
+///-----------------------------------------------Images---------------------------------------------------
 #define PASS_MAP_SIMPLE	L"Assets/Images/Map/map_simple_1920_1080.png"
 #define PASS_INK_0_128 L"Assets/Images/Map/ink_0_128.png"
 #define PASS_INK_1_128 L"Assets/Images/Map/ink_1_128.png"
@@ -27,47 +32,26 @@
 #define PASS_IKA_CUTIN L"Assets/Images/Cutin/cutin.png"
 #define PASS_SHADOW_64 L"Assets/Images/Utility/shadow_64.png"
 #define PASS_TIRE_64 L"Assets/Images/MapGimmick/tire_64.png"
-#define NUM_OF_ANIM_TYPHOON 36
 #define PASS_TYPHOON(index) L"Assets/Images/Typhoon/typhoon."+ToString(index)+L".png"
 #define PASS_RUMBA L"Assets/Images/Rumba/rumba.png"
 #define PASS_INKBALL L"Assets/Images/Inkball/inkball.png"
 #define PASS_EXPLOSION_READY(index) L"Assets/Images/Supernova/explosion_ready."+ToString(index)+L".png"
-#define NUM_OF_ANIM_EXPLOSION_READY 25
 #define PASS_EXPLOSION(index) L"Assets/Images/Supernova/explosion."+ToString(index)+L".png"
-#define NUM_OF_ANIM_EXPLOSION 17
-
+////-----------------------------------------------NumOfImages---------------------------------------------------
+#define NUM_OF_ANIM_TYPHOON 36
+#define NUM_OF_ANIM_EXPLOSION_READY 25
+#define NUM_OF_ANIM_EXPLOSION 18					 											 
+////-----------------------------------------------NumOfImages---------------------------------------------------
+///-----------------------------------------------Images---------------------------------------------------
+///-----------------------------------------------Movies---------------------------------------------------
 #define OPEN_MOVIE_IKA_CUTIN experimental::MediaPlayer::Open(L"Assets/Movies/cutin.avi")
 #define PLAY_MOVIE_IKA_CUTIN(rect) experimental::MediaPlayer::Play((rect))
 #define ISPLAYING_MOVIE_IKA_CUTIN experimental::MediaPlayer::IsPlaying()
 #define STOP_MOVIE_IKA_CUTIN experimental::MediaPlayer::Stop()
-//--------------------------当たり判定------------------------------------
-//高さの差がこの値以下なら衝突
-//m_mask_heightを定義したことによって不要
-#define HEIGHT_THRESHOLD 5.5
-//速さの差がこの値以下なら同じ
-#define VELOCITY_THRESHOLD 0.5
-//マスク半径が0とみなされる値
-#define MASK_RADIUS_NULL 0.001
+///-----------------------------------------------Movies---------------------------------------------------
+#pragma endregion
 
-
-//--------------------------カメラパラメータ------------------------------------
-//最大/最小scale値
-#define CAMERA_MAX_SCALE 1.3
-#define CAMERA_MIN_SCALE 0.8
-
-//--------------------------ゲーム内パラメータ------------------------------------
-#define IKA_TYPHOON_DAMAEG 80
-#define IKA_SUPERNOVA_DAMAEG 200
-
-//--------------------------簡易色識別------------------------------------
-#define COLOR_MINE 0
-#define COLOR_RIVAL 1
-#define COLOR_NEUTRAL 2
-
-//この値差以下なら同じ色とみなす閾値
-#define COLOR_THRESHOLD 3
-
-//--------------------------Singletonクラス------------------------------------
+#pragma region Singleton
 #define SCENE_MGR mine::SceneManager::getInstance()
 #define OBJ_MGR ObjectManager::getInstance()
 #define SETTING Setting::getInstance()
@@ -77,8 +61,9 @@
 #define UI_MGR UIManager::getInstance()
 #define OBJ_MAP_SIMPLE MapSimple::getInstance()
 #define ASSET_FAC AssetFactory::getInstance()
+#pragma endregion
 
-//--------------------------ID------------------------------------
+#pragma region ID
 //	 MGR  CLASS	 インスタンス(1～65535)
 // ID 00    00		0000 
 
@@ -100,6 +85,35 @@
 #define UID_MGR_AUDIO			0x08000000
 #define UID_MGR_UI				0x10000000
 #define UID_SCENE_CAMERA		0x20000000
+#pragma endregion
+
+//--------------------------当たり判定------------------------------------
+//速さの差がこの値以下なら同じ
+#define VELOCITY_THRESHOLD 0.5
+//マスク半径が0とみなされる値
+#define MASK_RADIUS_NULL 0.001
+//--------------------------当たり判定------------------------------------
+
+//--------------------------カメラパラメータ------------------------------------
+//最大/最小scale値
+#define CAMERA_MAX_SCALE 1.3
+#define CAMERA_MIN_SCALE 0.8
+//--------------------------カメラパラメータ------------------------------------
+
+//--------------------------ゲーム内パラメータ------------------------------------
+#define IKA_TYPHOON_DAMAEG 80
+#define IKA_SUPERNOVA_DAMAEG 200
+//--------------------------ゲーム内パラメータ------------------------------------
+
+//--------------------------簡易色識別------------------------------------
+#define COLOR_MINE 0
+#define COLOR_RIVAL 1
+#define COLOR_NEUTRAL 2
+
+//この値差以下なら同じ色とみなす閾値
+#define COLOR_THRESHOLD 3
+//--------------------------簡易色識別------------------------------------
+
 
 
 //-------------------------MSG--------------------------
@@ -110,6 +124,8 @@
 
 //メッセージ送信の際秒表記で遅延時間を渡す場合に使用
 #define MSG_SEC 1000
+//-------------------------MSG--------------------------
 //-------------------------REP/FOR--------------------------
 #define REP(i,n) for(int i=0;i<(n);i++)
 #define JUMP_REP(i,n,v) for(int i=0;i<(n);(i)+=(v))
+//-------------------------REP/FOR--------------------------

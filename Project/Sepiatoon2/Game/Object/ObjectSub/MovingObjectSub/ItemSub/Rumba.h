@@ -32,12 +32,12 @@ public:
 
 	bool handle_message(const Telegram& _msg)override;
 	bool handle_collide(Object* _obj)override;
+	void destroy();
 private:
 	void restrain();
 
 	void set_direction();
 
-	void destroy();
 private:
 	int timer = 0;
 	bool on_collide(Object* _obj)override;

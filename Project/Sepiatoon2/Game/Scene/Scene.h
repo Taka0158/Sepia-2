@@ -27,13 +27,9 @@ public:
 
 	virtual void delete_cut_scene() 
 	{
-		if (m_cut_scene==nullptr)
+		if (m_cut_scene!=nullptr)
 		{
-
-		}
-		else
-		{
-			delete m_cut_scene;
+			m_cut_scene.reset();
 			m_cut_scene = nullptr;
 		}
 	};
@@ -51,7 +47,7 @@ protected:
 	//		  ‚·‚é			 UIManager
 	UIManager* m_ui = nullptr;
 
-	CutScene* m_cut_scene = nullptr;
+	std::unique_ptr<CutScene> m_cut_scene = nullptr;
 };
 
 #include"CutScene\CutScene.cpp"

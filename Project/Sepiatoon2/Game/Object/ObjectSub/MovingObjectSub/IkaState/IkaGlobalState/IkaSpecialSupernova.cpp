@@ -30,14 +30,14 @@ void IkaSpecialSupernova::update(Ika* _owner)
 
 	if (m_timer < m_ready_duration)
 	{
-		m_tex_ready_index = get_tex_loop_index(m_tex_ready_index, NUM_OF_ANIM_EXPLOSION_READY, 0, NUM_OF_ANIM_EXPLOSION_READY, true);
+		m_tex_ready_index = get_tex_loop_index(m_tex_ready_index, NUM_OF_ANIM_EXPLOSION_READY-1, 0, NUM_OF_ANIM_EXPLOSION_READY-1, true);
 	
 		//inkball射出
-		fire(_owner);
+		//fire(_owner);
 	}
 	else if (m_timer < m_ready_duration + m_duration)
 	{
-		m_tex_index = get_tex_loop_index(m_tex_index, NUM_OF_ANIM_EXPLOSION, 0, NUM_OF_ANIM_EXPLOSION, true);
+		m_tex_index = get_tex_loop_index(m_tex_index, NUM_OF_ANIM_EXPLOSION-1, 0, NUM_OF_ANIM_EXPLOSION-1, true);
 		//爆発するタイミング
 		if (m_tex_index == 6)
 		{
@@ -53,8 +53,6 @@ void IkaSpecialSupernova::update(Ika* _owner)
 		}
 		else
 		{
-
-
 			_owner->init_mask_radius();
 			_owner->init_mask_height();
 		}
@@ -100,9 +98,9 @@ void IkaSpecialSupernova::fire(Ika* _owner)
 	if (m_timer%m_fire_interval == 0)
 	{
 		InkballParm ibp(_owner->get_p(), _owner->get_height(), m_fire_dir, 5.0, _owner->get_color());
-		MSG_DIS->dispatch_message(0.0, _owner->get_id(), UID_MGR_OBJ, msg::TYPE::CREATE_INK_BALL, &ibp);
+		MSG_DIS->dispatch_message(0.0, _owner->get_id(), UID_MGR_OBJ, msg::TYPE::CREATE_INK_BALL, &ibp,false);
 		m_fire_dir = m_fire_dir.rotate(m_angle).setLength(m_length);
 		m_angle += 0.2;
-		m_length += 0.1;
+		m_length += 0.02;
 	}
 }

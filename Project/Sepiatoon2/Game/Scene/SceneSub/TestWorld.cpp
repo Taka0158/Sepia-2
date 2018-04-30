@@ -10,6 +10,7 @@ TestWorld::TestWorld()
 TestWorld::~TestWorld()
 {
 	finalize();
+	DEBUG->regist(DebugText(3.0, L"------------------TESTWORLDデストラクタ----------------"));
 }
 
 void TestWorld::initialize()
@@ -18,6 +19,9 @@ void TestWorld::initialize()
 	OBJ_MGR->initialize();
 	SCENE_CAMERA->initialize();
 	m_ui->initialize();
+
+
+
 }
 
 void TestWorld::finalize()
@@ -26,7 +30,7 @@ void TestWorld::finalize()
 	SCENE_CAMERA->finalize();
 	m_ui->finalize();
 	MSG_DIS->destroy_all_message();
-}
+	delete_cut_scene();}
 
 void TestWorld::enter()
 {
@@ -42,14 +46,17 @@ void TestWorld::update()
 {
 	if (m_cut_scene)
 	{
-		m_cut_scene->update(this);
+		if (m_cut_scene->update(this)==false)
+		{
+			delete_cut_scene();
+		}
 	}
 	else 
 	{
-	SCENE_CAMERA->update_sub();
-	OBJ_MGR->update();
-	//EFFECT_MGR->update();
-	OBJ_MGR->debug_update();
+		SCENE_CAMERA->update_sub();
+		OBJ_MGR->update();
+		//EFFECT_MGR->update();
+		OBJ_MGR->debug_update();
 	}
 }
 
@@ -92,14 +99,32 @@ void TestWorld::debug_update()
 	{
 		OBJ_MGR->create_Tire(SCENE_CAMERA->get_mouse_pos());
 	}
-	if (Input::KeyT.clicked)
+	if (Input::KeyT.pressed)
 	{
 		OBJ_MGR->create_Rumba(SCENE_CAMERA->get_mouse_pos(), Setting::get_color(TeamType::TEAM_A));
 	}
-
-	if (Input::KeyU.clicked)
+	if (Input::KeyG.pressed)
 	{
-		OBJ_MGR->create_Inkball(SCENE_CAMERA->get_mouse_pos(), 10.0, RandomVec2(1.0), 5.0, Setting::get_color(TeamType::TEAM_A));
+		OBJ_MGR->create_Rumba(SCENE_CAMERA->get_mouse_pos(), Setting::get_color(TeamType::TEAM_B));
+	}
+
+	if (Input::KeyU.pressed)
+	{
+		REP(i, 10)
+		{
+			InkballParm ibp = InkballParm(SCENE_CAMERA->get_mouse_pos(), 10.0, RandomVec2(1.0), 5.0, Setting::get_color(TeamType::TEAM_A));
+			MSG_DIS->dispatch_message(0.0, UID_UNKNOWN, UID_MGR_OBJ, msg::TYPE::CREATE_INK_BALL, &ibp, false);
+
+		}
+	}
+	if (Input::KeyJ.pressed)
+	{
+		REP(i, 10)
+		{
+			InkballParm ibp = InkballParm(SCENE_CAMERA->get_mouse_pos(), 10.0, RandomVec2(1.0), 5.0, Setting::get_color(TeamType::TEAM_B));
+			MSG_DIS->dispatch_message(0.0, UID_UNKNOWN, UID_MGR_OBJ, msg::TYPE::CREATE_INK_BALL, &ibp, false);
+
+		}
 	}
 
 	if (Input::MouseL.pressed)
@@ -151,10 +176,11 @@ void TestWorld::debug_draw()
 
 void TestWorld::set_cut_scene(CutInType _type,Color _color)
 {
+	if (m_cut_scene != nullptr)return;
 	switch (_type)
 	{
 	case CutInType::IKA_CUTIN:
-		m_cut_scene = new IkaCutin(_color);
+		m_cut_scene.reset(new IkaCutin(_color));
 		break;
 	}
 }

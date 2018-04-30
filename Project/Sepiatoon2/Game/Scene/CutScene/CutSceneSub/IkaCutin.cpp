@@ -7,7 +7,7 @@ IkaCutin::IkaCutin(Color _color) :CutScene(Setting::get_ms(), 1000)
 
 IkaCutin::~IkaCutin()
 {
-
+	DEBUG->regist(DebugText(5.0, L"-----------カットインデストラクタ-----------"));
 }
 
 void IkaCutin::enter(Scene* _owner)

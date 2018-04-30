@@ -8,9 +8,9 @@ IkaStateMachine::IkaStateMachine(Ika* _owner)
 
 IkaStateMachine::~IkaStateMachine()
 {
-	m_current_state.release();
-	m_previous_state.release();
-	m_global_state.release();
+	m_current_state.reset();
+	m_previous_state.reset();
+	m_global_state.reset();
 }
 
 void IkaStateMachine::update()
@@ -31,7 +31,11 @@ void IkaStateMachine::change_state(IkaState* _new_state)
 
 	m_current_state->exit(m_owner);
 
-	m_previous_state = std::move(m_current_state);
+	//m_previous_state = std::move(m_current_state);
+	
+	m_previous_state.reset(m_current_state.get());
+	//³‚µ‚¢release
+	m_current_state.release();
 
 	m_current_state.reset(_new_state);
 
@@ -74,17 +78,22 @@ void IkaStateMachine::set_global_state(IkaState* _state)
 			m_global_state->enter(m_owner);
 		}
 	}
+	else
+	{
+		if (_state != nullptr)
+		{
+			delete _state;
+		}
+	}
 }
 
 void IkaStateMachine::delete_global_state()
 {
+	if (m_global_state)
 	{
-		if (m_global_state)
-		{
-			m_global_state->exit(m_owner);
-			m_global_state.release();
-			m_global_state = nullptr;
-		}
+		m_global_state->exit(m_owner);
+		m_global_state.reset();
+		m_global_state = nullptr;
 	}
 }
 

@@ -20,6 +20,7 @@ public:
 	void initialize();
 	void finalize();
 
+
 	//-----------------------------------------------Create関数--------------------------------------------------------------------------
 	//テスト用
 	//void create_TestObj(Vec2 _p);
@@ -83,8 +84,13 @@ private:
 	//この関数に渡す
 	void regist_object(Object*);
 
-
+	//update関数始めでオブジェクトの登録を行う
+	void register_object();
 private:
+	//未登録オブジェクトを格納する
+	//register_objcet()で登録される
+	std::queue<Object*> m_yet_objects;
+
 	//オブジェクトのインスタンス（のポインタ）を格納する
 	std::vector<Object*> m_objects;
 
@@ -102,7 +108,7 @@ private:
 	int m_timer = 0;
 
 	//描画順のソート間隔(フレーム)
-	int m_sort_duration = 20;
+	int m_sort_duration = 1;
 };						 
 
 

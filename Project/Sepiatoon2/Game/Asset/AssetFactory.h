@@ -28,6 +28,10 @@ public:
 
 	//VideoPlayer& get_video(MovieType);
 
+	//デバッグ用
+	void load_all_image();
+
+	void delete_all_image();
 
 private:
 	Image* m_im_map_simple_1920_1080 = nullptr;

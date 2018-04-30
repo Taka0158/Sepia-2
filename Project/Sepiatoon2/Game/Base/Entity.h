@@ -12,8 +12,8 @@ public:
 		m_id=_id;
 	}
 	virtual ~Entity() {};
-
-	//サブクラスはメッセージを受け取るメソッドを用意
+	
+	//メッセージを受け取る関数
 	virtual bool handle_message(const Telegram& msg) = 0;
 
 	ID get_id()const { return m_id; }

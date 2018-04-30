@@ -30,9 +30,11 @@ Ika::Ika(Map* _map, ControllerType _controller_type,Vec2 _init_p, Color _color, 
 }
 Ika::~Ika()
 {
-	finalize();
+	DEBUG->regist(DebugText(5.0, L"-----------イカデストラクタ-----------"));
+
 	//イカを被写体から削除
 	MSG_DIS->dispatch_message(0, m_id, UID_SCENE_CAMERA, msg::TYPE::RESET_CAMERA_SUBJECT, this);
+	finalize();
 }
 
 void Ika::initialize()
@@ -54,7 +56,7 @@ void Ika::finalize()
 {
 	m_is_alive = false;
 
-	//m_ika_fsm.release();
+	m_ika_fsm.reset();
 }
 
 void Ika::update()
@@ -419,6 +421,9 @@ void Ika::overwrite_global_state(IkaStateType _type)
 
 void Ika::execute_special()
 {
+	//この一文がなかったためにメモリリークが発生していた？
+	if (m_ika_fsm->get_global_state() != nullptr)return;
+
 	MSG_DIS->dispatch_message(0.0, this->m_id, UID_MGR_SCENE, msg::TYPE::SET_CUTIN, this);
 	switch (m_special_type)
 	{

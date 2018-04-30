@@ -16,8 +16,14 @@ ObjectManager::~ObjectManager()
 void ObjectManager::initialize()
 {
 	finalize();
+
 	SCENE_CAMERA->initialize();
 
+	m_timer = 0;
+}
+
+void ObjectManager::finalize()
+{
 	for (auto itr : m_objects)
 	{
 		if (itr != nullptr)
@@ -25,11 +31,7 @@ void ObjectManager::initialize()
 			itr->init_id();
 		}
 	}
-	m_timer = 0;
-}
 
-void ObjectManager::finalize()
-{
 	destroy_all_object();
 	check_alive();
 	reset_object_id();
@@ -44,10 +46,22 @@ void ObjectManager::finalize()
 	auto rmvIter = std::remove_if(m_objects.begin(), m_objects.end(), is_nullptr);
 	//削除すべき最初の要素から最後までを削除する
 	m_objects.erase(rmvIter, m_objects.end());
+
+	while (!m_yet_objects.empty())
+	{
+		if (m_yet_objects.front() != nullptr)
+		{
+			delete m_yet_objects.front();
+		}
+		m_yet_objects.pop();
+	}
 }
 
 void ObjectManager::update()
 {
+	//未登録オブジェクトを登録する
+	register_object();
+
 	m_timer++;
 
 	check_alive();
@@ -69,7 +83,8 @@ void ObjectManager::update()
 
 void ObjectManager::draw()
 {
-	/*
+	if (m_map != nullptr)m_map->draw();
+
 	for (unsigned int i = 0; i < m_objects.size(); i++)
 	{
 		if (m_objects[i] != nullptr)
@@ -78,9 +93,8 @@ void ObjectManager::draw()
 			m_objects[i]->draw();
 		}
 	}
-	*/
-	if (m_map != nullptr)m_map->draw();
 
+	/*
 	//描画深度より描画順序整列
 	if(m_timer%m_sort_duration==0)std::sort(m_objects_drawer.begin(), m_objects_drawer.end());
 
@@ -94,6 +108,7 @@ void ObjectManager::draw()
 			itr.second->draw();
 		}
 	}
+	*/
 }
 
 void ObjectManager::debug_update()
@@ -122,6 +137,17 @@ void ObjectManager::debug_draw()
 			m_objects[i]->debug_draw();
 		}
 	}
+	/*
+	for (auto itr : m_objects_drawer)
+	{
+		if (itr.second != nullptr)
+		{
+			if (itr.second->get_is_alive() == false)continue;
+			itr.second->debug_draw();
+		}
+	}
+	*/
+	Println(L"未登録オブジェクト数:", m_yet_objects.size());
 	Println(L"オブジェクト数:", m_objects.size());
 	Println(L"描画オブジェクト数:", m_objects_drawer.size());
 
@@ -234,7 +260,7 @@ void ObjectManager::create_Inkball(Vec2 _pos, double _init_height, Vec2 _dir, do
 
 	Inkball* new_obj = new Inkball(m_map, _pos, _init_height, _dir, _fly_strength, _color);
 
-	regist_object(new_obj);
+	m_yet_objects.push(new_obj);
 }
 
 void ObjectManager::create_Tire(Vec2 _pos)
@@ -243,7 +269,7 @@ void ObjectManager::create_Tire(Vec2 _pos)
 
 	Tire* new_obj = new Tire(m_map,_pos);
 
-	regist_object(new_obj);
+	m_yet_objects.push(new_obj);
 }
 
 void ObjectManager::create_Rumba(Vec2 _pos, Color _color)
@@ -252,7 +278,7 @@ void ObjectManager::create_Rumba(Vec2 _pos, Color _color)
 
 	Rumba* new_obj = new Rumba(m_map, _pos, _color);
 
-	regist_object(new_obj);
+	m_yet_objects.push(new_obj);
 }
 
 void ObjectManager::create_Ika(Vec2 _init_p,ControllerType _contoroller_type,Color _color,TeamType _team_type,CharType _char_type,SpecialType _special_type)
@@ -261,7 +287,7 @@ void ObjectManager::create_Ika(Vec2 _init_p,ControllerType _contoroller_type,Col
 
 	Ika* new_obj = new Ika(m_map,_contoroller_type,_init_p,_color,_team_type,_char_type,_special_type);
 	
-	regist_object(new_obj);
+	m_yet_objects.push(new_obj);
 }
 
 void ObjectManager::create_Ika(int _index,Vec2 _pos)
@@ -310,7 +336,7 @@ void ObjectManager::create_Ika(int _index,Vec2 _pos)
 
 	new_obj = new Ika(m_map, controller, init_pos, color, team_type, char_type, special_type);
 
-	regist_object(new_obj);
+	m_yet_objects.push(new_obj);
 
 }
 
@@ -440,5 +466,19 @@ void ObjectManager::check_collide()
 				}
 			}
 		}
+	}
+}
+
+void ObjectManager::register_object()
+{
+	if (m_yet_objects.empty() == true)return;
+
+	while (!m_yet_objects.empty())
+	{
+		Object* new_obj = m_yet_objects.front();
+
+		regist_object(new_obj);
+
+		m_yet_objects.pop();
 	}
 }

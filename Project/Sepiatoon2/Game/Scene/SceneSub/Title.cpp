@@ -20,11 +20,14 @@ void Title::initialize()
 
 void Title::finalize()
 {
+	DEBUG->regist(DebugText(3.0, L"------------------Titleデストラクタ----------------"));
 }
 
 void Title::enter()
 {				 
-
+	//デバグ用
+	//全ての画像データをロード
+	ASSET_FAC->load_all_image();
 }
 
 void Title::exit()

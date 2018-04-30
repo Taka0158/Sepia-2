@@ -204,7 +204,7 @@ Vec2 get_Vec2(Vec2 _from, Vec2 _to)
 	return Vec2(_to.x - _from.x, _to.y - _from.y);
 }
 
-//エフェクトに使用
+//エフェクトに使用 要素数ではなくindex指定に注意
 int get_tex_loop_index(int& _now_image_index,int _max_index, int _loop_start_index, int _loop_end_index, bool _is_loop)
 {
 	if (_max_index < _loop_end_index)ASSERT(L"get_tex_loop_index : 無効な引数");

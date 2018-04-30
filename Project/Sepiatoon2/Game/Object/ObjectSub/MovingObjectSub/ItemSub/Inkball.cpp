@@ -2,13 +2,14 @@
 
 Inkball::Inkball(Map* _map, Vec2 _init_pos, double _init_height,Vec2 _dir, double _fly_strength, Color _color) :Item(ID(ID_OBJ_INKBALL))
 {
+	//バグ有り
+	initialize();
+
 	m_direction = _dir;
 	m_color = _color;
 	m_map = _map;
 	init_moving_param();
 	set_id();
-	//バグ有り
-	initialize();
 	m_pos = _init_pos;
 
 	set_moving_parm();
@@ -18,6 +19,7 @@ Inkball::Inkball(Map* _map, Vec2 _init_pos, double _init_height,Vec2 _dir, doubl
 
 Inkball::~Inkball()
 {
+	//DEBUG->regist(DebugText(1.0, L"-----------インクボールデストラクタ-----------"));
 
 }
 
@@ -28,6 +30,7 @@ void Inkball::initialize()
 	m_depth = 1;
 	m_init_depth = 1;
 	m_mask_radius = 8.0;
+	m_mask_height = 6.0;
 }
 
 void Inkball::finalize()
@@ -44,7 +47,7 @@ void Inkball::update()
 	if (m_height < 2.0)
 	{
 		Paint p = Paint(Vec2_to_Point(m_pos), m_color, 0.75);
-		MSG_DIS->dispatch_message(0.0, this, m_map, msg::TYPE::MAP_PAINT, &p);
+		MSG_DIS->dispatch_message(0.0, this, m_map, msg::TYPE::MAP_PAINT, &p,false);
 
 		destroy();
 	}
@@ -114,10 +117,15 @@ bool Inkball::on_collide(Object* _obj)
 		else
 		{
 			other->damaged(20.0);
+			destroy();
 		}
 		ret = true;
 	}
-	destroy();
+	if (Rumba* other = dynamic_cast<Rumba*>(_obj))
+	{
+		other->destroy();
+		ret = true;
+	}
 	return ret;
 }
 

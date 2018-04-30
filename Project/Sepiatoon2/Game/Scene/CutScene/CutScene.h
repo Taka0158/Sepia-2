@@ -13,7 +13,7 @@ public:
 	virtual ~CutScene() {};
 
 	virtual void enter(Scene*) = 0;
-	virtual void update(Scene*);
+	virtual bool update(Scene*);
 	virtual void update_sub(Scene*) {};
 	
 	virtual void draw(Scene*);

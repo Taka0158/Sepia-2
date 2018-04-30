@@ -124,13 +124,21 @@ void mine::SceneManager::debug_draw()
 
 void mine::SceneManager::change_scene(Scene* _scene,SceneSwitch* _switch)
 {
+	//現在のシーンが有効なら
 	if (m_current_scene)
 	{
+		//次のシーンが存在しないならば
 		if (!m_next_scene)
 		{
 			m_next_scene.reset(_scene);
 
 			m_current_scene_switch.reset(_switch);
+		}
+		else
+		{
+			//既に次のシーンが準備されているならば
+			delete _scene;
+			delete _switch;
 		}
 	}
 	else
@@ -140,15 +148,20 @@ void mine::SceneManager::change_scene(Scene* _scene,SceneSwitch* _switch)
 }
 void mine::SceneManager::change_scene()
 {
+	//現在のシーンが有効なら
 	if (m_current_scene)
 	{
+		//次のシーンが準備され
+		//シーン遷移の状態がSWITCHならば
 		if ( m_next_scene && m_current_scene_switch->get_state() == SwitchType::SWITCH)
 		{
 			m_current_scene->exit();
 
-			m_current_scene=std::move(m_next_scene);
+			Scene* next_scene = m_next_scene.get();
 
 			m_next_scene.release();
+
+			m_current_scene.reset(next_scene);
 
 			m_current_scene->enter();
 		}

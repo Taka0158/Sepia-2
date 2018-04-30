@@ -7,6 +7,7 @@ AssetFactory::AssetFactory()
 
 AssetFactory::~AssetFactory()
 {
+	delete_all_image();
 	finalize();
 }
 
@@ -17,7 +18,79 @@ void AssetFactory::initialize()
 
 void AssetFactory::finalize()
 {
+}
 
+void AssetFactory::load_all_image()
+{
+	//ImageTypeÇÃëçêî
+	int num_of_enum_imagetype = 23;
+
+	REP(type, num_of_enum_imagetype)
+	{
+		if (type == int(ImageType::ANIM_TYPHOON))
+		{
+			REP(index, NUM_OF_ANIM_TYPHOON)
+			{
+				get_tex(ImageType(type), index);
+			}
+		}
+		else if (type == int(ImageType::ANIM_EXPLOSION_READY))
+		{
+			REP(index, NUM_OF_ANIM_EXPLOSION_READY)
+			{
+				get_tex(ImageType(type), index);
+			}
+		}
+		else if (type == int(ImageType::ANIM_EXPLOSION))
+		{
+			REP(index, NUM_OF_ANIM_EXPLOSION)
+			{
+				get_tex(ImageType(type), index);
+			}
+		}
+		else
+		{
+			get_tex(ImageType(type), 0);
+		}
+	}
+}
+
+void AssetFactory::delete_all_image()
+{
+	//ImageTypeÇÃëçêî
+	int num_of_enum_imagetype = 23;
+
+	REP(type, num_of_enum_imagetype)
+	{
+		if (type == int(ImageType::ANIM_TYPHOON))
+		{
+			REP(index, NUM_OF_ANIM_TYPHOON)
+			{
+				delete &get_tex(ImageType(type), index);
+			}
+		}
+		else if (type == int(ImageType::ANIM_EXPLOSION_READY))
+		{
+			REP(index, NUM_OF_ANIM_EXPLOSION_READY)
+			{
+				get_tex(ImageType(type), index);
+				delete &get_tex(ImageType(type), index);
+			}
+		}
+		else if (type == int(ImageType::ANIM_EXPLOSION))
+		{
+			REP(index, NUM_OF_ANIM_EXPLOSION)
+			{
+				get_tex(ImageType(type), index);
+				delete &get_tex(ImageType(type), index);
+			}
+		}
+		else
+		{
+			get_tex(ImageType(type), 0);
+			delete &get_tex(ImageType(type),0);
+		}
+	}
 }
 
 Image& AssetFactory::get_image(ImageType _type, int _index)
@@ -83,6 +156,7 @@ Image& AssetFactory::get_image(ImageType _type, int _index)
 		ret = (m_im_tire_64 != nullptr) ? m_im_tire_64 : m_im_tire_64 = new Image(PASS_TIRE_64);
 		break;
 	case ImageType::ANIM_TYPHOON:
+		_index = clamp(_index, 0, NUM_OF_ANIM_TYPHOON - 1);
 		ret = (m_im_typhoon[_index] != nullptr) ? m_im_typhoon[_index] : m_im_typhoon[_index] = new Image(PASS_TYPHOON(_index));
 		break;
 	case ImageType::RUMBA:
@@ -92,9 +166,11 @@ Image& AssetFactory::get_image(ImageType _type, int _index)
 		ret = (m_im_inkball != nullptr) ? m_im_inkball : m_im_inkball = new Image(PASS_INKBALL);
 		break;
 	case ImageType::ANIM_EXPLOSION_READY:
+		_index = clamp(_index, 0, NUM_OF_ANIM_EXPLOSION_READY - 1);
 		ret = (m_im_explosion_ready[_index] != nullptr) ? m_im_explosion_ready[_index] : m_im_explosion_ready[_index] = new Image(PASS_EXPLOSION_READY(_index));
 		break;
 	case ImageType::ANIM_EXPLOSION:
+		_index = clamp(_index, 0, NUM_OF_ANIM_EXPLOSION - 1);
 		ret = (m_im_explosion[_index] != nullptr) ? m_im_explosion[_index] : m_im_explosion[_index] = new Image(PASS_EXPLOSION(_index));
 		break;
 	}
@@ -232,7 +308,8 @@ Texture& AssetFactory::get_tex(ImageType _type,int _index)
 		ret = (m_tex_tire_64 != nullptr) ? m_tex_tire_64 : m_tex_tire_64 = new Texture(get_image(_type));
 		break;
 	case ImageType::ANIM_TYPHOON:
-		ret = (m_tex_typhoon[_index] != nullptr) ? m_tex_typhoon[_index] : new Texture(get_image(_type,_index));
+		_index = clamp(_index, 0, NUM_OF_ANIM_TYPHOON - 1);
+		ret = (m_tex_typhoon[_index] != nullptr) ? m_tex_typhoon[_index] : m_tex_typhoon[_index]=new Texture(get_image(_type,_index));
 		break;
 	case ImageType::RUMBA:
 		ret = (m_tex_rumba != nullptr) ? m_tex_rumba: m_tex_rumba = new Texture(get_image(_type));
@@ -241,10 +318,12 @@ Texture& AssetFactory::get_tex(ImageType _type,int _index)
 		ret = (m_tex_inkball != nullptr) ? m_tex_inkball : m_tex_inkball = new Texture(get_image(_type));
 		break;
 	case ImageType::ANIM_EXPLOSION_READY:
-		ret = (m_tex_explosion_ready[_index] != nullptr) ? m_tex_explosion_ready[_index] : new Texture(get_image(_type, _index));
+		_index = clamp(_index, 0, NUM_OF_ANIM_EXPLOSION_READY - 1);
+		ret = (m_tex_explosion_ready[_index] != nullptr) ? m_tex_explosion_ready[_index] : m_tex_explosion_ready[_index] = new Texture(get_image(_type, _index));
 		break;
 	case ImageType::ANIM_EXPLOSION:
-		ret = (m_tex_explosion[_index] != nullptr) ? m_tex_explosion[_index] : new Texture(get_image(_type, _index));
+		_index = clamp(_index, 0, NUM_OF_ANIM_EXPLOSION - 1);
+		ret = (m_tex_explosion[_index] != nullptr) ? m_tex_explosion[_index] : m_tex_explosion[_index] = new Texture(get_image(_type, _index));
 		break;
 	}
 
