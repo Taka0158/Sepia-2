@@ -23,7 +23,7 @@ void AssetFactory::finalize()
 void AssetFactory::load_all_image()
 {
 	//ImageTypeÇÃëçêî
-	int num_of_enum_imagetype = 26;
+	int num_of_enum_imagetype = 31;
 
 	REP(type, num_of_enum_imagetype)
 	{
@@ -183,6 +183,21 @@ Image& AssetFactory::get_image(ImageType _type, int _index)
 	case IT::TITLE_LOGO:
 		ret = (m_im_title_logo != nullptr) ? m_im_title_logo: m_im_title_logo= new Image(PASS_TITLE_LOGO);
 		break;
+	case ImageType::TACO_N_A:
+		ret = (m_im_taco_n_a != nullptr) ? m_im_taco_n_a : m_im_taco_n_a = new Image(PASS_TACO_N_A);
+		break;																			  
+	case ImageType::TACO_N_C:															  
+		ret = (m_im_taco_n_c != nullptr) ? m_im_taco_n_c : m_im_taco_n_c = new Image(PASS_TACO_N_C);
+		break;																			  
+	case ImageType::TACO_N_N:															  
+		ret = (m_im_taco_n_n != nullptr) ? m_im_taco_n_n : m_im_taco_n_n = new Image(PASS_TACO_N_N);
+		break;																			  
+	case ImageType::TACO_N_S:															  
+		ret = (m_im_taco_n_s != nullptr) ? m_im_taco_n_s : m_im_taco_n_s = new Image(PASS_TACO_N_S);
+		break;
+	case IT::FRAME:
+		ret = (m_im_frame != nullptr) ? m_im_frame : m_im_frame = new Image(PASS_FRAME);
+		break;
 	}
 	return *ret;
 }
@@ -219,6 +234,11 @@ Image AssetFactory::get_image_copy(ImageType _type)
 	case IT::TITLE_BG:
 	case IT::TITLE_IKA_BG:
 	case IT::TITLE_LOGO:
+	case ImageType::TACO_N_A:
+	case ImageType::TACO_N_C:
+	case ImageType::TACO_N_N:
+	case ImageType::TACO_N_S:
+	case IT::FRAME:
 		ret=get_image(_type).clone();
 		break;
 	}
@@ -257,6 +277,11 @@ Texture AssetFactory::get_tex_copy(ImageType _type)
 	case IT::TITLE_BG:
 	case IT::TITLE_IKA_BG:
 	case IT::TITLE_LOGO:
+	case ImageType::TACO_N_A:
+	case ImageType::TACO_N_C:
+	case ImageType::TACO_N_N:
+	case ImageType::TACO_N_S:
+	case IT::FRAME:
 		ret = Texture(get_tex(_type));
 		break;
 	}
@@ -352,6 +377,21 @@ Texture& AssetFactory::get_tex(ImageType _type,int _index)
 		break;
 	case IT::TITLE_LOGO:
 		ret = (m_tex_title_logo != nullptr) ? m_tex_title_logo : m_tex_title_logo= new Texture(get_image(_type));
+		break;
+	case ImageType::TACO_N_A:
+		ret = (m_tex_taco_n_a != nullptr) ? m_tex_taco_n_a : m_tex_taco_n_a = new Texture(get_image(_type));
+		break;
+	case ImageType::TACO_N_C:
+		ret = (m_tex_taco_n_c != nullptr) ? m_tex_taco_n_c : m_tex_taco_n_c = new Texture(get_image(_type));
+		break;
+	case ImageType::TACO_N_N:
+		ret = (m_tex_taco_n_n != nullptr) ? m_tex_taco_n_n : m_tex_taco_n_n = new Texture(get_image(_type));
+		break;
+	case ImageType::TACO_N_S:
+		ret = (m_tex_taco_n_s != nullptr) ? m_tex_taco_n_s : m_tex_taco_n_s = new Texture(get_image(_type));
+		break;
+	case IT::FRAME:
+		ret = (m_tex_frame != nullptr) ? m_tex_frame : m_tex_frame = new Texture(get_image(_type));
 		break;
 	}
 

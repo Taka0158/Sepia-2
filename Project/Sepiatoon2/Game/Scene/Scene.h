@@ -117,8 +117,8 @@ void Scene::draw_background()
 		Vec2 center_pos = Setting::get_sc() / 2.0;
 		double horizontal_interval = 400;
 		double x = center_pos.x + horizontal_interval*(i - num_bg / 2) + cos;
-		ASSET_FAC->get_tex(ImageType::TITLE_BG).scale(Setting::get_sc_scale()).drawAt(x + 15, center_pos.y + sin + 15, blend_color(ca, cb, r));
-		ASSET_FAC->get_tex(ImageType::TITLE_BG).scale(Setting::get_sc_scale()).drawAt(x, center_pos.y - sin, blend_color(ca, cb, r));
+		ASSET_FAC->get_tex(ImageType::TITLE_BG).scale(1.3*Setting::get_sc_scale()).drawAt(x + 15, center_pos.y + sin + 15, blend_color(ca, cb, r));
+		ASSET_FAC->get_tex(ImageType::TITLE_BG).scale(1.3*Setting::get_sc_scale()).drawAt(x, center_pos.y - sin, blend_color(ca, cb, r));
 	}
 }
 

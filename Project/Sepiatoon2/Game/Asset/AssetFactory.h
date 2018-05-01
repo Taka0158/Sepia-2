@@ -60,6 +60,11 @@ private:
 	Image* m_im_title_bg = nullptr;
 	Image* m_im_title_ika_bg = nullptr;
 	Image* m_im_title_logo = nullptr;
+	Image* m_im_taco_n_n = nullptr;
+	Image* m_im_taco_n_s = nullptr;
+	Image* m_im_taco_n_c = nullptr;
+	Image* m_im_taco_n_a = nullptr;
+	Image* m_im_frame = nullptr;
 
 	Texture* m_tex_map_simple_1920_1080 = nullptr;
 	Texture* m_tex_ink_0_128 = nullptr;
@@ -87,6 +92,11 @@ private:
 	Texture* m_tex_title_bg = nullptr;
 	Texture* m_tex_title_ika_bg = nullptr;
 	Texture* m_tex_title_logo = nullptr;
+	Texture* m_tex_taco_n_n = nullptr;
+	Texture* m_tex_taco_n_s = nullptr;
+	Texture* m_tex_taco_n_c = nullptr;
+	Texture* m_tex_taco_n_a = nullptr;
+	Texture* m_tex_frame = nullptr;
 
 	std::vector<Image*> m_images;
 

@@ -22,7 +22,8 @@ enum class TeamType
 
 enum class CharType
 {
-	NORMAL
+	NORMAL=0,
+	OCTOPUS
 };
 
 enum class SpecialType
@@ -77,7 +78,12 @@ enum class ImageType {
 	ANIM_EXPLOSION,
 	TITLE_BG,
 	TITLE_IKA_BG,
-	TITLE_LOGO
+	TITLE_LOGO,
+	TACO_N_A,
+	TACO_N_C,
+	TACO_N_N,
+	TACO_N_S,
+	FRAME
 };
 
 enum class MovieType
@@ -124,6 +130,38 @@ enum class SwitchType {
 
 
 //TODO
+
+struct CharTypeInfo
+{
+	CharTypeInfo(CharType _type)
+	{
+		switch (_type)
+		{
+		case CharType::NORMAL:
+			name = L"イカ";
+			hp = L"ふつう";
+			speed = L"ふつう";
+			special_gauge = L"ふつう";
+			remark = L"へいぼん";
+			break;
+		case CharType::OCTOPUS:
+			name = L"タコ";
+			hp = L"よわい";
+			speed = L"すこしよわい";
+			special_gauge = L"つよい";
+			remark = L"よくすべる";
+			break;
+		}
+	}
+	//タイプの名前
+	String name;
+	//ゲーム内パラメータの評価
+	String hp;
+	String speed;
+	String special_gauge;
+	//備考
+	String remark;
+};
 
 struct SceneParam
 {
@@ -266,4 +304,23 @@ Color blend_color(Color _c1, Color _c2 ,double _r)
 		_c1.g*(1 - _r) + _c2.g*_r,
 		_c1.b*(1 - _r) + _c2.b*_r,
 		_c1.a*(1 - _r) + _c2.a*_r);
+}
+
+//valueが[]範囲内に入っていればtrue
+bool check_range(double _value, double _min, double _max)
+{
+	return (_min <= _value && _value <= _max);
+}
+
+//画面 1:右半分 2:左半分　を暗転させる
+void darken_screen(int index ,Size _sc_size)
+{
+	if (index != 1)
+	{
+		Rect(Point(0.0, 0.0), Size(_sc_size.x / 2, _sc_size.y)).draw(Color(Palette::Black, 200));
+	}
+	else
+	{
+		Rect(Point(_sc_size.x / 2, 0.0), Size(_sc_size.x / 2, _sc_size.y)).draw(Color(Palette::Black, 200));
+	}
 }

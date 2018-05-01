@@ -176,12 +176,18 @@ void Ika::set_moving_parm()
 	switch (m_char_type)
 	{
 	case CharType::NORMAL:
-		//適当パラメータ
 		m_init_mass = 1.0;
 		m_init_max_speed = 6.0;
 		m_init_max_force = 10.0;
 		m_init_max_turn_rate = 0.02;
 		m_init_friction = 0.05;
+		break;
+	case CharType::OCTOPUS:
+		m_init_mass = 1.0;
+		m_init_max_speed = 5.5;
+		m_init_max_force = 10.0;
+		m_init_max_turn_rate = 0.02;
+		m_init_friction = 0.02;
 		break;
 	}
 	set_moving_parm(m_init_mass, m_init_max_speed, m_init_max_force, m_init_max_turn_rate, m_init_friction);
@@ -451,6 +457,14 @@ void Ika::set_char_param(CharType _type)
 		m_init_special_gauge = 0.0;
 		m_init_paint_scale = 1.0;
 		m_init_gauge_rate = 1.0;
+		m_init_mask_radius = 32.0;
+		m_init_mask_height = 2.0;
+		break;
+	case CT::OCTOPUS:
+		m_init_hp = 85.0;
+		m_init_special_gauge = 0.0;
+		m_init_paint_scale = 1.0;
+		m_init_gauge_rate = 1.25;
 		m_init_mask_radius = 32.0;
 		m_init_mask_height = 2.0;
 		break;

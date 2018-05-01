@@ -38,6 +38,12 @@
 #define PASS_TITLE_BG  L"Assets/Images/Title/bg.png"
 #define PASS_TITLE_IKA_BG  L"Assets/Images/Title/ika_bg.png"
 #define PASS_TITLE_LOGO  L"Assets/Images/Title/logo.png"
+#define PASS_TACO_N_N  L"Assets/Images/Taco/taco_n_n.png"
+#define PASS_TACO_N_C  L"Assets/Images/Taco/taco_n_c.png"
+#define PASS_TACO_N_A  L"Assets/Images/Taco/taco_n_a.png"
+#define PASS_TACO_N_S  L"Assets/Images/Taco/taco_n_s.png"
+#define PASS_FRAME  L"Assets/Images/SelectScene/frame.png"
+
 #define PASS_EXPLOSION_READY(index) L"Assets/Images/Supernova/explosion_ready."+ToString(index)+L".png"
 #define PASS_EXPLOSION(index) L"Assets/Images/Supernova/explosion."+ToString(index)+L".png"
 ////-----------------------------------------------NumOfImages---------------------------------------------------
