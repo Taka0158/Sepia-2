@@ -16,18 +16,31 @@ Title::~Title()
 
 void Title::initialize()
 {
+	finalize();
+	init_background();
+
+	m_commands.push_back(new GoToSinglePlayCommand());
+	m_commands.push_back(new GoToDoublePlayCommand());
+	m_commands.push_back(new GoToOptionCommand());
+	m_commands.push_back(new ExitCommand());
 }
 
 void Title::finalize()
 {
-	DEBUG->regist(DebugText(3.0, L"------------------Titleデストラクタ----------------"));
+	for (unsigned int i = 0; i < m_commands.size(); i++)
+	{
+		if (m_commands[i] != nullptr)
+		{
+			delete m_commands[i];
+			m_commands[i] = nullptr;
+		}
+	}
 }
 
 void Title::enter()
 {				 
-	//デバグ用
-	//全ての画像データをロード
-	ASSET_FAC->load_all_image();
+
+	m_index = 0;
 }
 
 void Title::exit()
@@ -37,17 +50,24 @@ void Title::exit()
 
 void Title::update()
 {
+	m_timer++;
 
+	input();
+
+	update_ika_pos();
 }
 
 void Title::draw()
 {
+	draw_background();
 
+	draw_command(280,64);
+
+	ASSET_FAC->get_tex(ImageType::TITLE_LOGO).scale(0.75*Setting::get_sc_scale()).drawAt(Setting::get_sc().x / 2, Setting::get_sc().y / 2 - 150 +sin(m_timer*0.1)*5);
 }
 
 void Title::debug_update()
 {
-
 	if (Input::Key1.clicked)
 	{
 		SCENE_MGR->change_scene(new Option());
@@ -60,6 +80,9 @@ void Title::debug_update()
 
 void Title::debug_draw()
 {
-	FontAsset(L"font_debug_8")(L"Title").drawCenter(Vec2(Setting::sc_w / 2, Setting::sc_h / 2));
+	//FontAsset(L"font_debug_8")(L"Title").drawCenter(Vec2(Setting::sc_w / 2, Setting::sc_h / 2));
+	Println(L"command-index : ", m_index);
 }
+
+
 

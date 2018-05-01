@@ -75,10 +75,10 @@ private:
 	void reset_object_id();
 
 	//描画順序付を行う
-	void regist_draw_object(Object*);
+	//void regist_draw_object(Object*);
 
 	//描画順序付けを解除する
-	void reset_draw_object(Object*);
+	//void reset_draw_object(Object*);
 
 	//create関数でobjectのインスタンスを作る場合
 	//この関数に渡す
@@ -86,6 +86,9 @@ private:
 
 	//update関数始めでオブジェクトの登録を行う
 	void register_object();
+
+	//描画深度に合わせてm_objectsをソートする
+	void sort_objects();
 private:
 	//未登録オブジェクトを格納する
 	//register_objcet()で登録される
@@ -100,8 +103,9 @@ private:
 
 	//object.m_depth基準で並び替える
 	//値が大きいほど手前に描画される
-	std::vector<Drawer> m_objects_drawer;
+	//std::vector<Drawer> m_objects_drawer;
 
+	
 	//mapインスタンス
 	Map* m_map = nullptr;
 

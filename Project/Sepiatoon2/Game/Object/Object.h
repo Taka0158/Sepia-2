@@ -78,7 +78,6 @@ protected:
 #include"ObjectSub\TestObj.cpp"
 #include"ObjectSub\MovingObject.h"
 
-/*
 //比較演算子のオーバーロード
 //描画順序の定義
 inline bool operator==(const Object& _o1, const Object& _o2)
@@ -96,4 +95,3 @@ inline bool operator<(const Object& _o1, const Object& _o2)
 		return (_o1.get_depth() < _o2.get_depth());
 	}
 }
-*/

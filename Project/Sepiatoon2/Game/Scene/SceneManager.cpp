@@ -16,14 +16,14 @@ void mine::SceneManager::initialize()
 	finalize();
 	if (!m_current_scene)
 	{
-		m_current_scene.reset(new Title());
+		m_current_scene.reset(new Start());
+
 		m_current_scene->enter();
 	}
 	else
 	{
 		ASSERT("既にシーンが存在し、不正なシーン遷移です");
 	}
-
 }
 
 void mine::SceneManager::finalize()
@@ -143,6 +143,7 @@ void mine::SceneManager::change_scene(Scene* _scene,SceneSwitch* _switch)
 	}
 	else
 	{
+
 		ASSERT("シーンが存在しないのに mine::SceneManager::change_scene が呼ばれました");
 	}
 }
@@ -182,15 +183,82 @@ bool mine::SceneManager::on_message(const Telegram& _msg)
 {
 	bool ret = false;
 
-	switch (_msg.msg)
+	if (_msg.msg == msg::TYPE::SET_CUTIN)
 	{
-	case msg::TYPE::SET_CUTIN:
 		Ika* sender = (Ika*)_msg.extraInfo;
 		//CutInTypeは選べるようにしたいTODO
 		if (m_current_scene)m_current_scene->set_cut_scene(CutInType::IKA_CUTIN, sender->get_color());
 		ret = true;
+	}
+	else if(_msg.msg == msg::TYPE::SCENE_MGR_SET_NEXT_SCENE)
+	{
+		SceneParam* next_scene = (SceneParam*)_msg.extraInfo;
+		change_scene(get_new_scene_from_type((*next_scene).st), get_new_scene_switch_from_type((*next_scene).sst));
+		ret = true;
+	}
+	return ret;
+}
+
+Scene* mine::SceneManager::get_new_scene_from_type(SceneType _type)
+{
+	typedef SceneType ST;
+	Scene* ret = nullptr;
+
+	switch (_type)
+	{
+	case ST::GAMEMAIN:
+		ret = new GameMain();
+		break;
+	case ST::MANUAL:
+		ret = new Manual();
+		break;
+	case ST::OPTION:
+		ret = new Option();
+		break;
+	case ST::RESULT:
+		ret = new Result();
+		break;
+	case ST::SELECTCHAR:
+		ret = new SelectChar();
+		break;
+	case ST::SELECTMAP:
+		ret = new SelectMap();
+		break;
+	case ST::SELECTPLAYMODE:
+		ret = new SelectPlayMode();
+		break;
+	case ST::SELECTWEAPON:
+		ret = new SelectWeapon();
+		break;
+	case ST::TESTWORLD:
+		ret = new TestWorld();
+		break;
+	case ST::TITLE:
+		ret = new Title();
 		break;
 	}
+
+	return ret;
+}
+
+SceneSwitch* mine::SceneManager::get_new_scene_switch_from_type(SceneSwitchType _type)
+{
+	typedef SceneSwitchType SST;
+	SceneSwitch* ret = nullptr;
+
+	switch (_type)
+	{
+	case SST::FADEIN_FADEOUT:
+		ret = new FadeInOut();
+		break;
+	case SST::IKA:
+		ret = new IkaSwitch();
+		break;
+	case SST::IKAIKA:
+		ret = new IkaIkaSwitch();
+		break;
+	}
+
 	return ret;
 }
 

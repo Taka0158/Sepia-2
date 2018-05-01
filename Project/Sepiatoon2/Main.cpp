@@ -55,7 +55,13 @@ void Main()
 	FontAsset::Register(L"font_debug_2", 2, Typeface::Default);
 
 	FontAsset::Register(L"font_ika_alphabet_32", 32, L"Project Paintball");
+	FontAsset::Register(L"font_ika_alphabet_64", 64, L"Project Paintball");
+	FontAsset::Register(L"font_ika_alphabet_96", 96, L"Project Paintball");
+	FontAsset::Register(L"font_ika_alphabet_128", 128, L"Project Paintball");
 	FontAsset::Register(L"font_ika_kana_32", 32, L"イカモドキ");
+	FontAsset::Register(L"font_ika_kana_64", 64, L"イカモドキ");
+	FontAsset::Register(L"font_ika_kana_96", 96, L"イカモドキ");
+	FontAsset::Register(L"font_ika_kana_128", 128, L"イカモドキ");
 
 	//シングルトンクラス生成
 	SETTING;
@@ -66,7 +72,7 @@ void Main()
 	MSG_DIS;
 	SCENE_MGR;
 
-	System::Sleep(3000);
+	//System::Sleep(3000);
 
 	//再現　： explosionを複数で行うと　例外
 	while (System::Update())
@@ -91,7 +97,7 @@ void Main()
 		MSG_DIS->debug_draw();
 		FONT_DEBUG_16(stopwatch.ms(), L"msec").draw(320, 32,Palette::Black);
 	   	}
-	System::Sleep(3000);
+	//System::Sleep(3000);
 }
 
 

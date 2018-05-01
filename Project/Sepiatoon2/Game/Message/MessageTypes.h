@@ -17,7 +17,8 @@ namespace msg
 		SHAKE_CAMERA,
 		EXECUTE_IKA_SPECIAL,
 		SET_CUTIN,
-		CREATE_INK_BALL
+		CREATE_INK_BALL,
+		SCENE_MGR_SET_NEXT_SCENE
 	};
 
 	//デバグ用に表示する名前
@@ -67,6 +68,9 @@ namespace msg
 			break;
 		case TYPE::CREATE_INK_BALL:
 			str = L"インクボール生成";
+			break;
+		case TYPE::SCENE_MGR_SET_NEXT_SCENE:
+			str = L"次のシーンへ遷移";
 			break;
 		}
 		return str;

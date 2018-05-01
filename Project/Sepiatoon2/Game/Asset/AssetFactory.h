@@ -57,6 +57,9 @@ private:
 	Image* m_im_inkball = nullptr;
 	Image* m_im_explosion[NUM_OF_ANIM_EXPLOSION] = { nullptr };
 	Image* m_im_explosion_ready[NUM_OF_ANIM_EXPLOSION_READY] = { nullptr };
+	Image* m_im_title_bg = nullptr;
+	Image* m_im_title_ika_bg = nullptr;
+	Image* m_im_title_logo = nullptr;
 
 	Texture* m_tex_map_simple_1920_1080 = nullptr;
 	Texture* m_tex_ink_0_128 = nullptr;
@@ -81,6 +84,9 @@ private:
 	Texture* m_tex_inkball = nullptr;
 	Texture* m_tex_explosion[NUM_OF_ANIM_EXPLOSION] = { nullptr };
 	Texture* m_tex_explosion_ready[NUM_OF_ANIM_EXPLOSION_READY] = { nullptr };
+	Texture* m_tex_title_bg = nullptr;
+	Texture* m_tex_title_ika_bg = nullptr;
+	Texture* m_tex_title_logo = nullptr;
 
 	std::vector<Image*> m_images;
 

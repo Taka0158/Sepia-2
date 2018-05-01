@@ -2,9 +2,9 @@
 
 #include"../Camera/SceneCamera.cpp"
 
+#include"SceneCommand\SceneCommand.cpp"
+
 #include"Scene.h"
-
-
 #include"SceneSwitch.h"
 
 namespace mine {
@@ -31,6 +31,8 @@ namespace mine {
 		void debug_draw();
 		Scene* get_current_scene() { return m_current_scene.get(); }
 	private:
+		Scene* get_new_scene_from_type(SceneType);
+		SceneSwitch* get_new_scene_switch_from_type(SceneSwitchType);
 		bool on_message(const Telegram& _msg);
 		std::unique_ptr<Scene> m_current_scene = nullptr;
 		std::unique_ptr<Scene> m_next_scene = nullptr;
@@ -39,7 +41,7 @@ namespace mine {
 }
 #include"SceneSub\TestWorld.cpp"
 #include"SceneSub\Title.cpp"
-
+#include"SceneSub\Start.cpp"
 
 /*
 Scene èÉêàâºëzä÷êî

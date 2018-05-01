@@ -9,7 +9,9 @@ private:
 	{
 		stopwatch.start();
 
-		Graphics::SetBackground(Palette::Gray);
+		Graphics::SetBackground(Palette::Black);
+
+		toggle_fullscreen();
 	};
 	~Setting() {};
 public:
@@ -87,6 +89,31 @@ public:
 	static ControllerType get_controller_4() { return m_controller_4; }
 	static MapType get_map(){ return m_map; }
 	static PlayModeType get_playmode() { return m_playmode; }
+	static bool get_is_single_play() { return m_is_single_play; }
+	static void set_is_single_play(bool _b) { m_is_single_play = _b; }
+
+	//キー入力（キーボード/ゲームパッド）
+	static bool is_pressed_key_up_p1() { return (m_key_up_p1.pressed|| Gamepad(0).y>INPUT_THRESHOLD); };
+	static bool is_pressed_key_down_p1() { return( m_key_down_p1.pressed || Gamepad(0).y<-INPUT_THRESHOLD); };
+	static bool is_pressed_key_right_p1() { return (m_key_right_p1.pressed || Gamepad(0).x>INPUT_THRESHOLD); };
+	static bool is_pressed_key_left_p1() { return (m_key_left_p1.pressed || Gamepad(0).x<-INPUT_THRESHOLD); };
+	static bool is_clicked_key_decide_p1() { return m_key_decide_p1.clicked; };
+	static bool is_pressed_key_up_p2() { return (m_key_up_p2.pressed || Gamepad(1).y>INPUT_THRESHOLD); };
+	static bool is_pressed_key_down_p2() { return(m_key_down_p2.pressed || Gamepad(1).y<-INPUT_THRESHOLD); };
+	static bool is_pressed_key_right_p2() { return (m_key_right_p2.pressed || Gamepad(1).x>INPUT_THRESHOLD); };
+	static bool is_pressed_key_left_p2() { return (m_key_left_p2.pressed || Gamepad(1).x<-INPUT_THRESHOLD); };
+	static bool is_clicked_key_decide_p2() { return m_key_decide_p2.clicked; };
+
+	static Key get_key_up_p1() { return m_key_up_p1; };
+	static Key get_key_down_p1() { return m_key_down_p1; };
+	static Key get_key_right_p1() { return m_key_right_p1; };
+	static Key get_key_left_p1() { return m_key_left_p1; };
+	static Key get_key_decide_p1() { return m_key_decide_p1; };
+	static Key get_key_up_p2() { return m_key_up_p2; };
+	static Key get_key_down_p2() { return m_key_down_p2; };
+	static Key get_key_right_p2() { return m_key_right_p2; };
+	static Key get_key_left_p2() { return m_key_left_p2; };
+	static Key get_key_decide_p2() { return m_key_decide_p2; };
 
 private:
 	//ゲーム情報の保持
@@ -118,12 +145,27 @@ private:
 	static ControllerType m_controller_3;
 	static ControllerType m_controller_4;
 
+	//キー入力（キーボード)
+	static Key m_key_up_p1;
+	static Key m_key_down_p1;
+	static Key m_key_right_p1;
+	static Key m_key_left_p1;
+	static Key m_key_decide_p1;
+
+	static Key m_key_up_p2;
+	static Key m_key_down_p2;
+	static Key m_key_right_p2;
+	static Key m_key_left_p2;
+	static Key m_key_decide_p2;
 
 	//マップ
 	static MapType m_map;
 
 	//プレイモード
 	static PlayModeType m_playmode;
+
+	//1人プレイ　か　二人プレイか
+	static bool m_is_single_play;
 
 };
 Stopwatch Setting::stopwatch = Stopwatch();
@@ -173,3 +215,17 @@ MapType Setting::m_map = MapType::SIMPLE;
 
 //プレイモード
 PlayModeType Setting::m_playmode = PlayModeType::ONE_ON_ONE;
+
+bool Setting::m_is_single_play = true;
+
+//キー入力（キーボード)
+Key Setting::m_key_up_p1 = Input::KeyUp;
+Key Setting::m_key_down_p1 = Input::KeyDown;
+Key Setting::m_key_right_p1 = Input::KeyRight;
+Key Setting::m_key_left_p1 = Input::KeyLeft;
+Key Setting::m_key_decide_p1 = Input::KeyRShift;
+Key Setting::m_key_up_p2 = Input::KeyW;
+Key Setting::m_key_down_p2 = Input::KeyS;
+Key Setting::m_key_right_p2 = Input::KeyD;
+Key Setting::m_key_left_p2 = Input::KeyA;
+Key Setting::m_key_decide_p2 = Input::KeyLShift;

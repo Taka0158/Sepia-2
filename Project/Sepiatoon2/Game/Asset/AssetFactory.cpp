@@ -23,7 +23,7 @@ void AssetFactory::finalize()
 void AssetFactory::load_all_image()
 {
 	//ImageTypeÇÃëçêî
-	int num_of_enum_imagetype = 23;
+	int num_of_enum_imagetype = 26;
 
 	REP(type, num_of_enum_imagetype)
 	{
@@ -95,6 +95,7 @@ void AssetFactory::delete_all_image()
 
 Image& AssetFactory::get_image(ImageType _type, int _index)
 {
+	typedef ImageType IT;
 	Image* ret = nullptr;
 	switch (_type)
 	{
@@ -173,12 +174,22 @@ Image& AssetFactory::get_image(ImageType _type, int _index)
 		_index = clamp(_index, 0, NUM_OF_ANIM_EXPLOSION - 1);
 		ret = (m_im_explosion[_index] != nullptr) ? m_im_explosion[_index] : m_im_explosion[_index] = new Image(PASS_EXPLOSION(_index));
 		break;
+	case IT::TITLE_BG:
+		ret = (m_im_title_bg!= nullptr) ? m_im_title_bg : m_im_title_bg = new Image(PASS_TITLE_BG);
+		break;
+	case IT::TITLE_IKA_BG:
+		ret = (m_im_title_ika_bg != nullptr) ? m_im_title_ika_bg : m_im_title_ika_bg = new Image(PASS_TITLE_IKA_BG);
+		break;
+	case IT::TITLE_LOGO:
+		ret = (m_im_title_logo != nullptr) ? m_im_title_logo: m_im_title_logo= new Image(PASS_TITLE_LOGO);
+		break;
 	}
 	return *ret;
 }
 
 Image AssetFactory::get_image_copy(ImageType _type)
 {
+	typedef ImageType IT;
 	Image ret;
 	switch (_type)
 	{
@@ -205,6 +216,9 @@ Image AssetFactory::get_image_copy(ImageType _type)
 	case ImageType::TIRE_64:
 	case ImageType::RUMBA:
 	case ImageType::INKBALL:
+	case IT::TITLE_BG:
+	case IT::TITLE_IKA_BG:
+	case IT::TITLE_LOGO:
 		ret=get_image(_type).clone();
 		break;
 	}
@@ -213,6 +227,7 @@ Image AssetFactory::get_image_copy(ImageType _type)
 
 Texture AssetFactory::get_tex_copy(ImageType _type)
 {
+	typedef ImageType IT;
 	Texture ret;
 	switch (_type)
 	{
@@ -239,6 +254,9 @@ Texture AssetFactory::get_tex_copy(ImageType _type)
 	case ImageType::TIRE_64:
 	case ImageType::RUMBA:
 	case ImageType::INKBALL:
+	case IT::TITLE_BG:
+	case IT::TITLE_IKA_BG:
+	case IT::TITLE_LOGO:
 		ret = Texture(get_tex(_type));
 		break;
 	}
@@ -247,6 +265,7 @@ Texture AssetFactory::get_tex_copy(ImageType _type)
 
 Texture& AssetFactory::get_tex(ImageType _type,int _index)
 {
+	typedef ImageType IT;
 	Texture* ret = nullptr;
 	switch (_type)
 	{
@@ -324,6 +343,15 @@ Texture& AssetFactory::get_tex(ImageType _type,int _index)
 	case ImageType::ANIM_EXPLOSION:
 		_index = clamp(_index, 0, NUM_OF_ANIM_EXPLOSION - 1);
 		ret = (m_tex_explosion[_index] != nullptr) ? m_tex_explosion[_index] : m_tex_explosion[_index] = new Texture(get_image(_type, _index));
+		break;
+	case IT::TITLE_BG:
+		ret = (m_tex_title_bg != nullptr) ? m_tex_title_bg : m_tex_title_bg = new Texture(get_image(_type));
+		break;
+	case IT::TITLE_IKA_BG:
+		ret = (m_tex_title_ika_bg != nullptr) ? m_tex_title_ika_bg : m_tex_title_ika_bg = new Texture(get_image(_type));
+		break;
+	case IT::TITLE_LOGO:
+		ret = (m_tex_title_logo != nullptr) ? m_tex_title_logo : m_tex_title_logo= new Texture(get_image(_type));
 		break;
 	}
 

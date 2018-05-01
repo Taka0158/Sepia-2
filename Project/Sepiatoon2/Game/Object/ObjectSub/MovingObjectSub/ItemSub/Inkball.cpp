@@ -121,7 +121,7 @@ bool Inkball::on_collide(Object* _obj)
 		}
 		ret = true;
 	}
-	if (Rumba* other = dynamic_cast<Rumba*>(_obj))
+	else if (Rumba* other = dynamic_cast<Rumba*>(_obj))
 	{
 		other->destroy();
 		ret = true;

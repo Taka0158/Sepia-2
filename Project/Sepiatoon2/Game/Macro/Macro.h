@@ -9,8 +9,8 @@
 #define FONT_DEBUG_8 FontAsset(L"font_debug_8")
 #define FONT_DEBUG_4 FontAsset(L"font_debug_4")
 #define FONT_DEBUG_2 FontAsset(L"font_debug_2")
-#define FONT_IKA_ALPHABET_32 FontAsset(L"font_ika_alphabet_32")
-#define FONT_IKA_KANA_32 FontAsset(L"font_ika_kana_32")
+#define FONT_IKA_ALPHABET(size) FontAsset(L"font_ika_alphabet_"+ToString(size))
+#define FONT_IKA_KANA(size) FontAsset(L"font_ika_kana_"+ToString(size))
 ///-----------------------------------------------Fonts---------------------------------------------------
 
 ///-----------------------------------------------Images---------------------------------------------------
@@ -35,6 +35,9 @@
 #define PASS_TYPHOON(index) L"Assets/Images/Typhoon/typhoon."+ToString(index)+L".png"
 #define PASS_RUMBA L"Assets/Images/Rumba/rumba.png"
 #define PASS_INKBALL L"Assets/Images/Inkball/inkball.png"
+#define PASS_TITLE_BG  L"Assets/Images/Title/bg.png"
+#define PASS_TITLE_IKA_BG  L"Assets/Images/Title/ika_bg.png"
+#define PASS_TITLE_LOGO  L"Assets/Images/Title/logo.png"
 #define PASS_EXPLOSION_READY(index) L"Assets/Images/Supernova/explosion_ready."+ToString(index)+L".png"
 #define PASS_EXPLOSION(index) L"Assets/Images/Supernova/explosion."+ToString(index)+L".png"
 ////-----------------------------------------------NumOfImages---------------------------------------------------
@@ -86,6 +89,11 @@
 #define UID_MGR_UI				0x10000000
 #define UID_SCENE_CAMERA		0x20000000
 #pragma endregion
+
+//--------------------------ì¸óÕÇÃËáíl------------------------------------
+#define INPUT_THRESHOLD 0.3
+//--------------------------ì¸óÕÇÃËáíl------------------------------------
+
 
 //--------------------------ìñÇΩÇËîªíË------------------------------------
 //ë¨Ç≥ÇÃç∑Ç™Ç±ÇÃílà»â∫Ç»ÇÁìØÇ∂

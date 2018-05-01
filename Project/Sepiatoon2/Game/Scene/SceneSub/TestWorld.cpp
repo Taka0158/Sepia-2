@@ -30,7 +30,8 @@ void TestWorld::finalize()
 	SCENE_CAMERA->finalize();
 	m_ui->finalize();
 	MSG_DIS->destroy_all_message();
-	delete_cut_scene();}
+	delete_cut_scene();
+}
 
 void TestWorld::enter()
 {

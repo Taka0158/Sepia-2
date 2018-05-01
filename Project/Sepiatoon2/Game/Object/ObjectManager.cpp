@@ -85,6 +85,8 @@ void ObjectManager::draw()
 {
 	if (m_map != nullptr)m_map->draw();
 
+	sort_objects();
+
 	for (unsigned int i = 0; i < m_objects.size(); i++)
 	{
 		if (m_objects[i] != nullptr)
@@ -134,7 +136,7 @@ void ObjectManager::debug_draw()
 		if (m_objects[i] != nullptr)
 		{
 			if (m_objects[i]->get_is_alive() == false)continue;
-			m_objects[i]->debug_draw();
+			//m_objects[i]->debug_draw();
 		}
 	}
 	/*
@@ -149,7 +151,7 @@ void ObjectManager::debug_draw()
 	*/
 	Println(L"未登録オブジェクト数:", m_yet_objects.size());
 	Println(L"オブジェクト数:", m_objects.size());
-	Println(L"描画オブジェクト数:", m_objects_drawer.size());
+	//Println(L"描画オブジェクト数:", m_objects_drawer.size());
 
 }
 
@@ -164,7 +166,7 @@ void ObjectManager::check_alive()
 			if (m_objects[i]->get_is_alive() == false)
 			{
 				//描画オブジェクト登録の解除
-				reset_draw_object(m_objects[i]);
+				//reset_draw_object(m_objects[i]);
 
 				//受取人がdeleteされるメッセージは削除
 				MSG_DIS->delete_direct_message(m_objects[i]);
@@ -354,6 +356,7 @@ void ObjectManager::reset_object_id()
 	TestObj::m_next_valid_id = 1;
 }
 
+/*
 void ObjectManager::regist_draw_object(Object* _obj)
 {
 	Drawer d = Drawer(_obj->get_depth_ref(), _obj);
@@ -381,6 +384,8 @@ void ObjectManager::reset_draw_object(Object* _obj)
 	}
 }
 
+*/
+
 void ObjectManager::regist_object(Object* _obj)
 {
 	//線形探索
@@ -389,12 +394,12 @@ void ObjectManager::regist_object(Object* _obj)
 		if (m_objects[i] == nullptr)
 		{
 			m_objects[i] = _obj;
-			regist_draw_object(_obj);
+			//regist_draw_object(_obj);
 			return;
 		}
 	}
 	m_objects.push_back(_obj);
-	regist_draw_object(_obj);
+	//regist_draw_object(_obj);
 }
 
 void ObjectManager::set_map(MapType _type)
@@ -481,4 +486,31 @@ void ObjectManager::register_object()
 
 		m_yet_objects.pop();
 	}
+}
+
+void ObjectManager::sort_objects()
+{
+	if (m_objects.empty() == true)return;
+
+	//毎フレーム呼び出すためinsertion sortで実装
+	//m_depthに応じて昇順にソート
+	for (unsigned int i = 0; i < m_objects.size(); i++)
+	{
+		if (m_objects[i] == nullptr)continue;
+		else if (m_objects[i]->get_is_alive() == false)continue;
+		for (unsigned int j = i+1; j < m_objects.size();j++)
+		{
+			if (m_objects[j] == nullptr)continue;
+			else if (m_objects[j]->get_is_alive() == false)continue;
+
+			if (m_objects[i]->get_depth() > m_objects[j]->get_depth())
+			{
+				Object* tmp = m_objects[i];
+				m_objects[i] = m_objects[j];
+				m_objects[j] = tmp;
+			}
+
+		}
+	}
+
 }

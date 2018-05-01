@@ -1,5 +1,19 @@
 //--------------------------------------------列挙型-------------------------------------
 
+enum class SceneType
+{
+	GAMEMAIN,
+	MANUAL,
+	OPTION,
+	RESULT,
+	SELECTCHAR,
+	SELECTMAP,
+	SELECTPLAYMODE,
+	SELECTWEAPON,
+	TESTWORLD,
+	TITLE
+};
+
 enum class TeamType
 {
 	TEAM_A,
@@ -60,7 +74,10 @@ enum class ImageType {
 	RUMBA,
 	INKBALL,
 	ANIM_EXPLOSION_READY,
-	ANIM_EXPLOSION
+	ANIM_EXPLOSION,
+	TITLE_BG,
+	TITLE_IKA_BG,
+	TITLE_LOGO
 };
 
 enum class MovieType
@@ -84,6 +101,15 @@ enum class CutInType
 	IKA_CUTIN
 };
 
+enum class SceneSwitchType
+{
+	IKAIKA,
+	IKA,
+	FADEIN_FADEOUT
+};
+
+
+
 
 //シーン切り替えクラスSceneSwitchの状態を定義
 enum class SwitchType {
@@ -98,6 +124,13 @@ enum class SwitchType {
 
 
 //TODO
+
+struct SceneParam
+{
+	SceneParam(SceneType _scene_type, SceneSwitchType _switch_type):st(_scene_type), sst(_switch_type) {};
+	SceneType st;
+	SceneSwitchType sst;
+};
 
 typedef std::bitset<32> ID;
 
@@ -223,4 +256,14 @@ int get_tex_loop_index(int& _now_image_index,int _max_index, int _loop_start_ind
 	}
 	next_index = clamp(next_index, 0, _max_index);
 	return next_index;
+}
+
+//_c1 (0.0----_r----1) _c2
+Color blend_color(Color _c1, Color _c2 ,double _r)
+{
+	_r = clamp(_r, 0.0, 1.0);
+	return Color(_c1.r*(1 - _r) + _c2.r*_r,
+		_c1.g*(1 - _r) + _c2.g*_r,
+		_c1.b*(1 - _r) + _c2.b*_r,
+		_c1.a*(1 - _r) + _c2.a*_r);
 }

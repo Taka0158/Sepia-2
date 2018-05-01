@@ -44,19 +44,19 @@ void IkaPlayerController::set_config(ControllerType _type)
 	switch (_type)
 	{
 	case ControllerType::PLAYER_1:
-		m_key_up = Input::KeyUp;
-		m_key_down = Input::KeyDown;
-		m_key_right = Input::KeyRight;
-		m_key_left = Input::KeyLeft;
-		m_key_swim = Input::KeyRShift;
+		m_key_up = Setting::get_key_up_p1();
+		m_key_down = Setting::get_key_down_p1();
+		m_key_right = Setting::get_key_right_p1();
+		m_key_left = Setting::get_key_left_p1();
+		m_key_swim = Setting::get_key_decide_p1();
 		m_key_gamepad_swim = Gamepad(0).button(0);
 		break;
 	case ControllerType::PLAYER_2:
-		m_key_up = Input::KeyW;
-		m_key_down = Input::KeyS;
-		m_key_right = Input::KeyD;
-		m_key_left = Input::KeyA;
-		m_key_swim = Input::KeyLShift;
+		m_key_up = Setting::get_key_up_p2();
+		m_key_down = Setting::get_key_down_p2();
+		m_key_right = Setting::get_key_right_p2();
+		m_key_left = Setting::get_key_left_p2();
+		m_key_swim = Setting::get_key_decide_p2();
 		m_key_gamepad_swim = Gamepad(1).button(0);
 		break;
 	}
@@ -81,8 +81,8 @@ Vec2 IkaPlayerController::input_gamepad(Ika* _owner)
 			break;
 	}
 
-	if (Abs(ret.x) < 0.30)ret.x = 0.0;
-	if (Abs(ret.y) < 0.30)ret.y = 0.0;
+	if (Abs(ret.x) < INPUT_THRESHOLD)ret.x = 0.0;
+	if (Abs(ret.y) < INPUT_THRESHOLD)ret.y = 0.0;
 
 	return ret;
 }
