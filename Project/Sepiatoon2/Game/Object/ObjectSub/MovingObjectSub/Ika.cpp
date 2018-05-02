@@ -103,6 +103,12 @@ void Ika::regist_texture(CharType _type)
 		m_tex_n = ASSET_FAC->get_tex(ImageType::IKA_N_N);
 		m_tex_s = ASSET_FAC->get_tex(ImageType::IKA_N_S);
 		break;
+	case CharType::OCTOPUS:
+		m_tex_a = ASSET_FAC->get_tex(ImageType::TACO_N_A);
+		m_tex_c = ASSET_FAC->get_tex(ImageType::TACO_N_C);
+		m_tex_n = ASSET_FAC->get_tex(ImageType::TACO_N_N);
+		m_tex_s = ASSET_FAC->get_tex(ImageType::TACO_N_S);
+		break;
 	}
 }
 
@@ -184,7 +190,7 @@ void Ika::set_moving_parm()
 		break;
 	case CharType::OCTOPUS:
 		m_init_mass = 1.0;
-		m_init_max_speed = 5.5;
+		m_init_max_speed = 6.0;
 		m_init_max_force = 10.0;
 		m_init_max_turn_rate = 0.02;
 		m_init_friction = 0.02;
@@ -335,13 +341,12 @@ void Ika::damaged(CharType _type)
 {
 	switch (_type)
 	{
+	default:
 	case CharType::NORMAL:
 		damaged(30.0);
 		break;
 	}
 }
-
-
 
 void Ika::destroy()
 {

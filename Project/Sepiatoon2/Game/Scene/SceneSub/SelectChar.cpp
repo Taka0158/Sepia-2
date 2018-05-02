@@ -37,7 +37,6 @@ void SelectChar::enter()
 	m_index_p2 = 0;
 
 	m_ready_timer = 0;
-
 }
 
 void SelectChar::exit()
@@ -51,7 +50,9 @@ void SelectChar::update()
 
 	update_ika_pos();
 
-	input();
+	update_pos();
+
+	input(ENUM_NUM_CHAR_TYPE-1);
 
 	if (m_is_ready_p1&&m_is_ready_p2)
 	{
@@ -76,7 +77,7 @@ void SelectChar::draw()
 {
 	draw_background();
 
-	draw_charcter();
+	draw_sub(L"キャラクターせんたく");
 
 }
 
@@ -103,118 +104,11 @@ void SelectChar::debug_draw()
 	Println(L"P2->index ", m_index_p2);
 }
 
-void SelectChar::toggle_ready()
-{
-	//ふたりプレイの場合
-	if (Setting::get_is_single_play()==false)
-	{
-		if ((Setting::is_clicked_key_decide_p2()))
-		{
-			m_is_ready_p2 = !m_is_ready_p2;
-			decide_p2(CharType(m_index_p2));
-		}
-	}
 
-	if ((Setting::is_clicked_key_decide_p1()))
-	{
-		m_is_ready_p1 = !m_is_ready_p1;
-		decide_p1(CharType(m_index_p1));
-	}
-
-}
-
-void SelectChar::input()
-{
-	toggle_ready();
-
-	if (!m_is_ready_p1)
-	{
-		if (Setting::is_clicked_key_right_p1())
-		{
-			m_index_p1++;
-		}
-		if (Setting::is_clicked_key_left_p1())
-		{
-			m_index_p1--;
-		}
-	}
-
-	if (!m_is_ready_p2)
-	{
-		if (Setting::is_clicked_key_right_p2())
-		{
-			m_index_p2++;
-		}
-		if (Setting::is_clicked_key_left_p2())
-		{
-			m_index_p2--;
-		}
-	}
-
-	m_index_p1 = clamp(m_index_p1, 0, 1);
-	m_index_p2 = clamp(m_index_p2, 0, 1);
-}
-
-
-void SelectChar::draw_charcter()
-{
-	draw_frame();
-}
-
-void SelectChar::draw_frame()
-{
-	Size sc = Setting::get_size();
-	int sc_h = Setting::get_size().y;
-	int sc_w = Setting::get_size().x;
-	Size sc_center = sc / 2;
-
-	//額縁(キャラクタ)中心
-	Size sc_center_p1 = Point(sc.x / 4 * 3, sc.y/2  -128*Setting::get_sc_scale());
-	Size sc_center_p2 = Point(sc.x / 4, sc.y / 2	-128*Setting::get_sc_scale());
-
-	//真ん中の区切りを描画
-	int rect_w = 16;
-	Rect(Point(sc_center.x - rect_w/2, 0), rect_w, sc_h).draw(Palette::Black);
-
-	//額縁の描画
-	ASSET_FAC->get_tex(ImageType::FRAME).drawAt(sc_center_p1);
-	ASSET_FAC->get_tex(ImageType::FRAME).drawAt(sc_center_p2);
-
-	//indexのキャラクタ表示
-	get_tex(CharType(m_index_p1))->scale(0.5*Setting::get_sc_scale()).drawAt(sc_center_p1);
-	get_tex(CharType(m_index_p2))->scale(0.5*Setting::get_sc_scale()).drawAt(sc_center_p2);
-
-	//準備完了なら
-	if (m_is_ready_p1)
-	{
-		darken_screen(1, Setting::get_size());
-	}
-	if (m_is_ready_p2)
-	{
-		darken_screen(2, Setting::get_size());
-	}
-
-	//文字描画
-	FONT_IKA_KANA(96)(L"キャラクターせんたく").drawCenter(sc_center.x, 112, Palette::White);
-
-	//キャラの説明
-	chara_describe();
-
-}
-
-void SelectChar::decide_p1(CharType _type)
-{
-	Setting::set_char_1(_type);
-}
-void SelectChar::decide_p2(CharType _type)
-{
-	Setting::set_char_3(_type);
-}
-
-Texture* SelectChar::get_tex(CharType _type)
+Texture* SelectChar::get_tex(int _index)
 {
 	Texture* ret = nullptr;
-	switch (_type)
+	switch (CharType(_index))
 	{
 	case CharType::NORMAL:
 		ret = &ASSET_FAC->get_tex(ImageType::IKA_N_N);
@@ -223,21 +117,11 @@ Texture* SelectChar::get_tex(CharType _type)
 		ret = &ASSET_FAC->get_tex(ImageType::TACO_N_N);
 		break;
 	}
-
 	return ret;
 }
 
-void SelectChar::chara_describe()
+void SelectChar::object_describe()
 {
-	Size sc = Setting::get_size();
-	int sc_h = Setting::get_size().y;
-	int sc_w = Setting::get_size().x;
-	Size sc_center = sc / 2;
-
-	//額縁(キャラクタ)中心
-	Size sc_center_p1 = Point(sc.x / 4 * 3, sc.y / 2 - 128 * Setting::get_sc_scale());
-	Size sc_center_p2 = Point(sc.x / 4, sc.y / 2 - 128 * Setting::get_sc_scale());
-
 	//文字のy間隔
 	int interval_y = 48;
 	//sc_centerからどれだけx,y座標離れた位置から描画するか
@@ -246,26 +130,12 @@ void SelectChar::chara_describe()
 
 	std::vector<String> p1_exp;
 	std::vector<String> p2_exp;
-	get_char_info(p1_exp, CharType(m_index_p1));
-	get_char_info(p2_exp, CharType(m_index_p2));
+	get_info(p1_exp, m_index_p1);
+	get_info(p2_exp, m_index_p2);
 
-	for (unsigned int i = 0; i < 5; i++)
+	for (unsigned int i = 0; i < p1_exp.size(); i++)
 	{
 		FONT_IKA_KANA(32)(p1_exp[i]).draw(sc_center_p1.x + init_x, sc_center_p1.y + init_y + i*interval_y);
 		FONT_IKA_KANA(32)(p2_exp[i]).draw(sc_center_p2.x + init_x, sc_center_p2.y + init_y + i*interval_y);
 	}
-}
-void SelectChar::get_char_info(std::vector<String>& _container,CharType _type)
-{
-	CharTypeInfo p = CharTypeInfo(_type);
-	String p_name =		 L"しゅるい----" + p.name;
-	String p_hp =		 L"たいりょく---" + p.hp;
-	String p_speed =	 L"すばやさ----" + p.speed;
-	String p_gauge =	 L"たまりやすさ--" + p.special_gauge;
-	String p_remark =	 L"とくちょう---" + p.remark;
-	_container.push_back(p_name);
-	_container.push_back(p_hp);
-	_container.push_back(p_speed);
-	_container.push_back(p_gauge);
-	_container.push_back(p_remark);
 }

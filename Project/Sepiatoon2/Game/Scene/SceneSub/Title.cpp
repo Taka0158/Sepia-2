@@ -52,7 +52,7 @@ void Title::update()
 {
 	m_timer++;
 
-	input();
+	common_input(0,int(m_commands.size()-1));
 
 	update_ika_pos();
 }
@@ -61,7 +61,7 @@ void Title::draw()
 {
 	draw_background();
 
-	draw_command(280*Setting::get_sc_scale(),64);
+	draw_command(Point(0,280*Setting::get_sc_scale()),64);
 
 	ASSET_FAC->get_tex(ImageType::TITLE_LOGO).scale(0.75*Setting::get_sc_scale()).drawAt(Setting::get_sc().x / 2, Setting::get_sc().y / 2 - 150 +sin(m_timer*0.1)*5);
 }

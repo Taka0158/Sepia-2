@@ -49,10 +49,12 @@ public:
 	//イカ座標の更新
 	void update_ika_pos();
 
-	//入力によるindexの変化
-	virtual void input();
+	//入力によるindexの変化	
+	//プレイヤー共通の場合のindexの変化
+	virtual void common_input(int _min_index,int _max_index);
+
 	//コマンドの表示
-	virtual void draw_command(int _init_y=0, int _font_size=64);
+	virtual void draw_command(Point _pos=Point(0,0), int _font_size=64);
 	
 
 protected:
@@ -95,7 +97,7 @@ protected:
 };
 
 const int Scene::m_num_ika = 16;
-const int Scene::m_input_interval = 10;
+const int Scene::m_input_interval = 5;
 
 
 void Scene::draw_background()
@@ -177,16 +179,18 @@ void Scene::init_background()
 	}
 }
 
-void Scene::input()
+void Scene::common_input(int _min_index, int _max_index)
 {
 	if (m_input_timer > m_input_interval)
 	{
-		if (Setting::is_pressed_key_up_p1() || Setting::is_pressed_key_up_p2())
+		if (Setting::is_pressed_key_up_p1() || Setting::is_pressed_key_up_p2()||
+			Setting::is_pressed_key_right_p1() || Setting::is_pressed_key_right_p2())
 		{
 			m_index--;
 			m_input_timer = 0;
 		}
-		else if (Setting::is_pressed_key_down_p1() || Setting::is_pressed_key_down_p2())
+		else if (Setting::is_pressed_key_down_p1() || Setting::is_pressed_key_down_p2()||
+			Setting::is_pressed_key_left_p1() || Setting::is_pressed_key_left_p2())
 		{
 			m_index++;
 			m_input_timer = 0;
@@ -197,17 +201,17 @@ void Scene::input()
 		m_input_timer++;
 	}
 
-	m_index = clamp(m_index, 0, int(m_commands.size())-1);
+	m_index = clamp(m_index, _min_index, _max_index);
 
 	if (Setting::is_clicked_key_decide_p1() || Setting::is_clicked_key_decide_p2())
 	{
 		m_commands[m_index]->execute(this);
 	}
 }
-void Scene::draw_command(int _init_y,int _font_size)
+void Scene::draw_command(Point _pos,int _font_size)
 {
 	int temp = int(m_commands.size()) / 2;
-	int interval = _font_size+ _font_size/2;
+	int interval = _font_size+ _font_size/2 + 8;
 	//偶数
 	if (int(m_commands.size()) % 2 == 0)
 	{
@@ -217,12 +221,12 @@ void Scene::draw_command(int _init_y,int _font_size)
 			//選択中
 			if (i + temp == m_index)
 			{
-				FONT_IKA_KANA(_font_size)(m_commands[i + temp]->get_name()).drawCenter(C.x, C.y+_init_y + i*interval, Palette::Black);
+				FONT_IKA_KANA(_font_size)(m_commands[i + temp]->get_name()).drawCenter(C.x+ _pos.x, C.y+ _pos.y + i*interval, Palette::Black);
 			}
 			//それ以外
 			else
 			{
-				FONT_IKA_KANA(_font_size)(m_commands[i + temp]->get_name()).drawCenter(C.x, C.y + _init_y + i*interval, Palette::White);
+				FONT_IKA_KANA(_font_size)(m_commands[i + temp]->get_name()).drawCenter(C.x + _pos.x, C.y + _pos.y + i*interval, Palette::White);
 			}
 		}
 	}
@@ -235,18 +239,18 @@ void Scene::draw_command(int _init_y,int _font_size)
 			//選択中
 			if (i + temp == m_index)
 			{
-				FONT_IKA_KANA(_font_size)(m_commands[i + temp]->get_name()).drawCenter(C.x, C.y + _init_y + i*interval, Palette::Black);
+				FONT_IKA_KANA(_font_size)(m_commands[i + temp]->get_name()).drawCenter(C.x + _pos.x, C.y + _pos.y + i*interval, Palette::Black);
 			}
 			//それ以外
 			else
 			{
-				FONT_IKA_KANA(_font_size)(m_commands[i + temp]->get_name()).drawCenter(C.x, C.y + _init_y + i*interval, Palette::White);
+				FONT_IKA_KANA(_font_size)(m_commands[i + temp]->get_name()).drawCenter(C.x + _pos.x, C.y + _pos.y + i*interval, Palette::White);
 			}
 		}
 	}
 }
 
-
+#include"SelectScene.h"
 #include"CutScene\CutScene.cpp"
 
 

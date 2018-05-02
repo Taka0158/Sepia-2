@@ -54,10 +54,12 @@ void Main()
 	FontAsset::Register(L"font_debug_2", 2, Typeface::Default);
 
 	FontAsset::Register(L"font_ika_alphabet_32", 32, L"Project Paintball");
+	FontAsset::Register(L"font_ika_alphabet_48", 48, L"Project Paintball");
 	FontAsset::Register(L"font_ika_alphabet_64", 64, L"Project Paintball");
 	FontAsset::Register(L"font_ika_alphabet_96", 96, L"Project Paintball");
 	FontAsset::Register(L"font_ika_alphabet_128", 128, L"Project Paintball");
 	FontAsset::Register(L"font_ika_kana_32", 32, L"イカモドキ");
+	FontAsset::Register(L"font_ika_kana_48", 48, L"イカモドキ");
 	FontAsset::Register(L"font_ika_kana_64", 64, L"イカモドキ");
 	FontAsset::Register(L"font_ika_kana_96", 96, L"イカモドキ");
 	FontAsset::Register(L"font_ika_kana_128", 128, L"イカモドキ");

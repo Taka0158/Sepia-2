@@ -100,3 +100,48 @@ public:
 	void execute(Scene*)override;
 };
 
+//---------------------------PlayModeType設定コマンド---------------
+class SetPC :public SceneCommand
+{
+public:
+	SetPC() { m_name = L"1たい1"; }
+	void execute(Scene*)override;
+};
+
+class SetPCCC :public SceneCommand
+{
+public:
+	SetPCCC() { m_name = L"2たい2"; }
+	void execute(Scene*)override;
+};
+
+class SetPP :public SceneCommand
+{
+public:
+	SetPP() { m_name = L"1たい1(たいせん)"; }
+	void execute(Scene*)override;
+};
+
+class SetPCPC :public SceneCommand
+{
+public:
+	SetPCPC() { m_name = L"2たい2(たいせん)"; }
+	void execute(Scene*)override;
+};
+
+class SetPPCC :public SceneCommand
+{
+public:
+	SetPPCC() { m_name = L"2たい2(きょうりょく)"; }
+	void execute(Scene*)override;
+};
+
+//---------------------------MapType設定コマンド---------------
+
+
+class SetMapSimple :public SceneCommand
+{
+public:
+	SetMapSimple() { m_name = L"シンプルマップ"; }
+	void execute(Scene*)override;
+};

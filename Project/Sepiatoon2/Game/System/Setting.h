@@ -240,7 +240,7 @@ ControllerType Setting::m_controller_4 = ControllerType::CPU;
 MapType Setting::m_map = MapType::SIMPLE;
 
 //プレイモード
-PlayModeType Setting::m_playmode = PlayModeType::ONE_ON_ONE;
+PlayModeType Setting::m_playmode = PlayModeType::P1_VS_COM;
 
 bool Setting::m_is_single_play = true;
 

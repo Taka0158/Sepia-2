@@ -86,8 +86,14 @@ bool IkaNormal::on_collide(Ika* _owner, Object* _obj)
 			//異なるチームなら
 			if (other->get_team_type() != _owner->get_team_type())
 			{
+
+				//同じような速度差なら
+				if (Abs(other->get_velocity().length() - _owner->get_velocity().length()) < VELOCITY_THRESHOLD)
+				{
+
+				}
 				//相手のほうが速い速度なら
-				if (other->get_velocity().length() > _owner->get_velocity().length())
+				else if (other->get_velocity().length() > VELOCITY_THRESHOLD + _owner->get_velocity().length())
 				{
 					MSG_DIS->dispatch_message(0.0, _owner->get_id(), UID_SCENE_CAMERA, msg::TYPE::SHAKE_CAMERA, &get_Vec2(other->get_p(), _owner->get_p()));
 					_owner->damaged(other->get_char_type());

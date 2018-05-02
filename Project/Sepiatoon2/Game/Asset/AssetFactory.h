@@ -65,6 +65,8 @@ private:
 	Image* m_im_taco_n_c = nullptr;
 	Image* m_im_taco_n_a = nullptr;
 	Image* m_im_frame = nullptr;
+	Image* m_im_select_typhoon[NUM_OF_ANIM_SELECT_TYPHOON] = { nullptr };
+	Image* m_im_select_supernova[NUM_OF_ANIM_SELECT_SUPERNOVA] = { nullptr };
 
 	Texture* m_tex_map_simple_1920_1080 = nullptr;
 	Texture* m_tex_ink_0_128 = nullptr;
@@ -97,6 +99,8 @@ private:
 	Texture* m_tex_taco_n_c = nullptr;
 	Texture* m_tex_taco_n_a = nullptr;
 	Texture* m_tex_frame = nullptr;
+	Texture* m_tex_select_typhoon[NUM_OF_ANIM_SELECT_TYPHOON] = { nullptr };
+	Texture* m_tex_select_supernova[NUM_OF_ANIM_SELECT_SUPERNOVA] = { nullptr };
 
 	std::vector<Image*> m_images;
 

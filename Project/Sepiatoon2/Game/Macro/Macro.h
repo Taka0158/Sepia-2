@@ -2,6 +2,15 @@
 
 #define ASSERT(str) assert(false && (str))
 
+#pragma region NumOfEnum
+#define ENUM_NUM_CHAR_TYPE 2
+#define ENUM_NUM_SPECIAL_TYPE 3
+#define ENUM_NUM_MAP_TYPE 1
+#define ENUM_NUM_IMAGE_TYPE 33
+#define ENUM_NUM_PLAYMODE_TYPE 5
+#pragma endregion
+
+
 #pragma region Assets
 ///-----------------------------------------------Fonts---------------------------------------------------
 
@@ -46,10 +55,14 @@
 
 #define PASS_EXPLOSION_READY(index) L"Assets/Images/Supernova/explosion_ready."+ToString(index)+L".png"
 #define PASS_EXPLOSION(index) L"Assets/Images/Supernova/explosion."+ToString(index)+L".png"
+#define PASS_SELECT_TYPHOON(index) L"Assets/Images/SelectScene/Typhoon/typhoon."+ToString(index)+L".png"
+#define PASS_SELECT_SUPERNOVA(index) L"Assets/Images/SelectScene/Supernova/supernova."+ToString(index)+L".png"
 ////-----------------------------------------------NumOfImages---------------------------------------------------
 #define NUM_OF_ANIM_TYPHOON 36
 #define NUM_OF_ANIM_EXPLOSION_READY 25
 #define NUM_OF_ANIM_EXPLOSION 18					 											 
+#define NUM_OF_ANIM_SELECT_TYPHOON 36					 											 
+#define NUM_OF_ANIM_SELECT_SUPERNOVA 20					 											 
 ////-----------------------------------------------NumOfImages---------------------------------------------------
 ///-----------------------------------------------Images---------------------------------------------------
 ///-----------------------------------------------Movies---------------------------------------------------

@@ -28,20 +28,24 @@ enum class CharType
 
 enum class SpecialType
 {
-	UNKNOWN,
-	TYPHOON,
+	TYPHOON=0,
 	DASH,
 	SUPERNOVA
 };
 
 enum class MapType
 {
-	SIMPLE
+	SIMPLE=0
 };
 
 enum class PlayModeType
 {
-	ONE_ON_ONE
+	//							(Settingでの添字)
+	P1_VS_COM = 0,	//PC			1vs2
+	P1_COM_VS_COM_COM,	//PCCC		1,2vs3,4
+	P1_VS_P2,			//PP		1 vs 3
+	P1_COM_VS_P2_COM,	//PCPC		1,2 vs 3,4
+	P1_P2_VS_COM_COM	//PPCC		1,3 vs 2,4
 };
 
 enum class ControllerType
@@ -83,7 +87,9 @@ enum class ImageType {
 	TACO_N_C,
 	TACO_N_N,
 	TACO_N_S,
-	FRAME
+	FRAME,
+	ANIM_SELECT_SUPERNOVA,
+	ANIM_SELECT_TYPHOON
 };
 
 enum class MovieType
@@ -129,7 +135,25 @@ enum class SwitchType {
 
 
 
-//TODO
+struct MapTypeInfo
+{
+	MapTypeInfo(MapType _type)
+	{
+		switch (_type)
+		{
+		case MapType::SIMPLE:
+			name = L"△△△シンプル△△△";
+			remark_1 = L"なにもおこらないシンプルなマップ";
+			remark_2 = L"はじめてにはもってこい！";
+			break;
+		}
+	}
+	//マップの名前
+	String name;
+	//説明
+	String remark_1;
+	String remark_2;
+};
 
 struct CharTypeInfo
 {
@@ -147,7 +171,7 @@ struct CharTypeInfo
 		case CharType::OCTOPUS:
 			name = L"タコ";
 			hp = L"よわい";
-			speed = L"すこしよわい";
+			speed = L"ふつう";
 			special_gauge = L"つよい";
 			remark = L"よくすべる";
 			break;
@@ -160,6 +184,32 @@ struct CharTypeInfo
 	String speed;
 	String special_gauge;
 	//備考
+	String remark;
+};
+
+struct SpecialTypeInfo
+{
+	SpecialTypeInfo(SpecialType _type)
+	{
+		switch (_type)
+		{
+		case SpecialType::TYPHOON:
+			name = L"△△△タイフーン△△△";
+			remark = L"なにものもよせつけない！";
+			break;
+		case SpecialType::SUPERNOVA:
+			name = L"△△△だいばくはつ△△△";
+			remark = L"いっきにぎゃくてん！";
+			break;
+		case SpecialType::DASH:
+			name = L"△△△こうじちゅう△△△";
+			remark = L"こうじちゅう";
+			break;
+		}
+	}
+	//タイプの名前
+	String name;
+	//説明
 	String remark;
 };
 

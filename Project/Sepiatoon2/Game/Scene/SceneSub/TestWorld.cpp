@@ -19,9 +19,6 @@ void TestWorld::initialize()
 	OBJ_MGR->initialize();
 	SCENE_CAMERA->initialize();
 	m_ui->initialize();
-
-
-
 }
 
 void TestWorld::finalize()
@@ -35,7 +32,7 @@ void TestWorld::finalize()
 
 void TestWorld::enter()
 {
-
+	init_background();
 }
 
 void TestWorld::exit()
@@ -45,6 +42,9 @@ void TestWorld::exit()
 
 void TestWorld::update()
 {
+	m_timer++;
+	update_ika_pos();
+
 	if (m_cut_scene)
 	{
 		if (m_cut_scene->update(this)==false)
@@ -63,6 +63,8 @@ void TestWorld::update()
 
 void TestWorld::draw()
 {
+	draw_background();
+
 	//ƒJƒƒ‰‚Ì‰e‹¿‰º
 	SCENE_CAMERA->update();
 	{

@@ -23,9 +23,8 @@ void AssetFactory::finalize()
 void AssetFactory::load_all_image()
 {
 	//ImageTypeÇÃëçêî
-	int num_of_enum_imagetype = 31;
 
-	REP(type, num_of_enum_imagetype)
+	REP(type, ENUM_NUM_IMAGE_TYPE)
 	{
 		if (type == int(ImageType::ANIM_TYPHOON))
 		{
@@ -44,6 +43,20 @@ void AssetFactory::load_all_image()
 		else if (type == int(ImageType::ANIM_EXPLOSION))
 		{
 			REP(index, NUM_OF_ANIM_EXPLOSION)
+			{
+				get_tex(ImageType(type), index);
+			}
+		}
+		else if (type == int(ImageType::ANIM_SELECT_SUPERNOVA))
+		{
+			REP(index, NUM_OF_ANIM_SELECT_SUPERNOVA)
+			{
+				get_tex(ImageType(type), index);
+			}
+		}
+		else if (type == int(ImageType::ANIM_SELECT_TYPHOON))
+		{
+			REP(index, NUM_OF_ANIM_SELECT_TYPHOON)
 			{
 				get_tex(ImageType(type), index);
 			}
@@ -58,9 +71,7 @@ void AssetFactory::load_all_image()
 void AssetFactory::delete_all_image()
 {
 	//ImageTypeÇÃëçêî
-	int num_of_enum_imagetype = 23;
-
-	REP(type, num_of_enum_imagetype)
+	REP(type, ENUM_NUM_IMAGE_TYPE)
 	{
 		if (type == int(ImageType::ANIM_TYPHOON))
 		{
@@ -80,6 +91,22 @@ void AssetFactory::delete_all_image()
 		else if (type == int(ImageType::ANIM_EXPLOSION))
 		{
 			REP(index, NUM_OF_ANIM_EXPLOSION)
+			{
+				get_tex(ImageType(type), index);
+				delete &get_tex(ImageType(type), index);
+			}
+		}
+		else if (type == int(ImageType::ANIM_SELECT_SUPERNOVA))
+		{
+			REP(index, NUM_OF_ANIM_SELECT_SUPERNOVA)
+			{
+				get_tex(ImageType(type), index);
+				delete &get_tex(ImageType(type), index);
+			}
+		}
+		else if (type == int(ImageType::ANIM_SELECT_TYPHOON))
+		{
+			REP(index, NUM_OF_ANIM_SELECT_TYPHOON)
 			{
 				get_tex(ImageType(type), index);
 				delete &get_tex(ImageType(type), index);
@@ -197,6 +224,14 @@ Image& AssetFactory::get_image(ImageType _type, int _index)
 		break;
 	case IT::FRAME:
 		ret = (m_im_frame != nullptr) ? m_im_frame : m_im_frame = new Image(PASS_FRAME);
+		break;
+	case ImageType::ANIM_SELECT_TYPHOON:
+		_index = clamp(_index, 0, NUM_OF_ANIM_SELECT_TYPHOON - 1);
+		ret = (m_im_select_typhoon[_index] != nullptr) ? m_im_select_typhoon[_index] : m_im_select_typhoon[_index] = new Image(PASS_SELECT_TYPHOON(_index));
+		break;
+	case ImageType::ANIM_SELECT_SUPERNOVA:
+		_index = clamp(_index, 0, NUM_OF_ANIM_SELECT_SUPERNOVA - 1);
+		ret = (m_im_select_supernova[_index] != nullptr) ? m_im_select_supernova[_index] : m_im_select_supernova[_index] = new Image(PASS_SELECT_SUPERNOVA(_index));
 		break;
 	}
 	return *ret;
@@ -393,8 +428,15 @@ Texture& AssetFactory::get_tex(ImageType _type,int _index)
 	case IT::FRAME:
 		ret = (m_tex_frame != nullptr) ? m_tex_frame : m_tex_frame = new Texture(get_image(_type));
 		break;
+	case ImageType::ANIM_SELECT_TYPHOON:
+		_index = clamp(_index, 0, NUM_OF_ANIM_SELECT_TYPHOON - 1);
+		ret = (m_tex_select_typhoon[_index] != nullptr) ? m_tex_select_typhoon[_index] : m_tex_select_typhoon[_index] = new Texture(get_image(_type,_index));
+		break;
+	case ImageType::ANIM_SELECT_SUPERNOVA:
+		_index = clamp(_index, 0, NUM_OF_ANIM_SELECT_SUPERNOVA - 1);
+		ret = (m_tex_select_supernova[_index] != nullptr) ? m_tex_select_supernova[_index] : m_tex_select_supernova[_index] = new Texture(get_image(_type, _index));
+		break;
 	}
-
 	return *ret;
 }
 

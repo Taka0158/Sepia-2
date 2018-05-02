@@ -108,6 +108,7 @@ public:
 	void destroy();
 	//ƒpƒ‰ƒ[ƒ^‚Ì‰Šú‰»
 	void init_param();
+
 private:
 	bool on_message(const Telegram&)override;
 	bool on_collide(Object* _obj)override;
