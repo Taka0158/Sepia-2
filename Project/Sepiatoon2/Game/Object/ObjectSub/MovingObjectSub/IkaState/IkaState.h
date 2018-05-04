@@ -83,7 +83,7 @@ public:
 	}
 
 	//ŒÄ‚Ño‚·ŠÖ”‚ÍŠ—LÒowner‚Ì‚à‚Ì‚Ì‚İ
-	virtual bool on_collide(Ika* _owner,Object* _obj) { return false; };
+	virtual bool on_collide(Ika* _owner, CollidableObject* _obj) { return false; };
 
 	//©•ª‚ÌStateType‚ğ•Ô‚·
 	virtual IkaStateType get_state_type() { return m_state_type; }

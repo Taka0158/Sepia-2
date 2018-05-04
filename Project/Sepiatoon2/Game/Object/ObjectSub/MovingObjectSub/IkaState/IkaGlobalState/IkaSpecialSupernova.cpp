@@ -43,10 +43,8 @@ void IkaSpecialSupernova::update(Ika* _owner)
 		{
 			Paint p = Paint(Vec2_to_Point(_owner->get_p()), _owner->get_color(), 5.0);
 			MSG_DIS->dispatch_message(0.0, _owner, _owner->get_map(), msg::TYPE::MAP_PAINT, &p, false);
-			_owner->set_mask_radius(5.0);
-			_owner->set_mask_height(1000.0);
 		}
-		if ( m_tex_index==7)
+		if ( 5<=m_tex_index&&m_tex_index<=10)
 		{
 			_owner->set_mask_radius(5.0);
 			_owner->set_mask_height(1000.0);

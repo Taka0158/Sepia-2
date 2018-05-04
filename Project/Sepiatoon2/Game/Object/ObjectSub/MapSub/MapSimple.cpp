@@ -1,8 +1,8 @@
 #include"MapSimple.h"
 
-MapSimple::MapSimple()
+MapSimple::MapSimple():Map(MapType::SIMPLE)
 {
-	initialize();
+
 }
 
 MapSimple::~MapSimple()
@@ -18,6 +18,10 @@ void MapSimple::initialize()
 	
 	m_tex_background = DynamicTexture(m_im_background);
 	m_timer = 0;
+
+	m_map_w = 1920;
+	m_map_h = 1080;
+	MSG_DIS->dispatch_message(0.0, UID_OBJ_MAP, UID_MAP_LOADER, msg::TYPE::MAP_LOAD, this);
 }
 
 void MapSimple::finalize()
@@ -47,16 +51,6 @@ void MapSimple::debug_update()
 
 void MapSimple::debug_draw()
 {
-	Println(L"***MAP_SIMPLE***");
-	/*
-	for (int i = 0; i < m_map_w/32; i++)
-	{
-		for (int j = 0; j < m_map_h/32; j++)
-		{
-			FONT_DEBUG_4(i,L",",j).drawCenter(Vec2(i*32+16, j*32+16),Palette::Black);
-		}
-	}
-	*/
 }
 
 

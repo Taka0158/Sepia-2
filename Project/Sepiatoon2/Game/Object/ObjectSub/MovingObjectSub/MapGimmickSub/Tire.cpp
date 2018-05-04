@@ -80,13 +80,13 @@ bool Tire::handle_message(const Telegram& _msg)
 	return true;
 }
 
-bool Tire::handle_collide(Object* _obj)
+bool Tire::handle_collide(CollidableObject* _obj)
 {
 	on_collide(_obj);
 	return true;
 }
 
-bool Tire::on_collide(Object* _obj) 
+bool Tire::on_collide(CollidableObject* _obj)
 {
 	bool ret = false;
 
@@ -95,7 +95,7 @@ bool Tire::on_collide(Object* _obj)
 		switch (other->get_ika_fsm()->get_now_state())
 		{
 		case IkaStateType::IKA_SPECIAL_TYPHOON:
-			burst(get_Vec2(other->get_p(), m_pos)*3);
+			burst(get_Vec2(other->get_p(), m_pos)*2);
 			break;
 		case IkaStateType::IKA_SPECIAL_SUPERNOVA:
 			burst(get_Vec2(other->get_p(), m_pos) * 10);

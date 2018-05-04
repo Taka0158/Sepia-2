@@ -32,7 +32,7 @@ public:
 	void overwrite_global_state(IkaState* _new_state);
 
 	//Õ“Ëˆ—‚ÍŠeState‚ÉŠÛ“Š‚°
-	bool on_collide(Object* _obj);
+	bool on_collide(CollidableObject* _obj);
 
 private:
 	Ika* m_owner;

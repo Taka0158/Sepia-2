@@ -18,6 +18,7 @@ void IkaSwim::enter(Ika* _owner)
 {
 	_owner->set_moving_parm(m_state_type);
 	_owner->paint();
+	_owner->set_init_depth(-100);
 }
 
 void IkaSwim::update(Ika* _owner)
@@ -30,6 +31,7 @@ void IkaSwim::update(Ika* _owner)
 
 	//State‘JˆÚˆ—
 	execute_change_state(_owner);
+
 }
 
 void IkaSwim::draw(Ika* _owner)
@@ -42,7 +44,7 @@ void IkaSwim::draw(Ika* _owner)
 
 void IkaSwim::exit(Ika* _owner)
 {
-
+	_owner->set_init_depth(0);
 }
 
 void IkaSwim::input(Ika* _owner)
@@ -57,17 +59,26 @@ void IkaSwim::input(Ika* _owner)
 void IkaSwim::state(Ika* _owner)
 {
 	int ground_color = check_ground_color(_owner);
-	if (ground_color==COLOR_NEUTRAL)
+	//•‚‚¢‚Ä‚¢‚½‚ç
+	if (_owner->get_height() >= ON_GROUND_THRESHOLD)
 	{
 		set_next_state(IkaStateType::IKA_NORMAL);
 	}
-	else if (ground_color == COLOR_RIVAL)
+	else
 	{
-		set_next_state(IkaStateType::IKA_SINK);
+		if (ground_color == COLOR_NEUTRAL)
+		{
+			set_next_state(IkaStateType::IKA_NORMAL);
+		}
+		else if (ground_color == COLOR_RIVAL)
+		{
+			set_next_state(IkaStateType::IKA_SINK);
+		}
 	}
+
 }
 
-bool IkaSwim::on_collide(Ika* _owner, Object* _obj)
+bool IkaSwim::on_collide(Ika* _owner, CollidableObject* _obj)
 {
 	bool ret = false;
 

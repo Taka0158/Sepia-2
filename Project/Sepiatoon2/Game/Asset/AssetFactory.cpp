@@ -233,6 +233,21 @@ Image& AssetFactory::get_image(ImageType _type, int _index)
 		_index = clamp(_index, 0, NUM_OF_ANIM_SELECT_SUPERNOVA - 1);
 		ret = (m_im_select_supernova[_index] != nullptr) ? m_im_select_supernova[_index] : m_im_select_supernova[_index] = new Image(PASS_SELECT_SUPERNOVA(_index));
 		break;
+	case ImageType::MAP_SIMPLE_BIG:
+		ret = (m_im_map_simple_3840_2160!= nullptr) ? m_im_map_simple_3840_2160 : m_im_map_simple_3840_2160 = new Image(PASS_MAP_SIMPLE_BIG);
+		break;
+	case ImageType::WALL:
+		ret = (m_im_wall != nullptr) ? m_im_wall : m_im_wall = new Image(PASS_WALL);
+		break;
+	case ImageType::WALL_BLACK:
+		ret = (m_im_wall_black != nullptr) ? m_im_wall_black: m_im_wall_black = new Image(PASS_WALL_BLACK);
+		break;
+	case ImageType::MAP_CLASSIC:
+		ret = (m_im_map_classic != nullptr) ? m_im_map_classic : m_im_map_classic = new Image(PASS_MAP_CLASSIC);
+		break;
+	case ImageType::MAP_CLASSIC_SAMPLE:
+		ret = (m_im_map_classic_sample != nullptr) ? m_im_map_classic_sample: m_im_map_classic_sample = new Image(PASS_MAP_CLASSIC_SAMPLE);
+		break;
 	}
 	return *ret;
 }
@@ -274,6 +289,11 @@ Image AssetFactory::get_image_copy(ImageType _type)
 	case ImageType::TACO_N_N:
 	case ImageType::TACO_N_S:
 	case IT::FRAME:
+	case IT::MAP_SIMPLE_BIG:
+	case ImageType::WALL:
+	case ImageType::WALL_BLACK:
+	case ImageType::MAP_CLASSIC:
+	case ImageType::MAP_CLASSIC_SAMPLE:
 		ret=get_image(_type).clone();
 		break;
 	}
@@ -317,6 +337,11 @@ Texture AssetFactory::get_tex_copy(ImageType _type)
 	case ImageType::TACO_N_N:
 	case ImageType::TACO_N_S:
 	case IT::FRAME:
+	case IT::MAP_SIMPLE_BIG:
+	case ImageType::WALL:
+	case ImageType::WALL_BLACK:
+	case ImageType::MAP_CLASSIC:
+	case ImageType::MAP_CLASSIC_SAMPLE:
 		ret = Texture(get_tex(_type));
 		break;
 	}
@@ -435,6 +460,21 @@ Texture& AssetFactory::get_tex(ImageType _type,int _index)
 	case ImageType::ANIM_SELECT_SUPERNOVA:
 		_index = clamp(_index, 0, NUM_OF_ANIM_SELECT_SUPERNOVA - 1);
 		ret = (m_tex_select_supernova[_index] != nullptr) ? m_tex_select_supernova[_index] : m_tex_select_supernova[_index] = new Texture(get_image(_type, _index));
+		break;
+	case ImageType::MAP_SIMPLE_BIG:
+		ret = (m_tex_map_simple_3840_2160 != nullptr) ? m_tex_map_simple_3840_2160 : m_tex_map_simple_3840_2160 = new Texture(get_image(_type, _index));
+		break;
+	case ImageType::WALL:
+		ret = (m_tex_wall != nullptr) ? m_tex_wall : m_tex_wall = new Texture(get_image(_type));
+		break;
+	case ImageType::WALL_BLACK:
+		ret = (m_tex_wall_black != nullptr) ? m_tex_wall_black : m_tex_wall_black = new Texture(get_image(_type));
+		break;
+	case ImageType::MAP_CLASSIC:
+		ret = (m_tex_map_classic != nullptr) ? m_tex_map_classic : m_tex_map_classic = new Texture(get_image(_type));
+		break;
+	case ImageType::MAP_CLASSIC_SAMPLE:
+		ret = (m_tex_map_classic_sample != nullptr) ? m_tex_map_classic_sample : m_tex_map_classic_sample = new Texture(get_image(_type));
 		break;
 	}
 	return *ret;

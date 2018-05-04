@@ -35,7 +35,9 @@ enum class SpecialType
 
 enum class MapType
 {
-	SIMPLE=0
+	SIMPLE=0,
+	SIMPLE_BIG,
+	CLASSIC
 };
 
 enum class PlayModeType
@@ -89,7 +91,18 @@ enum class ImageType {
 	TACO_N_S,
 	FRAME,
 	ANIM_SELECT_SUPERNOVA,
-	ANIM_SELECT_TYPHOON
+	ANIM_SELECT_TYPHOON,
+	MAP_SIMPLE_BIG,
+	WALL,
+	WALL_BLACK,
+	MAP_CLASSIC,
+	MAP_CLASSIC_SAMPLE,
+};
+
+enum class MapGimmickType
+{
+	NONE = 0,
+	WALL
 };
 
 enum class MovieType
@@ -142,9 +155,19 @@ struct MapTypeInfo
 		switch (_type)
 		{
 		case MapType::SIMPLE:
-			name = L"△△△シンプル△△△";
+			name = L"シンプル";
 			remark_1 = L"なにもおこらないシンプルなマップ";
 			remark_2 = L"はじめてにはもってこい！";
+			break;
+		case MapType::SIMPLE_BIG:
+			name = L"シンプル(ビッグサイズ)";
+			remark_1 = L"なにもおこらないシンプルなマップ";
+			remark_2 = L"ひろい！";
+			break;
+		case MapType::CLASSIC:
+			name = L"クラシックマップ";
+			remark_1 = L"こうじ";
+			remark_2 = L"こうじ";
 			break;
 		}
 	}
@@ -231,10 +254,13 @@ public:
 		color = Color(Palette::White);
 		scale = 1.0;
 	}
-	Paint(Point _p, Color _c,double _s=1.0):pos(_p), color(_c),scale(_s) {};
+	Paint(Point _p, Color _c,double _s=1.0,Image* _b=nullptr,bool _is_rotate=true):pos(_p), color(_c),scale(_s),blend_im(_b),is_rotate(_is_rotate) {};
 	Point pos;
 	Color color;
 	double scale;
+	//指定のインク画像があれば差し込む
+	Image* blend_im;
+	bool is_rotate;
 };
 
 struct InkballParm
@@ -373,4 +399,114 @@ void darken_screen(int index ,Size _sc_size)
 	{
 		Rect(Point(_sc_size.x / 2, 0.0), Size(_sc_size.x / 2, _sc_size.y)).draw(Color(Palette::Black, 200));
 	}
+}
+
+int ctoi(char c) 
+{
+	if (c >= '0' && c <= '9') {
+		return c - '0';
+	}
+	return 0;
+}
+
+namespace collide
+{
+	//コリジョンマスクのAABBの左上座標と右下座標を返す
+	std::pair<Point,Point> get_bounding_box(Circle _mask)
+	{
+		std::pair<Point, Point> ret;
+		Point lt, rb;
+		int r = _mask.r;
+		int x = _mask.x;
+		int y = _mask.y;
+		lt = Point(x - r, y - r);
+		rb = Point(x + r, y + r);
+		return ret = std::make_pair(lt, rb);
+	}
+
+	//点座標からどの番号（モートン順序）に所属するかを返す 0オリジン
+	int get_morton_order_from_index(Point _p)
+	{
+		//分割最小空間の一片の大きさ
+		double w = COLLIDE_SPACE_WIDTH / Pow(2, COLLIDE_SPACE_MAX_PARTITION_LEVEL);
+		double h = COLLIDE_SPACE_HEIGHT / Pow(2, COLLIDE_SPACE_MAX_PARTITION_LEVEL);
+
+		int index_x = _p.x / w;
+		int index_y = _p.y / h;
+
+		Bitset x = index_x;
+		Bitset y = index_y;
+		Bitset b;
+		b.reset();
+
+		for (int i = 0; i < COLLIDE_SPACE_MAX_PARTITION_LEVEL; i++)
+		{
+			int j = i * 2;
+			b[j] = x[i];
+			b[j + 1] = y[i];
+		}
+		int ret = clamp(int(b.to_ulong()),0, COLLIDE_MAX_INDEX_SIZE - 1);
+		return ret;
+	}
+
+	//コリジョンマスクのボリュームを考慮した所属空間のレベルを返す
+	int get_level_from_mask(Circle _mask)
+	{
+		int ret = COLLIDE_SPACE_MAX_PARTITION_LEVEL;
+
+		std::pair<Point, Point> p = get_bounding_box(_mask);
+		Point lt, rb;
+		lt = p.first;
+		rb = p.second;
+		lt = clamp(lt, COLLIDE_ROOT_SPACE_LT, COLLIDE_ROOT_SPACE_LT + Point(COLLIDE_SPACE_WIDTH-1, COLLIDE_SPACE_HEIGHT-1));
+		rb = clamp(rb, COLLIDE_ROOT_SPACE_LT, COLLIDE_ROOT_SPACE_LT + Point(COLLIDE_SPACE_WIDTH-1, COLLIDE_SPACE_HEIGHT-1));
+		int lt_morton_order = get_morton_order_from_index(lt);
+		int rb_morton_order = get_morton_order_from_index(rb);
+
+		//Println(L"lt", lt_morton_order);
+		//Println(L"rb", rb_morton_order);
+
+		Bitset b;
+
+		b = Bitset(lt_morton_order) ^
+			Bitset(rb_morton_order);
+
+		//Println(L"xor", b);
+
+		for (int i = 0; i < COLLIDE_SPACE_MAX_PARTITION_LEVEL; i++)
+		{
+			int j = i * 2;
+			if (b[j] != 0 || b[j + 1] != 0)
+			{
+				ret=COLLIDE_SPACE_MAX_PARTITION_LEVEL-i-1;
+			}
+		}
+		return ret;
+	}
+
+
+	//モートン番号から所属空間内の番号を得る
+	int get_num_from_morton_num(int _morton_num, int _level)
+	{
+		Bitset tmp = _morton_num;
+
+		Bitset  ret = (tmp >> ((COLLIDE_SPACE_MAX_PARTITION_LEVEL - _level) * 2));
+
+		return int(ret.to_ulong());
+
+	}
+
+	//モートン番号と所属空間から配列木構造に格納すべきindexを得る
+	int get_index_form_morton_num_and_level(int _morton_num, int _level)
+	{
+		//4分木であるため
+		int d = 4 - 1;
+		int n = int(((Pow(4, _level) - 1 )/ d));
+		int m = get_num_from_morton_num(_morton_num, _level);
+		//Println(L"morton", m);
+		//Println(L"addictive_num", n);
+		//Println(L"index:", m + n);
+		return m + n;
+	}
+
 }

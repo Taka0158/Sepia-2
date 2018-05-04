@@ -18,7 +18,12 @@ namespace msg
 		EXECUTE_IKA_SPECIAL,
 		SET_CUTIN,
 		CREATE_INK_BALL,
-		SCENE_MGR_SET_NEXT_SCENE
+		SCENE_MGR_SET_NEXT_SCENE,
+		REMOVE_FROM_COLLIDE_TREE,
+		REGISTER_TO_COLLIDE_TREE,
+		WALL_PAINT,
+		MAP_LOAD,
+		ALL_WALL_PAINT,
 	};
 
 	//デバグ用に表示する名前
@@ -71,6 +76,21 @@ namespace msg
 			break;
 		case TYPE::SCENE_MGR_SET_NEXT_SCENE:
 			str = L"次のシーンへ遷移";
+			break;
+		case TYPE::REMOVE_FROM_COLLIDE_TREE:
+			str = L"衝突木から削除";
+			break;
+		case TYPE::REGISTER_TO_COLLIDE_TREE:
+			str = L"衝突木に追加";
+			break;	
+		case TYPE::WALL_PAINT:
+			str = L"ブロックの下の色を黒に";
+			break;
+		case TYPE::MAP_LOAD:
+			str = L"マップロード";
+			break;
+		case TYPE::ALL_WALL_PAINT:
+			str = L"全ての壁色を黒に";
 			break;
 		}
 		return str;

@@ -192,6 +192,14 @@ Entity* MessageDispatcher::get_entity_from_id(ID _id)
 	{
 		ret = SCENE_CAMERA;
 	}
+	else if ((_id & ID(UID_COLLIDE_TREE)) != 0)
+	{
+		ret = COLLIDE_TREE;
+	}
+	else if ((_id & ID(UID_MAP_LOADER)) != 0)
+	{
+		ret = MAP_LOADER;
+	}
 	else
 	{
 		ASSERT("宛先が不明なメッセージです");

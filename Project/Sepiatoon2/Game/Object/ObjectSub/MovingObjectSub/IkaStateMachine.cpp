@@ -49,7 +49,7 @@ void IkaStateMachine::revert_to_previous_state()
 	change_state(m_previous_state.get());
 }
 
-bool IkaStateMachine::on_collide(Object* _obj)
+bool IkaStateMachine::on_collide(CollidableObject* _obj)
 {
 	bool ret = false;
 

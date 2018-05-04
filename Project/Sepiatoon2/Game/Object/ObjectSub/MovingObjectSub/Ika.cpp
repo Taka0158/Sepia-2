@@ -30,7 +30,7 @@ Ika::Ika(Map* _map, ControllerType _controller_type,Vec2 _init_p, Color _color, 
 }
 Ika::~Ika()
 {
-	DEBUG->regist(DebugText(5.0, L"-----------イカデストラクタ-----------"));
+	//DEBUG->regist(DebugText(5.0, L"-----------イカデストラクタ-----------"));
 
 	//イカを被写体から削除
 	MSG_DIS->dispatch_message(0, m_id, UID_SCENE_CAMERA, msg::TYPE::RESET_CAMERA_SUBJECT, this);
@@ -353,13 +353,13 @@ void Ika::destroy()
 	finalize();
 }
 
-bool Ika::handle_collide(Object* _obj)
+bool Ika::handle_collide(CollidableObject* _obj)
 {
 	on_collide(_obj);
 	return true;
 }
 
-bool Ika::on_collide(Object* _obj)
+bool Ika::on_collide(CollidableObject* _obj)
 {
 	bool ret = false;
 

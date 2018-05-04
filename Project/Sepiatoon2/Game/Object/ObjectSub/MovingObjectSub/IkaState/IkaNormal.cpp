@@ -56,7 +56,7 @@ void IkaNormal::input(Ika* _owner)
 	IkaController* controller = _owner->get_controller();
 	if (controller->is_pressed_swim())
 	{
-		if (check_ground_color(_owner)==COLOR_MINE)
+		if (check_ground_color(_owner)==COLOR_MINE&&_owner->get_height()<ON_GROUND_THRESHOLD)
 		{
 			set_next_state(IkaStateType::IKA_SWIM);
 		}
@@ -71,7 +71,7 @@ void IkaNormal::state(Ika* _owner)
 	}
 }
 
-bool IkaNormal::on_collide(Ika* _owner, Object* _obj)
+bool IkaNormal::on_collide(Ika* _owner, CollidableObject* _obj)
 {
 	bool ret = false;
 

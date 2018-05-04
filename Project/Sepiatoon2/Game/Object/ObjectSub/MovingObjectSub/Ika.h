@@ -98,7 +98,7 @@ public:
 	void set_init_pos(Vec2 _p) { m_init_pos = _p; }
 
 	bool handle_message(const Telegram&)override;
-	bool handle_collide(Object* _obj)override;
+	bool handle_collide(CollidableObject* _obj)override;
 
 	//ダメージを受けた時呼ぶ
 	void damaged(double);
@@ -111,7 +111,7 @@ public:
 
 private:
 	bool on_message(const Telegram&)override;
-	bool on_collide(Object* _obj)override;
+	bool on_collide(CollidableObject* _obj)override;
 	//画像の登録
 	void regist_texture(CharType);
 	//コントロールクラスの割り当て

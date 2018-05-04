@@ -5,7 +5,7 @@
 #pragma region NumOfEnum
 #define ENUM_NUM_CHAR_TYPE 2
 #define ENUM_NUM_SPECIAL_TYPE 3
-#define ENUM_NUM_MAP_TYPE 1
+#define ENUM_NUM_MAP_TYPE 3
 #define ENUM_NUM_IMAGE_TYPE 33
 #define ENUM_NUM_PLAYMODE_TYPE 5
 #pragma endregion
@@ -24,12 +24,16 @@
 
 ///-----------------------------------------------Images---------------------------------------------------
 #define PASS_MAP_SIMPLE	L"Assets/Images/Map/map_simple_1920_1080.png"
+#define PASS_MAP_SIMPLE_BIG	L"Assets/Images/Map/map_simple_2560_1440.png"
+#define PASS_MAP_CLASSIC	L"Assets/Images/Map/map_classic_2560_1440.png"
+//ランダムインク範囲
 #define PASS_INK_0_128 L"Assets/Images/Map/ink_0_128.png"
 #define PASS_INK_1_128 L"Assets/Images/Map/ink_1_128.png"
 #define PASS_INK_2_128 L"Assets/Images/Map/ink_2_128.png"
 #define PASS_INK_3_128 L"Assets/Images/Map/ink_3_128.png"
 #define PASS_INK_4_128 L"Assets/Images/Map/ink_4_128.png"
 #define PASS_INK_5_128 L"Assets/Images/Map/ink_5_128.png"
+//ランダムインク範囲
 #define PASS_INK_0_600 L"Assets/Images/Map/ink_0_600.png"
 #define PASS_IKA_N_A L"Assets/Images/Ika/ika_n_a.png"
 #define PASS_IKA_N_C L"Assets/Images/Ika/ika_n_c.png"
@@ -52,6 +56,9 @@
 #define PASS_TACO_N_A  L"Assets/Images/Taco/taco_n_a.png"
 #define PASS_TACO_N_S  L"Assets/Images/Taco/taco_n_s.png"
 #define PASS_FRAME  L"Assets/Images/SelectScene/frame.png"
+#define PASS_WALL  L"Assets/Images/MapGimmick/wall_128_120.png"
+#define PASS_WALL_BLACK  L"Assets/Images/MapGimmick/black_128_120.png"
+#define PASS_MAP_CLASSIC_SAMPLE  L"Assets/Images/Map/classic_sample.png"
 
 #define PASS_EXPLOSION_READY(index) L"Assets/Images/Supernova/explosion_ready."+ToString(index)+L".png"
 #define PASS_EXPLOSION(index) L"Assets/Images/Supernova/explosion."+ToString(index)+L".png"
@@ -82,7 +89,11 @@
 #define SCENE_CAMERA SceneCamera::getInstance()
 #define UI_MGR UIManager::getInstance()
 #define OBJ_MAP_SIMPLE MapSimple::getInstance()
+#define OBJ_MAP_SIMPLE_BIG MapSimpleBig::getInstance()
+#define OBJ_MAP_CLASSIC MapClassic::getInstance()
 #define ASSET_FAC AssetFactory::getInstance()
+#define COLLIDE_TREE CollideTree::getInstance()
+#define MAP_LOADER MapLoader::getInstance()
 #pragma endregion
 
 #pragma region ID
@@ -102,11 +113,14 @@
 #define ID_MAPGIMMCIK_TIRE		0x02080000
 #define ID_OBJ_RUMBA		    0x02100000
 #define ID_OBJ_INKBALL		    0x02200000
+#define ID_MAPGIMMCIK_WALL		0x02400000
 
 #define UID_MGR_EFFECT			0x04000000
 #define UID_MGR_AUDIO			0x08000000
 #define UID_MGR_UI				0x10000000
 #define UID_SCENE_CAMERA		0x20000000
+#define UID_COLLIDE_TREE		0x40000000
+#define UID_MAP_LOADER			0x80000000
 #pragma endregion
 
 //--------------------------入力の閾値------------------------------------
@@ -119,12 +133,53 @@
 #define VELOCITY_THRESHOLD 0.5
 //マスク半径が0とみなされる値
 #define MASK_RADIUS_NULL 0.001
+//地面にいるとされる閾値
+#define ON_GROUND_THRESHOLD 0.5
+
+#pragma region Collide
+//ルート空間の左上座標 (変更に注意)
+#define COLLIDE_ROOT_SPACE_LT Point(0,0)
+//ルート空間の大きさ
+#define COLLIDE_SPACE_WIDTH 2560
+#define COLLIDE_SPACE_HEIGHT 1440
+
+//空間の分割数 (ルートが0)
+#define COLLIDE_SPACE_MAX_PARTITION_LEVEL 4
+//配列初期化用  (LEVEL:2->21,LEVEL3->85,LEVEL4->341,LEVEL5->1365)
+#define COLLIDE_MAX_INDEX_SIZE 341
+
+//分割最小空間の大きさ
+#define COLLIDE_MIN_SPACE_WIDTH COLLIDE_SPACE_WIDTH/Pow(2,COLLIDE_SPACE_MAX_PARTITION_LEVEL) 
+#define COLLIDE_MIN_SPACE_HEIGHT COLLIDE_SPACE_HEIGHT/Pow(2,COLLIDE_SPACE_MAX_PARTITION_LEVEL)
+
+//空間分割による最小空間の最大空間数
+#define COLLIDE_MAX_PARTITION_NUM Pow(4,(COLLIDE_SPACE_MAX_PARTITION_LEVEL))
+
+//4分木配列に必要な要素数
+#define COLLIDE_MAX_INDEX int(Pow(4,(COLLIDE_SPACE_MAX_PARTITION_LEVEL+1))-1/3)
+
+
+typedef std::bitset<COLLIDE_SPACE_MAX_PARTITION_LEVEL*2 + 2> Bitset;
+
+#pragma endregion			  
+//--------------------------マップ情報------------------------------------
+//Small:1920*1080
+//Large:2560*1440
+//グリッド最小単位:128*120
+#define MAP_GRID_WIDTH 128
+#define MAP_GRID_HEIGHT 120
+
+#define MAP_S_X_NUM	15
+#define MAP_S_Y_NUM	9
+#define MAP_L_X_NUM	20
+#define MAP_L_Y_NUM	12
+
 //--------------------------当たり判定------------------------------------
 
 //--------------------------カメラパラメータ------------------------------------
 //最大/最小scale値
 #define CAMERA_MAX_SCALE 1.3
-#define CAMERA_MIN_SCALE 0.8
+#define CAMERA_MIN_SCALE 0.5
 //--------------------------カメラパラメータ------------------------------------
 
 //--------------------------ゲーム内パラメータ------------------------------------

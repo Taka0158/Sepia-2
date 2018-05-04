@@ -145,3 +145,17 @@ public:
 	SetMapSimple() { m_name = L"シンプルマップ"; }
 	void execute(Scene*)override;
 };
+
+class SetMapSimpleBig :public SceneCommand
+{
+public:
+	SetMapSimpleBig() { m_name = L"ビッグシンプルマップ"; }
+	void execute(Scene*)override;
+};
+
+class SetMapClassic :public SceneCommand
+{
+public:
+	SetMapClassic() { m_name = L"クラシックマップ"; }
+	void execute(Scene*)override;
+};

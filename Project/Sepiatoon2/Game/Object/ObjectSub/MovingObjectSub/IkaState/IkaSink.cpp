@@ -27,6 +27,8 @@ void IkaSink::update(Ika* _owner)
 
 	//StateëJà⁄èàóù
 	execute_change_state(_owner);
+
+	
 }
 
 void IkaSink::draw(Ika* _owner)
@@ -54,13 +56,13 @@ void IkaSink::input(Ika* _owner)
 
 void IkaSink::state(Ika* _owner)
 {
-	if (check_ground_color(_owner) == COLOR_MINE)
+	if (check_ground_color(_owner) == COLOR_MINE )
 	{
 		set_next_state(IkaStateType::IKA_NORMAL);
 	}
 }
 
-bool IkaSink::on_collide(Ika* _owner, Object* _obj)
+bool IkaSink::on_collide(Ika* _owner, CollidableObject* _obj)
 {
 	bool ret = false;
 

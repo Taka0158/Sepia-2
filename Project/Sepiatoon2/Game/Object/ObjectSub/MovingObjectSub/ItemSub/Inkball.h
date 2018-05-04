@@ -32,13 +32,13 @@ public:
 	}
 
 	bool handle_message(const Telegram& _msg)override;
-	bool handle_collide(Object* _obj)override;
+	bool handle_collide(CollidableObject* _obj)override;
 private:
 	void restrain();
 	void destroy();
 private:
 	int timer = 0;
-	bool on_collide(Object* _obj)override;
+	bool on_collide(CollidableObject* _obj)override;
 	static int m_next_valid_id;
 	Map* m_map;
 

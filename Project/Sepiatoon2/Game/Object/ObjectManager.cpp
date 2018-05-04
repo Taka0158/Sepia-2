@@ -18,6 +18,7 @@ void ObjectManager::initialize()
 	finalize();
 
 	SCENE_CAMERA->initialize();
+	COLLIDE_TREE->initialize();
 
 	m_timer = 0;
 }
@@ -55,6 +56,8 @@ void ObjectManager::finalize()
 		}
 		m_yet_objects.pop();
 	}
+
+	COLLIDE_TREE->finalize();
 }
 
 void ObjectManager::update()
@@ -70,12 +73,18 @@ void ObjectManager::update()
 
 	if (m_map != nullptr)m_map->update();
 
-
 	for (unsigned int i = 0; i < m_objects.size(); i++)
 	{
 		if (m_objects[i] != nullptr)
 		{
 			if (m_objects[i]->get_is_alive() == false)continue;
+
+			//ルート空間内に納める
+			m_objects[i]->restrain_area();
+
+			//各オブジェクトのモートン番号を更新する
+			if(m_timer%m_morton_interval==0)m_objects[i]->update_morton_and_level();
+
 			m_objects[i]->update();
 		}
 	}
@@ -115,6 +124,9 @@ void ObjectManager::draw()
 
 void ObjectManager::debug_update()
 {
+	toggle_debug_draw();
+	if (!m_is_debug_draw)return;
+	
 	if (m_map != nullptr)m_map->debug_update();
 
 	for (unsigned int i = 0; i < m_objects.size(); i++)
@@ -129,6 +141,8 @@ void ObjectManager::debug_update()
 
 void ObjectManager::debug_draw()
 {
+	if (!m_is_debug_draw)return;
+
 	if (m_map != nullptr)m_map->debug_draw();
 
 	for (unsigned int i = 0; i < m_objects.size(); i++)
@@ -136,9 +150,21 @@ void ObjectManager::debug_draw()
 		if (m_objects[i] != nullptr)
 		{
 			if (m_objects[i]->get_is_alive() == false)continue;
-			//m_objects[i]->debug_draw();
+
+			//AABB表示
+			std::pair<Point, Point> p = collide::get_bounding_box(m_objects[i]->get_mask());
+			Rect(p.first, p.second - p.first).draw(Color(Palette::Red, 100));
+			//モートン番号とレベルを表示
+			FONT_DEBUG_16(m_objects[i]->get_morton_number(), L":", m_objects[i]->get_level()).drawCenter(m_objects[i]->get_p());
+
+			m_objects[i]->debug_draw();
 		}
 	}
+	COLLIDE_TREE->debug_draw();
+	DEBUG->draw_collide_space();
+	//確認のため
+	//check_collide();
+
 	/*
 	for (auto itr : m_objects_drawer)
 	{
@@ -169,7 +195,10 @@ void ObjectManager::check_alive()
 				//reset_draw_object(m_objects[i]);
 
 				//受取人がdeleteされるメッセージは削除
-				MSG_DIS->delete_direct_message(m_objects[i]);
+				MSG_DIS->delete_direct_message(m_objects[i]); 
+
+				//衝突判定木から取り除く
+				m_objects[i]->remove_from_tree();
 
 				delete m_objects[i];
 				m_objects[i] = nullptr;
@@ -208,6 +237,8 @@ bool ObjectManager::handle_message(const Telegram& _msg)
 bool ObjectManager::on_message(const Telegram& _msg)
 {
 	bool ret = false;
+	Paint p;
+	InkballParm* ibp;
 
 	switch (_msg.msg)
 	{
@@ -216,10 +247,26 @@ bool ObjectManager::on_message(const Telegram& _msg)
 		ret = true;
 		break;
 	case msg::TYPE::CREATE_INK_BALL:
-		InkballParm* ibp=(InkballParm*)_msg.extraInfo;
+		ibp=(InkballParm*)_msg.extraInfo;
 		create_Inkball(ibp->pos, ibp->init_height, ibp->dir, ibp->fly_strength, ibp->color);
 		ret = true;
 		break;
+	case msg::TYPE::ALL_WALL_PAINT:
+		//試合終了の時呼び出される想定
+		//壁下色を結果に影響しないように黒色にする
+		for (unsigned int i = 0; i < m_objects.size(); i++)
+		{
+			if (m_objects[i] != nullptr)
+			{
+				if (m_objects[i]->get_is_alive() == false)continue;
+				if (is_same_class(m_objects[i]->get_id(), ID(ID_MAPGIMMCIK_WALL)))
+				{
+					p = Paint(Vec2_to_Point(m_objects[i]->get_p()), Palette::Black, 1.0, &ASSET_FAC->get_image(ImageType::WALL_BLACK), false);
+					MSG_DIS->dispatch_message(0.0, this, m_map, msg::TYPE::MAP_PAINT, &p);
+				}
+			}
+		}
+		ret = true;
 	}
 
 	return ret;
@@ -243,7 +290,6 @@ Entity* ObjectManager::get_entity_from_id(ID _id)
 			return itr;
 		}
 	}
-
 	return ret;
 }
 
@@ -261,6 +307,15 @@ void ObjectManager::create_Inkball(Vec2 _pos, double _init_height, Vec2 _dir, do
 	if (m_map == nullptr)return;
 
 	Inkball* new_obj = new Inkball(m_map, _pos, _init_height, _dir, _fly_strength, _color);
+
+	m_yet_objects.push(new_obj);
+}
+
+void ObjectManager::create_Wall(Vec2 _pos)
+{
+	if (m_map == nullptr)return;
+
+	Wall* new_obj = new Wall(m_map,_pos);
 
 	m_yet_objects.push(new_obj);
 }
@@ -411,6 +466,12 @@ void ObjectManager::set_map(MapType _type)
 	case MapType::SIMPLE:
 		m_map = OBJ_MAP_SIMPLE;
 		break;
+	case MapType::SIMPLE_BIG:
+		m_map = OBJ_MAP_SIMPLE_BIG;
+		break;
+	case MapType::CLASSIC:
+		m_map = OBJ_MAP_CLASSIC;
+		break;
 	}
 
 	m_map->enter();
@@ -440,6 +501,10 @@ void ObjectManager::check_collide()
 {
 	if (m_objects.empty())return;
 
+	//衝突木構造に丸投げ
+	COLLIDE_TREE->collide();
+
+	/*
 	//ゴリ押し全探索
 	for (int i = 0; i < m_objects.size(); i++)
 	{
@@ -452,8 +517,10 @@ void ObjectManager::check_collide()
 			if (m_objects[j] == nullptr)continue;
 			if (m_objects[j]->get_mask_radius() < 0.1)continue;
 
-			//衝突しているなら
-			if (m_objects[i]->get_mask().intersects(m_objects[j]->get_mask()))
+			double distance = (m_objects[i]->get_p() - m_objects[j]->get_p()).length();
+
+			//衝突判定処理
+			if (distance<=m_objects[i]->get_mask_radius()+ m_objects[j]->get_mask_radius())
 			{
 				double h1 = m_objects[i]->get_height();
 				double h1_bottom = h1 - m_objects[i]->get_mask_height() / 2.0;
@@ -472,6 +539,9 @@ void ObjectManager::check_collide()
 			}
 		}
 	}
+	*/
+	
+	
 }
 
 void ObjectManager::register_object()
@@ -483,6 +553,11 @@ void ObjectManager::register_object()
 		Object* new_obj = m_yet_objects.front();
 
 		regist_object(new_obj);
+
+		//衝突木への登録
+		new_obj->restrain_area();
+		new_obj->init_morton_and_level();
+		MSG_DIS->dispatch_message(0.0, m_id, UID_COLLIDE_TREE, msg::TYPE::REGISTER_TO_COLLIDE_TREE, new_obj);
 
 		m_yet_objects.pop();
 	}
@@ -509,7 +584,6 @@ void ObjectManager::sort_objects()
 				m_objects[i] = m_objects[j];
 				m_objects[j] = tmp;
 			}
-
 		}
 	}
 

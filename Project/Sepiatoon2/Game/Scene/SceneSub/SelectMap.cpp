@@ -28,6 +28,8 @@ void SelectMap::finalize()
 void SelectMap::enter()
 {
 	m_commands.push_back(new SetMapSimple());
+	m_commands.push_back(new SetMapSimpleBig());
+	m_commands.push_back(new SetMapClassic());
 }
 
 void SelectMap::exit()
@@ -55,7 +57,7 @@ void SelectMap::draw()
 {
 	draw_background();
 	map_describe();
-	draw_command(Point(512*Setting::get_sc_scale(),-128 * Setting::get_sc_scale()), 16);
+	draw_command(Point(512*Setting::get_sc_scale(),-128 * Setting::get_sc_scale()), 16,Palette::Gray);
 }
 
 void SelectMap::debug_update()
@@ -83,6 +85,12 @@ Texture* SelectMap::get_tex(int _index)
 	{
 	case MapType::SIMPLE:
 		ret = &ASSET_FAC->get_tex(ImageType::MAP_SIMPLE);
+		break;
+	case MapType::SIMPLE_BIG:
+		ret = &ASSET_FAC->get_tex(ImageType::MAP_SIMPLE_BIG);
+		break;
+	case MapType::CLASSIC:
+		ret = &ASSET_FAC->get_tex(ImageType::MAP_CLASSIC_SAMPLE);
 		break;
 	}
 

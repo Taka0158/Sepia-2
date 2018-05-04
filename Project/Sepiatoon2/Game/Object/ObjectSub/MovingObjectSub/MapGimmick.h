@@ -11,3 +11,4 @@ protected:
 };
 
 #include"MapGimmickSub\Tire.cpp"
+#include"MapGimmickSub\Wall.cpp"

@@ -35,7 +35,7 @@ void IkaSpecialTyphoon::enter(Ika* _owner)
 	m_owner = _owner;
 
 	m_paint_scale = 2.5;
-	m_mask_radius = 4.0;
+	m_mask_radius = 3.0;
 	m_draw_scale = 2.0;
 
 	_owner->set_special_gauge_rate(0.0);
@@ -94,7 +94,7 @@ IkaStateType IkaSpecialTyphoon::get_state_type()
 	return m_state_type;
 }
 
-bool IkaSpecialTyphoon::on_collide(Ika* _owner, Object* _obj)
+bool IkaSpecialTyphoon::on_collide(Ika* _owner, CollidableObject* _obj)
 {
 	bool ret = false;
 

@@ -30,12 +30,12 @@ void UIManager::finalize()
 
 void UIManager::update()
 {
-	if (m_UITime != nullptr)m_UITime->update();
+	//if (m_UITime != nullptr)m_UITime->update();
 }
 
 void UIManager::draw()
 {
-	if (m_UITime != nullptr)m_UITime->draw();
+	//if (m_UITime != nullptr)m_UITime->draw();
 }
 
 void UIManager::debug_update()

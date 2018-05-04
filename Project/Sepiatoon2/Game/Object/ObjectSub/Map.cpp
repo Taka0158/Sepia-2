@@ -1,6 +1,6 @@
 #include"Map.h"
-#include"MapSub\MapSimple.cpp"
-Map::Map():Object(ID(UID_OBJ_MAP)) {
+
+Map::Map(MapType _type):Object(ID(UID_OBJ_MAP)), m_map_type(_type) {
 	m_depth = -100;
 	m_is_alive = true;
 	m_pos = Vec2(0.0, 0.0);
@@ -68,23 +68,33 @@ bool Map::on_message(const Telegram& _msg)
 
 
 void Map::blend()
-{
+{			
+	bool is_change = false;
 	while (!que.empty())
 	{
 		Paint p = que.front();
-		Image img = get_random_ink();
+		Image img;
+
+		//éwíËÇÃÉCÉìÉNâÊëúÇ™Ç†ÇÍÇŒóDêÊ
+		if (p.blend_im == nullptr)img = get_random_ink();
+		else img = *p.blend_im;
+
 		Size s = Size(img.width*p.scale, img.height*p.scale) / 2;
-		rotate_image(img).scale(p.scale,Interpolation::Nearest).write(m_im_background, Vec2_to_Point(p.pos) - s, p.color);
+		
+		if(p.is_rotate)rotate_image(img).scale(p.scale,Interpolation::Nearest).write(m_im_background, Vec2_to_Point(p.pos) - s, p.color);
+		else img.scale(p.scale, Interpolation::Nearest).write(m_im_background, Vec2_to_Point(p.pos) - s, p.color);
+		
 		que.pop();
-		m_tex_background.fill(m_im_background);
+		is_change = true;
 	}
+	if(is_change)m_tex_background.fill(m_im_background);
 }
 
 void Map::paint(Paint _p)
 {
 	Paint p = _p;
-	p.pos.x = clamp(_p.pos.x, 0, m_map_w);
-	p.pos.y = clamp(_p.pos.y, 0, m_map_h);
+	//p.pos.x = clamp(_p.pos.x, 0, m_map_w);
+	//p.pos.y = clamp(_p.pos.y, 0, m_map_h);
 	que.push(p);
 }
 

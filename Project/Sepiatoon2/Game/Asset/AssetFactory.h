@@ -67,6 +67,11 @@ private:
 	Image* m_im_frame = nullptr;
 	Image* m_im_select_typhoon[NUM_OF_ANIM_SELECT_TYPHOON] = { nullptr };
 	Image* m_im_select_supernova[NUM_OF_ANIM_SELECT_SUPERNOVA] = { nullptr };
+	Image* m_im_map_simple_3840_2160 = nullptr;
+	Image* m_im_wall = nullptr;
+	Image* m_im_wall_black = nullptr;
+	Image* m_im_map_classic = nullptr;
+	Image* m_im_map_classic_sample = nullptr;
 
 	Texture* m_tex_map_simple_1920_1080 = nullptr;
 	Texture* m_tex_ink_0_128 = nullptr;
@@ -101,6 +106,11 @@ private:
 	Texture* m_tex_frame = nullptr;
 	Texture* m_tex_select_typhoon[NUM_OF_ANIM_SELECT_TYPHOON] = { nullptr };
 	Texture* m_tex_select_supernova[NUM_OF_ANIM_SELECT_SUPERNOVA] = { nullptr };
+	Texture* m_tex_map_simple_3840_2160 = nullptr;
+	Texture* m_tex_wall = nullptr;
+	Texture* m_tex_wall_black = nullptr;
+	Texture* m_tex_map_classic = nullptr;
+	Texture* m_tex_map_classic_sample = nullptr;
 
 	std::vector<Image*> m_images;
 

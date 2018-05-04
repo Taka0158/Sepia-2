@@ -191,3 +191,21 @@ void SetMapSimple::execute(Scene* _owner)
 	SceneParam sp = SceneParam(next_scene_type, switch_type);
 	MSG_DIS->dispatch_message(0.0, UID_MGR_SCENE, UID_MGR_SCENE, msg::TYPE::SCENE_MGR_SET_NEXT_SCENE, &sp);
 }
+void SetMapSimpleBig::execute(Scene* _owner)
+{
+	Setting::set_map(MapType::SIMPLE_BIG);
+
+	SceneType next_scene_type = SceneType::MANUAL;
+	SceneSwitchType switch_type = SceneSwitchType::IKAIKA;
+	SceneParam sp = SceneParam(next_scene_type, switch_type);
+	MSG_DIS->dispatch_message(0.0, UID_MGR_SCENE, UID_MGR_SCENE, msg::TYPE::SCENE_MGR_SET_NEXT_SCENE, &sp);
+}
+void SetMapClassic::execute(Scene* _owner)
+{
+	Setting::set_map(MapType::CLASSIC);
+
+	SceneType next_scene_type = SceneType::MANUAL;
+	SceneSwitchType switch_type = SceneSwitchType::IKAIKA;
+	SceneParam sp = SceneParam(next_scene_type, switch_type);
+	MSG_DIS->dispatch_message(0.0, UID_MGR_SCENE, UID_MGR_SCENE, msg::TYPE::SCENE_MGR_SET_NEXT_SCENE, &sp);
+}

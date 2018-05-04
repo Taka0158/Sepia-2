@@ -54,7 +54,7 @@ public:
 	virtual void common_input(int _min_index,int _max_index);
 
 	//コマンドの表示
-	virtual void draw_command(Point _pos=Point(0,0), int _font_size=64);
+	virtual void draw_command(Point _pos=Point(0,0), int _font_size=64,Color _c=Palette::White);
 	
 
 protected:
@@ -208,7 +208,7 @@ void Scene::common_input(int _min_index, int _max_index)
 		m_commands[m_index]->execute(this);
 	}
 }
-void Scene::draw_command(Point _pos,int _font_size)
+void Scene::draw_command(Point _pos,int _font_size,Color _c)
 {
 	int temp = int(m_commands.size()) / 2;
 	int interval = _font_size+ _font_size/2 + 8;
@@ -226,7 +226,7 @@ void Scene::draw_command(Point _pos,int _font_size)
 			//それ以外
 			else
 			{
-				FONT_IKA_KANA(_font_size)(m_commands[i + temp]->get_name()).drawCenter(C.x + _pos.x, C.y + _pos.y + i*interval, Palette::White);
+				FONT_IKA_KANA(_font_size)(m_commands[i + temp]->get_name()).drawCenter(C.x + _pos.x, C.y + _pos.y + i*interval, _c);
 			}
 		}
 	}
@@ -244,7 +244,7 @@ void Scene::draw_command(Point _pos,int _font_size)
 			//それ以外
 			else
 			{
-				FONT_IKA_KANA(_font_size)(m_commands[i + temp]->get_name()).drawCenter(C.x + _pos.x, C.y + _pos.y + i*interval, Palette::White);
+				FONT_IKA_KANA(_font_size)(m_commands[i + temp]->get_name()).drawCenter(C.x + _pos.x, C.y + _pos.y + i*interval, _c);
 			}
 		}
 	}

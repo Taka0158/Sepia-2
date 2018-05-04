@@ -101,13 +101,13 @@ bool Rumba::handle_message(const Telegram& _msg)
 	return true;
 }
 
-bool Rumba::handle_collide(Object* _obj)
+bool Rumba::handle_collide(CollidableObject* _obj)
 {
 	on_collide(_obj);
 	return true;
 }
 
-bool Rumba::on_collide(Object* _obj)
+bool Rumba::on_collide(CollidableObject* _obj)
 {
 	bool ret = false;
 

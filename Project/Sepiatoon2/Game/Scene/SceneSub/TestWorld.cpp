@@ -55,7 +55,7 @@ void TestWorld::update()
 	else 
 	{
 		SCENE_CAMERA->update_sub();
-		OBJ_MGR->update();
+		if(!Input::KeyP.pressed)OBJ_MGR->update();
 		//EFFECT_MGR->update();
 		OBJ_MGR->debug_update();
 	}
@@ -110,6 +110,10 @@ void TestWorld::debug_update()
 	{
 		OBJ_MGR->create_Rumba(SCENE_CAMERA->get_mouse_pos(), Setting::get_color(TeamType::TEAM_B));
 	}
+	if (Input::KeyY.clicked)
+	{
+		OBJ_MGR->create_Wall(SCENE_CAMERA->get_mouse_pos());
+	}
 
 	if (Input::KeyU.pressed)
 	{
@@ -160,9 +164,21 @@ void TestWorld::debug_update()
 	{
 		OBJ_MGR->set_map(MapType::SIMPLE);
 	}
+	if (Input::KeyF6.clicked)
+	{
+		OBJ_MGR->set_map(MapType::SIMPLE_BIG);
+	}
+	if (Input::KeyF8.clicked)
+	{
+		OBJ_MGR->set_map(MapType::CLASSIC);
+	}
 	if (Input::KeyF3.clicked)
 	{
 		OBJ_MGR->destroy_map();
+	}
+	if (Input::KeyH.clicked)
+	{
+		MSG_DIS->dispatch_message(0.0, UID_MGR_SCENE, UID_MGR_OBJ, msg::TYPE::ALL_WALL_PAINT);
 	}
 
 	if (Input::KeyF7.clicked)

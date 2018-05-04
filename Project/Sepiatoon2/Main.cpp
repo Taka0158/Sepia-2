@@ -1,7 +1,8 @@
 ﻿#define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
-
+#include <stdlib.h>  
+#include <stdio.h>
 #include <Siv3D.hpp>
 #include<HamFramework.hpp>
 #include<vector>
@@ -12,6 +13,7 @@
 #include<set>
 #include<bitset>
 #include<queue>
+#include<stack>
 
 #include"Game\Pattern\Command.h"
 #include"Game\Pattern\Singleton.h"
@@ -32,6 +34,7 @@
 
 #include"Game\Object\ObjectManager.cpp"
 #include"Game\Scene\SceneManager.cpp"
+#include"Game\MapLoader\MapLoader.cpp"
 
 #include"Game\Message\MessageDispatcher.cpp"
 
@@ -67,6 +70,7 @@ void Main()
 	//シングルトンクラス生成
 	SETTING;
 	SCENE_CAMERA;
+	COLLIDE_TREE;
 	OBJ_MGR;
 	ASSET_FAC;
 	DEBUG;
@@ -87,28 +91,46 @@ void Main()
 		MSG_DIS->dispatch_delayed_direct_message();
 
 		SCENE_MGR->update();
-		SCENE_MGR->debug_update();
+		if(!Input::KeyF12.pressed)SCENE_MGR->debug_update();
 		SCENE_MGR->draw();
-		SCENE_MGR->debug_draw();
+		if (!Input::KeyF12.pressed)SCENE_MGR->debug_draw();
 
 
 		//デバッグ機構
-		DEBUG->update();
-		DEBUG->show();
-		MSG_DIS->debug_draw();
-		FONT_DEBUG_16(stopwatch.ms(), L"msec").draw(320, 32,Palette::Black);
+		if (!Input::KeyF12.pressed)DEBUG->update();
+		if (!Input::KeyF12.pressed)DEBUG->show();
+		if (!Input::KeyF12.pressed)MSG_DIS->debug_draw();
+		if (!Input::KeyF12.pressed)FONT_DEBUG_16(stopwatch.ms(), L"msec").draw(320, 32,Palette::Black);
 	   	}
 	//System::Sleep(3000);
 }
+
+/*
+仕上げまで
+():AI後でもいい
+
+UI実装
+EffectMgr/Effect実装
+AudioMgr実装
+Manual画像生成
+GameMain画面の実装（ルール整備）
+Result画面の実装
+・スペシャル（DASH)追加実装
+->・Item追加実装
+(・Char追加実装)
+(・Map追加実装)
+(・MapGimmick追加実装)
+-------------------
+AI実装
+
+
+*/
 
 
 /*
 TODOIST 20180427
 
 Inkball::Initialize()で原因不明のバグ有り
-
-
-
 
 */
 

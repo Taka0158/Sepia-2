@@ -99,13 +99,13 @@ bool Inkball::handle_message(const Telegram& _msg)
 	return true;
 }
 
-bool Inkball::handle_collide(Object* _obj)
+bool Inkball::handle_collide(CollidableObject* _obj)
 {
 	on_collide(_obj);
 	return true;
 }
 
-bool Inkball::on_collide(Object* _obj)
+bool Inkball::on_collide(CollidableObject* _obj)
 {
 	bool ret = false;
 

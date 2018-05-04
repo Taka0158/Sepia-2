@@ -4,7 +4,7 @@
 class Map :public Object
 {
 public:
-	Map();
+	Map(MapType _type);
 	virtual ~Map();
 	virtual void initialize() {};
 	virtual void finalize() {};
@@ -31,6 +31,8 @@ public:
 
 	//マップサイズを返す
 	Size get_map_size() { return Size(m_map_w, m_map_h); }
+
+	MapType get_map_type() { return m_map_type; }
 protected:
 	//画像処理（ブレンド）を行う
 	void blend();
@@ -56,5 +58,12 @@ protected:
 
 	//色塗りの行列
 	std::queue<Paint> que;
+
+	//自分のマップタイプ
+	MapType m_map_type;
 };
 
+
+#include"MapSub\MapSimple.cpp"
+#include"MapSub\MapSimpleBig.cpp"
+#include"MapSub\MapClassic.cpp"

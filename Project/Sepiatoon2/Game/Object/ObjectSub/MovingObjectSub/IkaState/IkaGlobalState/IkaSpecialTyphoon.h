@@ -17,7 +17,7 @@ public:
 
 	IkaStateType get_state_type()override;
 
-	bool on_collide(Ika* _owner, Object* _obj);
+	bool on_collide(Ika* _owner, CollidableObject* _obj);
 private:
 	int m_timer = 0;
 

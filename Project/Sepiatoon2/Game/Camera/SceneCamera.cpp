@@ -33,6 +33,15 @@ void SceneCamera::finalize()
 
 void SceneCamera::debug_draw()
 {
+	//SS—p
+	if (Input::KeyNum9.clicked)
+	{
+		if (OBJ_MGR->get_map() != nullptr)
+		{
+			Size s=OBJ_MGR->get_map()->get_map_size();
+			set_center(s/2, true);
+		}
+	}
 	if (Input::KeyNum3.clicked)
 	{
 		setTargetScale(1.0);
@@ -117,7 +126,7 @@ void SceneCamera::update_sub()
 
 	for (auto itr : m_subjects)
 	{
-		desired_camera_center += itr->get_p() + itr->get_velocity()*3;
+		desired_camera_center += itr->get_p() + itr->get_velocity()*5;
 	}
 
 	desired_camera_center /= double(m_subjects.size());
@@ -164,7 +173,7 @@ void SceneCamera::set_scale()
 		}
 	}
 	//”¼Œa r@ˆÈ“à‚É@”íÊ‘Ì‚ª‰f‚é‚æ‚¤‚É‚·‚é
-	double r = (Setting::get_sc().y/2 );
+	double r = (Setting::get_sc().y/2-250 );
 	double desired_scale = r/far_length;
 
 	desired_scale = clamp(desired_scale, CAMERA_MIN_SCALE, CAMERA_MAX_SCALE);

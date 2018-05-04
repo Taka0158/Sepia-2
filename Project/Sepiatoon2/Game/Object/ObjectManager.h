@@ -1,5 +1,7 @@
 #pragma once
 
+#include"CollidableObject.h"
+#include"CollideTree.cpp"
 #include"Object.h"
 
 class Map;
@@ -39,6 +41,8 @@ public:
 
 	void create_Inkball(Vec2 _pos, double _init_height, Vec2 _dir, double _fly_strength, Color _color);
 
+	void create_Wall(Vec2 _pos);
+
 	//-----------------------------------------------Create関数--------------------------------------------------------------------------
 
 	//メッセージの受け取り関数
@@ -59,6 +63,11 @@ public:
 
 	Map* get_map() { return m_map; };
 private:
+	void toggle_debug_draw()
+	{
+		m_is_debug_draw = (Input::KeyYen.clicked) ? !m_is_debug_draw : m_is_debug_draw;
+	}
+
 	//ここでメッセージに対応する処理を呼び出す
 	bool on_message(const Telegram& _msg);
 
@@ -105,6 +114,7 @@ private:
 	//値が大きいほど手前に描画される
 	//std::vector<Drawer> m_objects_drawer;
 
+	bool m_is_debug_draw = false;
 	
 	//mapインスタンス
 	Map* m_map = nullptr;
@@ -113,8 +123,10 @@ private:
 
 	//描画順のソート間隔(フレーム)
 	int m_sort_duration = 1;
+
+	//モートン番号を更新する頻度
+	static int m_morton_interval;
 };						 
 
-
-
 ObjectManager* Singleton<ObjectManager>::instance = nullptr;
+int ObjectManager::m_morton_interval = 5;
