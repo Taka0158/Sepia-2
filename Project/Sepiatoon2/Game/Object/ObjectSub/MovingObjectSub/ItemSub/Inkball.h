@@ -4,7 +4,13 @@
 class Inkball :public Item
 {
 public:
-	Inkball(Map* _map, Vec2 _init_pos,double _init_height,Vec2 _dir,double _fly_strength,Color _color);
+	Inkball(Map* _map,
+		Vec2 _init_pos,
+		double _init_height,
+		Vec2 _dir,
+		double _fly_strength,
+		Color _color,
+		double _paint_scale=1.0);
 	~Inkball();
 
 	void initialize()override;
@@ -25,7 +31,7 @@ public:
 	void set_moving_parm()override
 	{
 		m_max_force = 5.0;
-		m_max_speed = 6.0;
+		m_max_speed = 10.0;
 		m_max_turn_rate = 0.01;
 		m_friction = 0.2;
 		m_gravity = 0.05;
@@ -33,6 +39,8 @@ public:
 
 	bool handle_message(const Telegram& _msg)override;
 	bool handle_collide(CollidableObject* _obj)override;
+
+	Color get_color()override { return m_color; };
 private:
 	void restrain();
 	void destroy();
@@ -52,6 +60,9 @@ private:
 
 	//•`‰æŠp“x
 	double m_angle;
+
+	//ƒCƒ“ƒN“h‚è”ÍˆÍ”{—¦
+	double m_paint_scale;
 };
 
 int Inkball::m_next_valid_id = 0;

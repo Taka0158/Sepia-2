@@ -13,8 +13,10 @@ public:
 	void exit(Ika* _owner)override;
 
 private:
-	//–³“GŽžŠÔ(sec)
-	static double m_invincible_time;
+	//–³“GŽžŠÔ(frame)
+	static int m_invincible_time;
+
+	int m_timer;
 };
 
-double IkaDamaged::m_invincible_time = 2.0;
+int IkaDamaged::m_invincible_time = 120;

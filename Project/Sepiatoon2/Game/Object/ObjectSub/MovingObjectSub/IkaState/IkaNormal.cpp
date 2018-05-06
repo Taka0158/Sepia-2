@@ -65,7 +65,7 @@ void IkaNormal::input(Ika* _owner)
 
 void IkaNormal::state(Ika* _owner)
 {
-	if (check_ground_color(_owner) == COLOR_RIVAL)
+	if (check_ground_color(_owner) == COLOR_RIVAL && _owner->get_height()<ON_GROUND_THRESHOLD)
 	{
 		set_next_state(IkaStateType::IKA_SINK);
 	}
@@ -124,6 +124,10 @@ bool IkaNormal::on_collide(Ika* _owner, CollidableObject* _obj)
 		case IST::IKA_SPECIAL_SUPERNOVA:
 			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*10.0);
 			_owner->damaged(IKA_SUPERNOVA_DAMAEG);
+			break;
+		case IST::IKA_SPECIAL_DASH:
+			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*10.0);
+			_owner->damaged(IKA_DASH_DAMAGE);
 			break;
 		}
 	}

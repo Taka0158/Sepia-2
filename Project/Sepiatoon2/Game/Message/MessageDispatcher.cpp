@@ -9,13 +9,14 @@ void MessageDispatcher::dispatch_message(double _dispatch_time,
 	ID _receiver_id,
 	msg::TYPE _msg,
 	void* _exInfo,
-	bool _use_debug_text)
+	bool _use_debug_text,
+	bool _is_delete_exinfo)
 {
 	//届け先のポインタを受け取る
 	Entity* receiver = get_entity_from_id(_receiver_id);
 
 	//荷物の作成
-	Telegram telegram(_dispatch_time*MSG_SEC, _sender_id, _receiver_id, _msg, _exInfo, _use_debug_text);
+	Telegram telegram(_dispatch_time*MSG_SEC, _sender_id, _receiver_id, _msg, _exInfo, _use_debug_text,_is_delete_exinfo);
 
 	//デバッグ用テキストの追加
 	if(_use_debug_text)DEBUG->regist(DebugText(3.0 + _dispatch_time / MSG_SEC,L"送信:"+ to_hex(_sender_id) + L"-->"+ to_hex(_receiver_id) + L"<" + msg::toString(_msg) + L">"));
@@ -38,13 +39,14 @@ void MessageDispatcher::dispatch_message(double _dispatch_time,
 	Entity* _receiver,
 	msg::TYPE _msg,
 	void* _exInfo,
-	bool _use_debug_text)
+	bool _use_debug_text,
+	bool _is_delete_exinfo)
 {
 	//届け先のポインタを受け取る
 	Entity* receiver = _receiver;
 
 	//荷物の作成
-	DirectTelegram direct_telegram(_dispatch_time,_sender, _receiver, _msg, _exInfo,_use_debug_text);
+	DirectTelegram direct_telegram(_dispatch_time,_sender, _receiver, _msg, _exInfo,_use_debug_text, _is_delete_exinfo);
 
 	//デバッグ用テキストの追加
 	if(_use_debug_text)DEBUG->regist(DebugText(3.0 + _dispatch_time / MSG_SEC, L"送信:" + to_hex(_sender->get_id()) + L"-->" + to_hex(_receiver->get_id()) + L"<" + msg::toString(_msg) + L">"));
@@ -127,10 +129,16 @@ void MessageDispatcher::discharge(Entity* _receiver, const Telegram& _msg)
 		return;
 	}
 
-
 	//デバッグ用テキストの追加
 	if(_msg.show_debug_text)DEBUG->regist(DebugText(3.0, L"受信:" + to_hex(_msg.receiver_id) + L"<--" + to_hex(_msg.sender_id) + L"<" + msg::toString(_msg.msg) + L">"));
+	
 	_receiver->handle_message(_msg);
+
+	//送信後削除要請が合った追加情報は削除
+	if (_msg.is_delete_exinfo == true)
+	{
+		delete_exinfo(_msg);
+	}
 }
 
 void MessageDispatcher::discharge(Entity* _receiver, const DirectTelegram& _msg)
@@ -147,14 +155,28 @@ void MessageDispatcher::discharge(Entity* _receiver, const DirectTelegram& _msg)
 	if (_msg.show_debug_text)DEBUG->regist(DebugText(3.0, L"受信:" + to_hex(_msg.receiver->get_id()) + L"<--" + to_hex(_msg.sender->get_id()) + L"<" + msg::toString(_msg.msg) + L">"));
 	
 	//通常のTelegramに変換
-	Telegram msg=Telegram(_msg.dispatch_time, 0, _msg.receiver->get_id(), _msg.msg, _msg.extraInfo);
+	Telegram msg=Telegram(_msg.dispatch_time, 0, _msg.receiver->get_id(), _msg.msg, _msg.extraInfo,_msg.show_debug_text,_msg.is_delete_exinfo);
 	
 	_receiver->handle_message(msg);
+
+	//送信後削除要請が合った追加情報は削除
+	if (msg.is_delete_exinfo == true)
+	{
+		delete_exinfo(msg);
+	}
 
 }
 
 void MessageDispatcher::destroy_all_message()
 {
+	for (auto itr : telegrams)
+	{
+		if (itr.is_delete_exinfo == true)
+		{
+			delete_exinfo(itr);
+		}
+	}
+
 	telegrams.clear();
 }
 
@@ -186,7 +208,7 @@ Entity* MessageDispatcher::get_entity_from_id(ID _id)
 	}
 	else if ((_id & ID(UID_MGR_UI)) != 0)
 	{
-
+		ret = UI_MGR;
 	}
 	else if ((_id & ID(UID_SCENE_CAMERA)) != 0)
 	{
@@ -231,6 +253,29 @@ void MessageDispatcher::delete_direct_message(Entity* _entity)
 	{
 		String msg_type = msg::toString(itr->msg);
 		DEBUG->regist(DebugText(3.0, L"受取人消失 TYPE : " + msg_type));
+		if (itr->is_delete_exinfo == true)delete_exinfo(*itr);
 		direct_telegrams.erase(itr);
 	}
 }
+
+void MessageDispatcher::delete_exinfo(const Telegram& _msg) 
+{
+	if (_msg.extraInfo != nullptr)
+	{
+		//void*　のdeleteはデストラクタが呼ばれないことに注意！
+		delete _msg.extraInfo;
+		DEBUG->regist(DebugText(3.0, L"-----追加情報を削除-----"));
+
+	}
+}
+
+void MessageDispatcher::delete_exinfo(const DirectTelegram& _msg)
+{
+	if (_msg.extraInfo != nullptr)
+	{
+		//void*　のdeleteはデストラクタが呼ばれないことに注意！
+		delete _msg.extraInfo;
+		DEBUG->regist(DebugText(3.0, L"-----追加情報を削除-----"));
+	}
+}
+

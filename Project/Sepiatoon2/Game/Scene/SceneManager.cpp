@@ -45,11 +45,6 @@ void mine::SceneManager::update()
 		m_current_scene->update();
 		m_current_scene->debug_update();
 		
-		if (m_current_scene->get_ui() != nullptr)
-		{
-			m_current_scene->get_ui()->update();
-			m_current_scene->get_ui()->debug_update();
-		}
 	}
 
 	if (m_current_scene_switch)
@@ -71,19 +66,12 @@ void mine::SceneManager::draw()
 	if (m_current_scene)
 	{
 		m_current_scene->draw();
-		m_current_scene->debug_draw();
 
-		if (m_current_scene->get_ui() != nullptr)
-		{
-			m_current_scene->get_ui()->draw();
-			m_current_scene->get_ui()->debug_draw();
-		}
 	}
 
 	if (m_current_scene_switch)
 	{
 		m_current_scene_switch->draw();
-		m_current_scene_switch->debug_draw();
 	}
 
 }
@@ -119,6 +107,18 @@ void mine::SceneManager::debug_draw()
 	{
 
 	}
+
+	if (m_current_scene)
+	{
+		m_current_scene->debug_draw();
+
+	}
+
+	if (m_current_scene_switch)
+	{
+		m_current_scene_switch->debug_draw();
+	}
+
 	SCENE_CAMERA->debug_draw();
 }
 

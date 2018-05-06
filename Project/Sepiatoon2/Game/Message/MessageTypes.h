@@ -24,6 +24,18 @@ namespace msg
 		WALL_PAINT,
 		MAP_LOAD,
 		ALL_WALL_PAINT,
+		DEFINITE_DAMAGE_OTHER,
+		GET_MISSILE_TARGET,
+		GIVE_MISSILE_TARGET,
+		REGISTER_TO_UI,
+		CREATE_ORB,
+		CREATE_IKABALLOON,
+		CREATE_MISSILE,
+		CREATE_RUMBA,
+		RESPAWN_IKA,
+		CREATE_IKA,
+		ALL_IKA_STATE_RESPAWN,
+		GIVE_CREATED_IKA
 	};
 
 	//デバグ用に表示する名前
@@ -91,6 +103,42 @@ namespace msg
 			break;
 		case TYPE::ALL_WALL_PAINT:
 			str = L"全ての壁色を黒に";
+			break;
+		case TYPE::DEFINITE_DAMAGE_OTHER:
+			str = L"相手に例外なしにダメージを当たる";
+			break;
+		case TYPE::GET_MISSILE_TARGET:
+			str = L"ミサイルの相手を探す";
+			break;
+		case TYPE::GIVE_MISSILE_TARGET:
+			str = L"ミサイルの相手を与える";
+			break;
+		case TYPE::REGISTER_TO_UI:
+			str = L"UIオブジェクトに登録";
+			break;
+		case TYPE::CREATE_ORB:
+			str = L"ORB生成";
+			break;
+		case TYPE::CREATE_IKABALLOON:
+			str = L"IKABALLOON生成";
+			break;
+		case TYPE::CREATE_MISSILE:
+			str = L"MISSILE生成";
+			break;
+		case TYPE::CREATE_RUMBA:
+			str = L"RUMBA生成";
+			break;
+		case TYPE::RESPAWN_IKA:
+			str = L"IKA復活";
+			break;
+		case TYPE::CREATE_IKA:
+			str = L"IKA生成";
+			break;
+		case TYPE::ALL_IKA_STATE_RESPAWN:
+			str = L"全てのイカをIkaRespawnに";
+			break;
+		case TYPE::GIVE_CREATED_IKA:
+			str = L"生成したイカを渡す";
 			break;
 		}
 		return str;

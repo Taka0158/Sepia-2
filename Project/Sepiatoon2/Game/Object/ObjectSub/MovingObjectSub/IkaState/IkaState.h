@@ -111,6 +111,7 @@ double IkaState::m_threshold_paint = 8.0;
 #include"IkaGlobalState\IkaSpecialTyphoon.cpp"
 #include"IkaGlobalState\IkaSpecialSupernova.cpp"
 #include"IkaGlobalState\IkaSpecialDash.cpp"
+#include"IkaGlobalState\IkaRespawn.cpp"
 #include"IkaNormal.cpp"
 #include"IkaSwim.cpp"
 #include"IkaSink.cpp"

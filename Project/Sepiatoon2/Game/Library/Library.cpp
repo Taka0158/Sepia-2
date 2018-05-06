@@ -40,6 +40,24 @@ enum class MapType
 	CLASSIC
 };
 
+enum class MissileType
+{
+	NORMAL=0,
+	RAIN
+};
+
+enum class OrbType
+{
+	NORMAL=0,
+	SPECIAL
+};
+
+enum class IkaBalloonType
+{
+	ITEM=0,
+	ORB
+};
+
 enum class PlayModeType
 {
 	//							(Settingでの添字)
@@ -57,6 +75,12 @@ enum class ControllerType
 	CPU
 };
 
+enum class ItemType
+{
+	MULTI_MISSILE=0,
+	RAIN,
+	RUMBA
+};
 
 enum class ImageType {
 	MAP_SIMPLE = 0,
@@ -97,12 +121,26 @@ enum class ImageType {
 	WALL_BLACK,
 	MAP_CLASSIC,
 	MAP_CLASSIC_SAMPLE,
+	ANIM_ORB,
+	ANIM_CUTIN_WIND,
+	ANIM_SELECT_DASH,
+	MISSILE,
+	TRAMPOLINE,
+	SPECIAL_ORB,
+	IKA_BALLOON_1,
+	IKA_BALLOON_2,
+	RESPAWN_POINT,
+	WALL_BLACK_CIRCLE
+
 };
 
 enum class MapGimmickType
 {
 	NONE = 0,
-	WALL
+	WALL ,
+	TRAMPOLINE,
+	RESPAWN_A,
+	RESPAWN_B,
 };
 
 enum class MovieType
@@ -118,7 +156,8 @@ enum class IkaStateType {
 	IKA_DAMAGED,
 	IKA_SPECIAL_TYPHOON,
 	IKA_SPECIAL_DASH,
-	IKA_SPECIAL_SUPERNOVA
+	IKA_SPECIAL_SUPERNOVA,
+	IKA_RESPAWN
 };
 
 enum class CutInType
@@ -217,16 +256,16 @@ struct SpecialTypeInfo
 		switch (_type)
 		{
 		case SpecialType::TYPHOON:
-			name = L"△△△タイフーン△△△";
-			remark = L"なにものもよせつけない！";
+			name = L"タイフーン";
+			remark = L"だれもちかづけない！";
 			break;
 		case SpecialType::SUPERNOVA:
-			name = L"△△△だいばくはつ△△△";
+			name = L"だいばくはつ";
 			remark = L"いっきにぎゃくてん！";
 			break;
 		case SpecialType::DASH:
-			name = L"△△△こうじちゅう△△△";
-			remark = L"こうじちゅう";
+			name = L"バリアダッシュ";
+			remark = L"ムテキになってかけぬけろ！";
 			break;
 		}
 	}
@@ -235,6 +274,7 @@ struct SpecialTypeInfo
 	//説明
 	String remark;
 };
+
 
 struct SceneParam
 {
@@ -263,18 +303,65 @@ public:
 	bool is_rotate;
 };
 
+struct MissileParm
+{
+	MissileParm(Vec2 _pos, double _init_height, Color _color,bool _is_rising=true,MissileType _type=MissileType::NORMAL) :pos(_pos),
+		init_height(_init_height),
+		color(_color),
+		is_rising(_is_rising),
+		type(_type){};
+	Vec2 pos;
+	double init_height;
+	Color color;
+	//上昇中かどうか
+	bool is_rising;
+	MissileType type;
+};
+
 struct InkballParm
 {
-	InkballParm(Vec2 _pos, double _init_height, Vec2 _dir, double _fly_strength, Color _color) :pos(_pos),
+	InkballParm(Vec2 _pos, double _init_height, Vec2 _dir, double _fly_strength, Color _color,double _paint_scale=1.0)
+		:pos(_pos),
 		init_height(_init_height),
 		dir(_dir),
 		fly_strength(_fly_strength),
-		color(_color) {};
+		color(_color),
+		paint_scale(_paint_scale){};
 	Vec2 pos;
 	double init_height;
 	Vec2 dir;
 	double fly_strength;
 	Color color;
+	double paint_scale;
+};
+
+struct IkaBalloonParm
+{
+	IkaBalloonParm(Vec2 _pos,IkaBalloonType _type):pos(_pos),type(_type) {};
+	Vec2 pos;
+	IkaBalloonType type;
+};
+
+struct RumbaParm
+{
+	RumbaParm(Vec2 _pos, Color _color) :pos(_pos), color(_color) {};
+	Vec2 pos;
+	Color color;
+};
+
+struct OrbParm
+{
+	OrbParm(Vec2 _pos, double _init_height, Vec2 _dir, double _fly_strength, OrbType _type=OrbType::NORMAL)
+		:pos(_pos),
+		init_height(_init_height),
+		dir(_dir),
+		fly_strength(_fly_strength),
+		type(_type){};
+	Vec2 pos;
+	double init_height;
+	Vec2 dir;
+	double fly_strength;
+	OrbType type;
 };
 
 Vec2 Point_to_Vec2(Point _p)

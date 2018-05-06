@@ -237,8 +237,16 @@ bool ObjectManager::handle_message(const Telegram& _msg)
 bool ObjectManager::on_message(const Telegram& _msg)
 {
 	bool ret = false;
+	//switch文を使うことの見通しの悪さ
+	std::pair<int, Vec2>* pair;
+	IkaStateType s;
 	Paint p;
-	InkballParm* ibp;
+	InkballParm* ip;
+	OrbParm* op;
+	IkaBalloonParm* ibp;
+	MissileParm* mp;
+	RumbaParm* rp;
+	Ika* ika;
 
 	switch (_msg.msg)
 	{
@@ -247,8 +255,8 @@ bool ObjectManager::on_message(const Telegram& _msg)
 		ret = true;
 		break;
 	case msg::TYPE::CREATE_INK_BALL:
-		ibp=(InkballParm*)_msg.extraInfo;
-		create_Inkball(ibp->pos, ibp->init_height, ibp->dir, ibp->fly_strength, ibp->color);
+		ip=(InkballParm*)_msg.extraInfo;
+		create_Inkball(ip->pos, ip->init_height, ip->dir, ip->fly_strength, ip->color,ip->paint_scale);
 		ret = true;
 		break;
 	case msg::TYPE::ALL_WALL_PAINT:
@@ -264,9 +272,65 @@ bool ObjectManager::on_message(const Telegram& _msg)
 					p = Paint(Vec2_to_Point(m_objects[i]->get_p()), Palette::Black, 1.0, &ASSET_FAC->get_image(ImageType::WALL_BLACK), false);
 					MSG_DIS->dispatch_message(0.0, this, m_map, msg::TYPE::MAP_PAINT, &p);
 				}
+				else if (is_same_class(m_objects[i]->get_id(), ID(ID_MAPGIMMCIK_RESPAWN_POINT)))
+				{
+					p = Paint(Vec2_to_Point(m_objects[i]->get_p()), Palette::Black, 1.0, &ASSET_FAC->get_image(ImageType::WALL_BLACK_CIRCLE), false);
+					MSG_DIS->dispatch_message(0.0, this, m_map, msg::TYPE::MAP_PAINT, &p);
+				}
+
 			}
 		}
 		ret = true;
+		break;
+	case msg::TYPE::GET_MISSILE_TARGET:
+		MSG_DIS->dispatch_message(0.0, m_id, _msg.sender_id, msg::TYPE::GIVE_MISSILE_TARGET, find_missile_target((Missile*)_msg.extraInfo));
+		ret = true;
+		break;
+	case msg::TYPE::CREATE_ORB:
+		op = (OrbParm*)_msg.extraInfo;
+		create_SpecialOrb(op->pos, op->init_height, op->dir, op->fly_strength, op->type);
+		ret = true;
+		break;
+	case msg::TYPE::CREATE_IKABALLOON:
+		ibp = (IkaBalloonParm*)_msg.extraInfo;
+		create_IkaBalloon(ibp->pos, ibp->type);
+		ret = true;
+		break;
+	case msg::TYPE::CREATE_MISSILE:
+		mp = (MissileParm*)_msg.extraInfo;
+		create_Missile(mp->pos,mp->init_height,mp->color,mp->type);
+		ret = true;
+		break;
+	case msg::TYPE::CREATE_RUMBA:
+		rp = (RumbaParm*)_msg.extraInfo;
+		create_Rumba(rp->pos,rp->color);
+		ret = true;
+		break;
+	case msg::TYPE::CREATE_IKA:
+		pair = (std::pair<int, Vec2>*)_msg.extraInfo;
+		ika = create_Ika(pair->first, pair->second);
+		//もしリスポーンオブジェクトから呼び出されていたらIkaを返す
+		if (is_same_class(_msg.sender_id, ID(ID_MAPGIMMCIK_RESPAWN_POINT)))
+		{
+			MSG_DIS->dispatch_message(0.0, m_id, ID(_msg.sender_id), msg::TYPE::GIVE_CREATED_IKA, ika);
+		}
+		break;
+	case msg::TYPE::ALL_IKA_STATE_RESPAWN:
+		for (unsigned int i = 0; i < m_objects.size(); i++)
+		{
+			if (m_objects[i] != nullptr)
+			{
+				if (m_objects[i]->get_is_alive() == false)continue;
+				if (is_same_class(m_objects[i]->get_id(), ID(ID_OBJ_IKA)))
+				{
+					s = IkaStateType::IKA_RESPAWN;
+					MSG_DIS->dispatch_message(0.0, this, m_objects[i], msg::TYPE::DELETE_IKA_GLOBAL_STATE);
+					MSG_DIS->dispatch_message(0.0, this, m_objects[i], msg::TYPE::SET_IKA_GLOBAL_STATE,&s);
+				}
+			}
+		}
+		ret = true;
+		break;
 	}
 
 	return ret;
@@ -302,11 +366,20 @@ void ObjectManager::create_TestObj(Vec2 _p)
 }
 */
 
-void ObjectManager::create_Inkball(Vec2 _pos, double _init_height, Vec2 _dir, double _fly_strength, Color _color)
+void ObjectManager::create_Inkball(Vec2 _pos, double _init_height, Vec2 _dir, double _fly_strength, Color _color, double _paint_scale)
 {
 	if (m_map == nullptr)return;
 
-	Inkball* new_obj = new Inkball(m_map, _pos, _init_height, _dir, _fly_strength, _color);
+	Inkball* new_obj = new Inkball(m_map, _pos, _init_height, _dir, _fly_strength, _color,_paint_scale);
+
+	m_yet_objects.push(new_obj);
+}
+
+void ObjectManager::create_SpecialOrb(Vec2 _pos, double _init_height, Vec2 _dir, double _fly_strength, OrbType _type)
+{
+	if (m_map == nullptr)return;
+
+	SpecialOrb* new_obj = new SpecialOrb(m_map, _pos, _init_height, _dir, _fly_strength, _type);
 
 	m_yet_objects.push(new_obj);
 }
@@ -347,9 +420,9 @@ void ObjectManager::create_Ika(Vec2 _init_p,ControllerType _contoroller_type,Col
 	m_yet_objects.push(new_obj);
 }
 
-void ObjectManager::create_Ika(int _index,Vec2 _pos)
+Ika* ObjectManager::create_Ika(int _index,Vec2 _pos)
 {
-	if (m_map == nullptr)return;
+	if (m_map == nullptr)return nullptr;
 	Vec2 init_pos = _pos;
 	ControllerType controller;
 	TeamType team_type;
@@ -395,7 +468,46 @@ void ObjectManager::create_Ika(int _index,Vec2 _pos)
 
 	m_yet_objects.push(new_obj);
 
+	return new_obj;
+
 }
+
+void ObjectManager::create_Missile(Vec2 _pos, double _init_height, Color _color, MissileType _type)
+{
+	if (m_map == nullptr)return;
+
+	Missile *new_obj = new Missile(m_map, _pos, _init_height, _color,_type);
+
+	m_yet_objects.push(new_obj);
+}
+
+void ObjectManager::create_IkaBalloon(Vec2 _pos, IkaBalloonType _type)
+{
+	if (m_map == nullptr)return;
+
+	IkaBalloon* new_obj = new IkaBalloon(m_map, _pos,_type);
+
+	m_yet_objects.push(new_obj);
+}
+
+void ObjectManager::create_Trampoline(Vec2 _pos)
+{
+	if (m_map == nullptr)return;
+
+	Trampoline* new_obj = new Trampoline(m_map, _pos);
+
+	m_yet_objects.push(new_obj);
+}
+
+void ObjectManager::create_RespawnPoint(Vec2 _pos,TeamType _type)
+{
+	if (m_map == nullptr)return;
+
+	RespawnPoint* new_obj = new RespawnPoint(m_map, _pos,Setting::get_color(_type));
+
+	m_yet_objects.push(new_obj);
+}
+
 
 void ObjectManager::destroy_all_object()
 {
@@ -587,4 +699,42 @@ void ObjectManager::sort_objects()
 		}
 	}
 
+}
+
+Object* ObjectManager::find_missile_target(Missile* _missile)
+{
+	Object* ret = nullptr;
+
+	Color missile_color = _missile->get_color();
+
+	//候補を格納
+	std::list<Object*> rumba_targets;
+
+	for(unsigned int i=0;i<m_objects.size();i++)
+	{
+		if (m_objects[i] != nullptr)
+		{
+			if (m_objects[i]->get_is_alive() == false)continue;
+			if (is_same_class(m_objects[i]->get_id(),ID(ID_OBJ_IKA)))
+			{
+				if (m_objects[i]->get_color() != missile_color)
+				{
+					//Ikaが見つかれば即座に終了
+					return m_objects[i];
+				}
+			}
+			else if (is_same_class(m_objects[i]->get_id(), ID(ID_OBJ_RUMBA)))
+			{
+				if (m_objects[i]->get_color() != missile_color)
+				{
+					//Rumbaが見つかれば候補に格納
+					rumba_targets.push_back(m_objects[i]);
+				}
+			}
+		}
+	}
+
+	//ルンバがいればそれに向かう
+	if (rumba_targets.empty() == false)ret = rumba_targets.front();
+	return ret;
 }

@@ -28,6 +28,7 @@ public:
 	//MovingObjectのパラメータを設定する
 	virtual void set_moving_parm() = 0;
 
+
 	//重力を適応する
 	void gravity()
 	{
@@ -81,11 +82,11 @@ public:
 	}
 
 	//影を描画する
-	void draw_shadow(double _size = 1.0)
+	void draw_shadow(double _size = 1.0,Vec2 _pos=Vec2(0.0,0.0),double _height_threshold=ON_GROUND_THRESHOLD)
 	{
-		if (m_height > 3.0)
+		if (m_height > ON_GROUND_THRESHOLD)
 		{
-			ASSET_FAC->get_tex(ImageType::SHADOW_64).scale(_size).drawAt(m_pos);
+			ASSET_FAC->get_tex(ImageType::SHADOW_64).scale(_size).drawAt(m_pos+_pos);
 		}
 	}
 

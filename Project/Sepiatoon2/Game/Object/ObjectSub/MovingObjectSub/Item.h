@@ -12,3 +12,6 @@ protected:
 
 #include"ItemSub\Rumba.cpp"
 #include"ItemSub\Inkball.cpp"
+#include"ItemSub\Missile.cpp"
+#include"ItemSub\SpecialOrb.cpp"
+#include"ItemSub\IkaBalloon.cpp"

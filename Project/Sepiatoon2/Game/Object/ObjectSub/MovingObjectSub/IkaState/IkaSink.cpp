@@ -25,6 +25,8 @@ void IkaSink::update(Ika* _owner)
 
 	input(_owner);
 
+	_owner->sink_damage();
+
 	//State‘JˆÚˆ—
 	execute_change_state(_owner);
 
@@ -100,6 +102,10 @@ bool IkaSink::on_collide(Ika* _owner, CollidableObject* _obj)
 		case IST::IKA_SPECIAL_SUPERNOVA:
 			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*10.0);
 			_owner->damaged(IKA_SUPERNOVA_DAMAEG);
+			break;
+		case IST::IKA_SPECIAL_DASH:
+			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*10.0);
+			_owner->damaged(IKA_DASH_DAMAGE);
 			break;
 		}
 

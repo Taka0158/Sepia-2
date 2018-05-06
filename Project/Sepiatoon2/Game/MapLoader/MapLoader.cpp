@@ -30,9 +30,14 @@ void MapLoader::load_map(Map* _map)
 	switch (_map->get_map_type())
 	{
 	case MapType::SIMPLE:
+		str = L"Assets/MapData/Simple.txt";
+		w = MAP_S_X_NUM;
+		h = MAP_S_Y_NUM;
 	case MapType::SIMPLE_BIG:
-		return;
-		//‰½‚à‚µ‚È‚¢
+		str = L"Assets/MapData/SimpleBig.txt";
+		w = MAP_L_X_NUM;
+		h = MAP_L_Y_NUM;
+		break;
 	case MapType::CLASSIC:
 		str = L"Assets/MapData/MapClassic.txt";
 		w = MAP_L_X_NUM;
@@ -67,6 +72,9 @@ void MapLoader::create_request(MapGimmickType _type,Vec2 _pos)
 	switch (_type)
 	{
 	case MapGimmickType::NONE:		break;	case MapGimmickType::WALL:		OBJ_MGR->create_Wall(_pos);		break;
+	case MapGimmickType::TRAMPOLINE:		OBJ_MGR->create_Trampoline(_pos);		break;
+	case MapGimmickType::RESPAWN_A:		OBJ_MGR->create_RespawnPoint(_pos,TeamType::TEAM_A);		break;
+	case MapGimmickType::RESPAWN_B:		OBJ_MGR->create_RespawnPoint(_pos, TeamType::TEAM_B);		break;
 	default:
 		ASSERT(L"—\Šú‚µ‚È‚¢MapGimmickType‚Å‚·");
 		break;

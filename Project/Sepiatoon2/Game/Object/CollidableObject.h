@@ -9,7 +9,7 @@ public:
 
 	CollidableObject(ID _id) :Entity(ID(UID_MGR_OBJ) | _id){};
 
-	virtual ~CollidableObject() {};
+	virtual ~CollidableObject() {};	  
 
 	//長方形のマスクを使う場合はoverride
 	virtual void mask_update() { m_mask.setPos(m_pos).setSize(m_mask_radius); };

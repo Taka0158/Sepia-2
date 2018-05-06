@@ -248,6 +248,39 @@ Image& AssetFactory::get_image(ImageType _type, int _index)
 	case ImageType::MAP_CLASSIC_SAMPLE:
 		ret = (m_im_map_classic_sample != nullptr) ? m_im_map_classic_sample: m_im_map_classic_sample = new Image(PASS_MAP_CLASSIC_SAMPLE);
 		break;
+	case ImageType::ANIM_ORB:
+		_index = clamp(_index, 0, NUM_OF_ANIM_ORB - 1);
+		ret = (m_im_orb[_index] != nullptr) ? m_im_orb[_index] : m_im_orb[_index] = new Image(PASS_ORB(_index));
+		break;
+	case ImageType::ANIM_CUTIN_WIND:
+		_index = clamp(_index, 0, NUM_OF_ANIM_CUTIN_WIND- 1);
+		ret = (m_im_cutin_wind[_index] != nullptr) ? m_im_cutin_wind[_index] : m_im_cutin_wind[_index] = new Image(PASS_CUTIN_WIND(_index));
+		break;
+	case ImageType::ANIM_SELECT_DASH:
+		_index = clamp(_index, 0, NUM_OF_ANIM_SELECT_DASH - 1);
+		ret = (m_im_select_dash[_index] != nullptr) ? m_im_select_dash[_index] : m_im_select_dash[_index] = new Image(PASS_SELECT_DASH(_index));
+		break;
+	case ImageType::MISSILE:
+		ret = (m_im_missile != nullptr) ? m_im_missile : m_im_missile = new Image(PASS_MISSILE);
+		break;
+	case ImageType::TRAMPOLINE:
+		ret = (m_im_trampoline != nullptr) ? m_im_trampoline : m_im_trampoline = new Image(PASS_TRAMPOLINE);
+		break;
+	case ImageType::SPECIAL_ORB:
+		ret = (m_im_special_orb!= nullptr) ? m_im_special_orb : m_im_special_orb = new Image(PASS_SPECIAL_ORB);
+		break;
+	case ImageType::IKA_BALLOON_1:
+		ret = (m_im_ika_balloon_1 != nullptr) ? m_im_ika_balloon_1 : m_im_ika_balloon_1 = new Image(PASS_IKA_BALLOON_1);
+		break;
+	case ImageType::IKA_BALLOON_2:
+		ret = (m_im_ika_balloon_2 != nullptr) ? m_im_ika_balloon_2 : m_im_ika_balloon_2 = new Image(PASS_IKA_BALLOON_2);
+		break;
+	case ImageType::RESPAWN_POINT:
+		ret = (m_im_respawn_point != nullptr) ? m_im_respawn_point : m_im_respawn_point = new Image(PASS_RESPAWN_POINT);
+		break;
+	case ImageType::WALL_BLACK_CIRCLE:
+		ret = (m_im_wall_black_circle != nullptr) ? m_im_wall_black_circle : m_im_wall_black_circle = new Image(PASS_WALL_BLACK_CIRCLE);
+		break;
 	}
 	return *ret;
 }
@@ -294,6 +327,13 @@ Image AssetFactory::get_image_copy(ImageType _type)
 	case ImageType::WALL_BLACK:
 	case ImageType::MAP_CLASSIC:
 	case ImageType::MAP_CLASSIC_SAMPLE:
+	case ImageType::MISSILE:
+	case ImageType::TRAMPOLINE:
+	case ImageType::SPECIAL_ORB:
+	case ImageType::IKA_BALLOON_1:
+	case ImageType::IKA_BALLOON_2:
+	case ImageType::RESPAWN_POINT:
+	case ImageType::WALL_BLACK_CIRCLE:
 		ret=get_image(_type).clone();
 		break;
 	}
@@ -342,6 +382,13 @@ Texture AssetFactory::get_tex_copy(ImageType _type)
 	case ImageType::WALL_BLACK:
 	case ImageType::MAP_CLASSIC:
 	case ImageType::MAP_CLASSIC_SAMPLE:
+	case ImageType::MISSILE:
+	case ImageType::TRAMPOLINE:
+	case ImageType::SPECIAL_ORB:
+	case ImageType::IKA_BALLOON_1:
+	case ImageType::IKA_BALLOON_2:
+	case ImageType::RESPAWN_POINT:
+	case ImageType::WALL_BLACK_CIRCLE:
 		ret = Texture(get_tex(_type));
 		break;
 	}
@@ -476,11 +523,42 @@ Texture& AssetFactory::get_tex(ImageType _type,int _index)
 	case ImageType::MAP_CLASSIC_SAMPLE:
 		ret = (m_tex_map_classic_sample != nullptr) ? m_tex_map_classic_sample : m_tex_map_classic_sample = new Texture(get_image(_type));
 		break;
+	case ImageType::ANIM_ORB:
+		_index = clamp(_index, 0, NUM_OF_ANIM_ORB - 1);
+		ret = (m_tex_orb[_index] != nullptr) ? m_tex_orb[_index] : m_tex_orb[_index] = new Texture(get_image(_type, _index));
+		break;
+	case ImageType::ANIM_CUTIN_WIND:
+		_index = clamp(_index, 0, NUM_OF_ANIM_CUTIN_WIND - 1);
+		ret = (m_tex_cutin_wind[_index] != nullptr) ? m_tex_cutin_wind[_index] : m_tex_cutin_wind[_index] = new Texture(get_image(_type, _index));
+		break;
+	case ImageType::ANIM_SELECT_DASH:
+		_index = clamp(_index, 0, NUM_OF_ANIM_SELECT_DASH - 1);
+		ret = (m_tex_select_dash[_index] != nullptr) ? m_tex_select_dash[_index] : m_tex_select_dash[_index] = new Texture(get_image(_type, _index));
+		break;
+	case ImageType::MISSILE:
+		ret = (m_tex_missile != nullptr) ? m_tex_missile : m_tex_missile = new Texture(get_image(_type));
+		break;
+	case ImageType::TRAMPOLINE:
+		ret = (m_tex_trampoline != nullptr) ? m_tex_trampoline : m_tex_trampoline = new Texture(get_image(_type));
+		break;
+	case ImageType::SPECIAL_ORB:
+		ret = (m_tex_special_orb != nullptr) ? m_tex_special_orb : m_tex_special_orb = new Texture(get_image(_type));
+		break;
+	case ImageType::IKA_BALLOON_1:
+		ret = (m_tex_ika_balloon_1 != nullptr) ? m_tex_ika_balloon_1 : m_tex_ika_balloon_1 = new Texture(get_image(_type));
+		break;
+	case ImageType::IKA_BALLOON_2:
+		ret = (m_tex_ika_balloon_2 != nullptr) ? m_tex_ika_balloon_2 : m_tex_ika_balloon_2 = new Texture(get_image(_type));
+		break;
+	case ImageType::RESPAWN_POINT:
+		ret = (m_tex_respawn_point != nullptr) ? m_tex_respawn_point : m_tex_respawn_point = new Texture(get_image(_type));
+		break;
+	case ImageType::WALL_BLACK_CIRCLE:
+		ret = (m_tex_wall_black_circle != nullptr) ? m_tex_wall_black_circle : m_tex_wall_black_circle = new Texture(get_image(_type));
+		break;
 	}
 	return *ret;
 }
-
-
 
 /*
 VideoPlayer& AssetFactory::get_video(MovieType _type)

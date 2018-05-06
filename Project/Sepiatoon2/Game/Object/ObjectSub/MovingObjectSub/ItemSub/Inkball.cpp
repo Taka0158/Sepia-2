@@ -1,13 +1,13 @@
 #include"Inkball.h"
 
-Inkball::Inkball(Map* _map, Vec2 _init_pos, double _init_height,Vec2 _dir, double _fly_strength, Color _color) :Item(ID(ID_OBJ_INKBALL))
+Inkball::Inkball(Map* _map, Vec2 _init_pos, double _init_height,Vec2 _dir, double _fly_strength, Color _color,double _paint_scale) :Item(ID(ID_OBJ_INKBALL))
 {
-	//バグ有り
 	initialize();
 
 	m_direction = _dir;
 	m_color = _color;
 	m_map = _map;
+	m_paint_scale = _paint_scale;
 	init_moving_param();
 	set_id();
 	m_pos = _init_pos;
@@ -20,7 +20,6 @@ Inkball::Inkball(Map* _map, Vec2 _init_pos, double _init_height,Vec2 _dir, doubl
 Inkball::~Inkball()
 {
 	//DEBUG->regist(DebugText(1.0, L"-----------インクボールデストラクタ-----------"));
-
 }
 
 void Inkball::initialize()
@@ -29,8 +28,8 @@ void Inkball::initialize()
 	m_is_alive = true;
 	m_depth = 1;
 	m_init_depth = 1;
-	m_mask_radius = 8.0;
-	m_mask_height = 6.0;
+	m_mask_radius = 10.0;
+	m_mask_height = 16.0;
 }
 
 void Inkball::finalize()
@@ -46,7 +45,7 @@ void Inkball::update()
 
 	if (m_height < 2.0)
 	{
-		Paint p = Paint(Vec2_to_Point(m_pos), m_color, 0.75);
+		Paint p = Paint(Vec2_to_Point(m_pos), m_color, 0.75*m_paint_scale);
 		MSG_DIS->dispatch_message(0.0, this, m_map, msg::TYPE::MAP_PAINT, &p,false);
 
 		destroy();
@@ -116,7 +115,7 @@ bool Inkball::on_collide(CollidableObject* _obj)
 		}
 		else
 		{
-			other->damaged(20.0);
+			other->damaged(INK_BALL_DAMAGE);
 			destroy();
 		}
 		ret = true;

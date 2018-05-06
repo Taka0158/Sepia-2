@@ -32,6 +32,7 @@ public:
 
 	bool handle_message(const Telegram& _msg)override;
 	bool handle_collide(CollidableObject* _obj)override;
+	Color get_color() { return m_color; }
 	void destroy();
 private:
 	void restrain();

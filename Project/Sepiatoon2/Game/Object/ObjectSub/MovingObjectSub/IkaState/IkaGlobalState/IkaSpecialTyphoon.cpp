@@ -23,6 +23,8 @@ void IkaSpecialTyphoon::input(Ika* _owner)
 		m_paint_scale += 0.01;
 		m_mask_radius += 0.025;
 		m_draw_scale += 0.0075;
+
+
 	}
 	else
 	{
@@ -34,6 +36,7 @@ void IkaSpecialTyphoon::enter(Ika* _owner)
 {
 	m_owner = _owner;
 
+	//開始パラメータ(倍率)
 	m_paint_scale = 2.5;
 	m_mask_radius = 3.0;
 	m_draw_scale = 2.0;
@@ -64,11 +67,6 @@ void IkaSpecialTyphoon::update(Ika* _owner)
 }
 void IkaSpecialTyphoon::draw(Ika* _owner)
 {
-	Println(L"IkaSpecialTyphoon:index",m_tex_index);
-	Println(L"paint_scale_rate", m_paint_scale);
-	Println(L"mask_radius_rate", m_mask_radius);
-	Println(L"draw_scale_rate", m_draw_scale);
-	Println(L"IkaSpecialTyphoon");
 	double angle = _owner->get_angle();
 	double scale = _owner->get_tex_scale();
 	ASSET_FAC->get_tex(ImageType::ANIM_TYPHOON, m_tex_index).scale(m_draw_scale).drawAt(_owner->get_p(), _owner->get_color());

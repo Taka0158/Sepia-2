@@ -1,5 +1,7 @@
 #pragma once
 
+#include"Indicatable.h"
+
 //管理するUI子クラスが増えればObjectManagerのような振る舞いに変更すべき
 class UIManager :public Entity, public Singleton<UIManager>
 {
@@ -20,6 +22,12 @@ public:
 	bool handle_message(const Telegram&);
 private:
 	bool on_message(const Telegram&);
+
+	//UI表示するオブジェクトの登録
+	void register_object(Indicatable*);
+
+	//登録されたオブジェクトの表示
+	void draw_indicators();
 
 	//テストクラス
 	//経過時間(秒)を表示するクラス
@@ -47,6 +55,11 @@ private:
 	};
 
 	UITime* m_UITime = nullptr;
+
+	//UIを表示するオブジェクト
+	//登録することで描画深度に関わらず表示できる
+	//削除はfinalize関数でのみ行う
+	std::vector<Indicatable*> m_indicators;
 };
 
 UIManager* Singleton<UIManager>::instance = nullptr;

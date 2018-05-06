@@ -12,14 +12,17 @@ public:
 		ID _receiver_id,
 		msg::TYPE _msg,
 		void* _exinfo = nullptr,
-		bool _use_debug_text = true);
+		bool _use_debug_text = true,
+		bool _is_delete_exinfo = false);
+
 	//相手を直指名　即時配達
 	void dispatch_message(double _dispatch_time,
 		Entity* _sender_id,
 		Entity* _receiver_id,
 		msg::TYPE _msg,
 		void* _exinfo = nullptr,
-		bool _use_debug_text=true);
+		bool _use_debug_text=true,
+		bool _is_delete_exinfo = false);
 
 	//遅延メッセージの送信
 	bool dispatch_delayed_message();
@@ -35,6 +38,10 @@ public:
 
 	//receiverがdeleteされるときに呼び出す
 	void delete_direct_message(Entity*);
+
+	//追加情報を削除する
+	void delete_exinfo(const Telegram& _msg);
+	void delete_exinfo(const DirectTelegram& _msg);
 
 protected:
 	//このメソッドはdispatch_message,dispatch_delayed_messageが利用する

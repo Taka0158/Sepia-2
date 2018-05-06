@@ -72,6 +72,16 @@ private:
 	Image* m_im_wall_black = nullptr;
 	Image* m_im_map_classic = nullptr;
 	Image* m_im_map_classic_sample = nullptr;
+	Image* m_im_orb[NUM_OF_ANIM_ORB] = { nullptr };
+	Image* m_im_cutin_wind[NUM_OF_ANIM_CUTIN_WIND] = { nullptr };
+	Image* m_im_select_dash[NUM_OF_ANIM_SELECT_DASH] = { nullptr };
+	Image* m_im_missile = nullptr;
+	Image* m_im_trampoline = nullptr;
+	Image* m_im_special_orb = nullptr;
+	Image* m_im_ika_balloon_1 = nullptr;
+	Image* m_im_ika_balloon_2 = nullptr;
+	Image* m_im_respawn_point= nullptr;
+	Image* m_im_wall_black_circle = nullptr;
 
 	Texture* m_tex_map_simple_1920_1080 = nullptr;
 	Texture* m_tex_ink_0_128 = nullptr;
@@ -111,6 +121,16 @@ private:
 	Texture* m_tex_wall_black = nullptr;
 	Texture* m_tex_map_classic = nullptr;
 	Texture* m_tex_map_classic_sample = nullptr;
+	Texture* m_tex_orb[NUM_OF_ANIM_ORB] = { nullptr };
+	Texture* m_tex_cutin_wind[NUM_OF_ANIM_CUTIN_WIND] = { nullptr };
+	Texture* m_tex_select_dash[NUM_OF_ANIM_SELECT_DASH] = { nullptr };
+	Texture* m_tex_missile = nullptr;
+	Texture* m_tex_trampoline = nullptr;
+	Texture* m_tex_special_orb = nullptr;
+	Texture* m_tex_ika_balloon_1 = nullptr;
+	Texture* m_tex_ika_balloon_2 = nullptr;
+	Texture* m_tex_respawn_point = nullptr;
+	Texture* m_tex_wall_black_circle = nullptr;
 
 	std::vector<Image*> m_images;
 

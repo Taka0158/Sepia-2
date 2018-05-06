@@ -26,16 +26,21 @@ struct Telegram
 	//デバッグ表示するかどうか
 	bool show_debug_text = true;
 
+	//届けた後に追加情報をdeleteするかどうか
+	bool is_delete_exinfo = false;
+
 	Telegram(double _dispatch_time,
 		ID _sender_id,
 		ID _receiver_id,
 		msg::TYPE _msg,
 		void* _exInfo = nullptr,
-		bool _show_debug_text =true):dispatch_time(_dispatch_time),
+		bool _show_debug_text =true,
+		bool _is_delete_exinfo = false):dispatch_time(_dispatch_time),
 								sender_id(_sender_id),
 								receiver_id(_receiver_id),
 								msg(_msg),
 								extraInfo(_exInfo),
+								is_delete_exinfo(_is_delete_exinfo),
 								show_debug_text(_show_debug_text)
 	{
 
@@ -63,6 +68,9 @@ struct DirectTelegram
 	//追加情報
 	void* extraInfo = nullptr;
 
+	//届けた後に追加情報をdeleteするかどうか
+	bool is_delete_exinfo = false;
+
 	//デバッグ表示するかどうか
 	bool show_debug_text = true;
 
@@ -71,11 +79,13 @@ struct DirectTelegram
 		Entity* _receiver,
 		msg::TYPE _msg,
 		void* _exInfo = nullptr,
-		bool _show_debug_text = true) :dispatch_time(_dispatch_time),
+		bool _show_debug_text = true,
+		bool _is_delete_exinfo = false) :dispatch_time(_dispatch_time),
 		sender(_sender),
 		receiver(_receiver),
 		msg(_msg),
 		extraInfo(_exInfo),
+		is_delete_exinfo(_is_delete_exinfo),
 		show_debug_text(_show_debug_text)
 		
 	{

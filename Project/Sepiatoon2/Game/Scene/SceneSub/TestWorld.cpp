@@ -2,7 +2,6 @@
 
 TestWorld::TestWorld()
 {
-	m_ui = UI_MGR;
 	scene_name = L"TestWorld";
 	initialize();
 }
@@ -17,15 +16,15 @@ void TestWorld::initialize()
 {
 	finalize();
 	OBJ_MGR->initialize();
+	UI_MGR->initialize();
 	SCENE_CAMERA->initialize();
-	m_ui->initialize();
 }
 
 void TestWorld::finalize()
 {
 	OBJ_MGR->finalize();
 	SCENE_CAMERA->finalize();
-	m_ui->finalize();
+	UI_MGR->finalize();
 	MSG_DIS->destroy_all_message();
 	delete_cut_scene();
 }
@@ -57,7 +56,8 @@ void TestWorld::update()
 		SCENE_CAMERA->update_sub();
 		if(!Input::KeyP.pressed)OBJ_MGR->update();
 		//EFFECT_MGR->update();
-		OBJ_MGR->debug_update();
+		UI_MGR->update();
+
 	}
 }
 
@@ -71,8 +71,10 @@ void TestWorld::draw()
 		const auto t1 = SCENE_CAMERA->createTransformer();
 
 		OBJ_MGR->draw();
-		//EFFECT_MGR->draw();
+		//EFFECT_MGR->draw()
 		OBJ_MGR->debug_draw();
+		UI_MGR->draw();
+		UI_MGR->debug_draw();
 	}
 
 	if (m_cut_scene)m_cut_scene->draw(this);
@@ -84,19 +86,24 @@ void TestWorld::debug_update()
 
 	if (Input::KeyZ.clicked)
 	{
-		OBJ_MGR->create_Ika(1, Vec2(160, 160));
+		int index = 1;
+		MSG_DIS->dispatch_message(0.0, ID(UID_MGR_SCENE), ID(ID_MAPGIMMCIK_RESPAWN_POINT), msg::TYPE::RESPAWN_IKA, &index);
+
 	}
 	if (Input::KeyX.clicked)
 	{
-		OBJ_MGR->create_Ika(2, Vec2(1920-160,1080 -160));
+		int index = 2;
+		MSG_DIS->dispatch_message(0.0, ID(UID_MGR_SCENE), ID(ID_MAPGIMMCIK_RESPAWN_POINT), msg::TYPE::RESPAWN_IKA, &index);
 	}
 	if (Input::KeyC.clicked)
 	{
-		OBJ_MGR->create_Ika(3, Vec2(160,1080- 160));
+		int index = 3;
+		MSG_DIS->dispatch_message(0.0, ID(UID_MGR_SCENE), ID(ID_MAPGIMMCIK_RESPAWN_POINT), msg::TYPE::RESPAWN_IKA, &index);
 	}
 	if (Input::KeyV.clicked)
 	{
-		OBJ_MGR->create_Ika(4, Vec2(1920-160, 160));
+		int index = 4;
+		MSG_DIS->dispatch_message(0.0, ID(UID_MGR_SCENE), ID(ID_MAPGIMMCIK_RESPAWN_POINT), msg::TYPE::RESPAWN_IKA, &index);
 	}
 	if (Input::MouseM.clicked)
 	{
@@ -186,6 +193,43 @@ void TestWorld::debug_update()
 		//set_cut_scene(new IkaCutin(Setting::get_color(Setting::get_ika_1_team())));
 	}
 
+	if (Input::KeyR.clicked)
+	{
+		OBJ_MGR->create_Missile(SCENE_CAMERA->get_mouse_pos(), 50, Setting::get_color(TeamType::TEAM_B));
+	}
+	if (Input::KeyF.clicked)
+	{
+		OBJ_MGR->create_Missile(SCENE_CAMERA->get_mouse_pos(), 50, Setting::get_color(TeamType::TEAM_A));
+	}
+	if (Input::KeyE.clicked)
+	{
+		OBJ_MGR->create_Missile(SCENE_CAMERA->get_mouse_pos(), 50, Setting::get_color(TeamType::TEAM_A),MissileType::RAIN);
+	}
+	if (Input::KeyB.clicked)
+	{
+		OBJ_MGR->create_IkaBalloon(SCENE_CAMERA->get_mouse_pos(), IkaBalloonType::ITEM);
+	}
+	if (Input::KeyN.clicked)
+	{
+		OBJ_MGR->create_IkaBalloon(SCENE_CAMERA->get_mouse_pos(), IkaBalloonType::ORB);
+	}
+	if (Input::KeyM.clicked)
+	{
+		if (Input::KeyLControl.pressed)
+		{
+			OrbParm op = OrbParm(SCENE_CAMERA->get_mouse_pos(), 10.0, RandomVec2(1.0),5, OrbType::NORMAL);
+			MSG_DIS->dispatch_message(0.0, UID_UNKNOWN, UID_MGR_OBJ, msg::TYPE::CREATE_INK_BALL, &op, false);
+		}
+		else
+		{
+			OrbParm op = OrbParm(SCENE_CAMERA->get_mouse_pos(), 10.0, RandomVec2(1.0), 5, OrbType::SPECIAL);
+			MSG_DIS->dispatch_message(0.0, UID_UNKNOWN, UID_MGR_OBJ, msg::TYPE::CREATE_INK_BALL, &op, false);
+		}
+
+	}
+
+	OBJ_MGR->debug_update();
+	UI_MGR->debug_update();
 }
 
 void TestWorld::debug_draw()

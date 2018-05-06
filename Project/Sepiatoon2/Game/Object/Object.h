@@ -2,7 +2,7 @@
 class Object :public CollidableObject
 {
 public:
-	Object(ID _id) :CollidableObject(ID(UID_MGR_OBJ) | _id)
+	Object(ID _id) :CollidableObject(_id)
 	{
 
 	};
@@ -23,6 +23,10 @@ public:
 	void init_depth(){ m_depth= m_init_depth; };
 	int& get_depth_ref() { return m_depth; };
 	void set_is_alive(bool _b) { m_is_alive = _b; };
+
+	//‚©‚È‚è‹­ˆø‚ÌŒã•t	–½–¼‹K‘¥‚ÉŠ´Ó
+	virtual Color get_color() { return Palette::Black; }
+	//virtual void destroy() { m_is_alive = false; }
 
 	//ID‚ğİ’è‚·‚é
 	virtual void set_id() = 0;

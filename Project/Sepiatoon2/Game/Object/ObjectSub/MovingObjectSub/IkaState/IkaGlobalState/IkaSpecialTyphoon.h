@@ -15,6 +15,7 @@ public:
 	void draw(Ika* _owner)override;
 	void exit(Ika* _owner)override;
 
+	//localstate‚ðŽg—p‚·‚é‚½‚ß
 	IkaStateType get_state_type()override;
 
 	bool on_collide(Ika* _owner, CollidableObject* _obj);
@@ -35,4 +36,4 @@ private:
 	double m_draw_scale;
 };
 
-int IkaSpecialTyphoon::m_duration = 600;
+int IkaSpecialTyphoon::m_duration = 420;

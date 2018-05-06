@@ -37,7 +37,6 @@ public:
 	virtual ~Scene() {};
 
 	String get_scene_name() { return scene_name; };
-	UIManager* get_ui() { return m_ui; };
 
 
 	//背景を描画する準備をする
@@ -63,12 +62,6 @@ protected:
 	//コマンド選択のindex
 	int m_index;
 	
-	//シーンごとに別のUIにすべき？
-	//規模が小さいので単一のUIで済ます
-	//UIが存在しないSceneは　nullptr
-	//		  する			 UIManager
-	UIManager* m_ui = nullptr;
-
 	std::unique_ptr<CutScene> m_cut_scene = nullptr;
 
 	int m_timer = 0;

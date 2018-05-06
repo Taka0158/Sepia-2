@@ -33,15 +33,25 @@ public:
 		TeamType _team_type=Setting::get_ika_1_team(),
 		CharType _char_type=Setting::get_char_1(),
 		SpecialType _special_type=Setting::get_special_1());
-	void create_Ika(int _index,Vec2 _pos);
+	Ika* create_Ika(int _index,Vec2 _pos);
 
 	void create_Tire(Vec2 _pos);
 
 	void create_Rumba(Vec2 _pos, Color _color);
 
-	void create_Inkball(Vec2 _pos, double _init_height, Vec2 _dir, double _fly_strength, Color _color);
+	void create_Inkball(Vec2 _pos, double _init_height, Vec2 _dir, double _fly_strength, Color _color,double _paint_scale);
 
 	void create_Wall(Vec2 _pos);
+
+	void create_Missile(Vec2 _pos, double _init_height, Color _color,MissileType _type=MissileType::NORMAL);
+
+	void create_SpecialOrb(Vec2 _pos, double _init_height, Vec2 _dir, double _fly_strength, OrbType _type=OrbType::NORMAL);
+
+	void create_IkaBalloon(Vec2 _pos,IkaBalloonType _type);
+
+	void create_Trampoline(Vec2 _pos);
+
+	void create_RespawnPoint(Vec2 _pos, TeamType _type);
 
 	//-----------------------------------------------Create関数--------------------------------------------------------------------------
 
@@ -98,6 +108,9 @@ private:
 
 	//描画深度に合わせてm_objectsをソートする
 	void sort_objects();
+
+	//ミサイルのターゲットを探す
+	Object* find_missile_target(Missile*);
 private:
 	//未登録オブジェクトを格納する
 	//register_objcet()で登録される

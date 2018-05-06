@@ -8,6 +8,7 @@
 #define ENUM_NUM_MAP_TYPE 3
 #define ENUM_NUM_IMAGE_TYPE 33
 #define ENUM_NUM_PLAYMODE_TYPE 5
+#define ENUM_NUM_ITEM_TYPE 3
 #pragma endregion
 
 
@@ -59,17 +60,30 @@
 #define PASS_WALL  L"Assets/Images/MapGimmick/wall_128_120.png"
 #define PASS_WALL_BLACK  L"Assets/Images/MapGimmick/black_128_120.png"
 #define PASS_MAP_CLASSIC_SAMPLE  L"Assets/Images/Map/classic_sample.png"
+#define PASS_MISSILE  L"Assets/Images/Missile/missile.png"
+#define PASS_TRAMPOLINE L"Assets/Images/MapGimmick/trampoline.png"
+#define PASS_SPECIAL_ORB L"Assets/Images/Item/special_orb_1.png"
+#define PASS_IKA_BALLOON_1 L"Assets/Images/Item/ika_balloon_1.png"
+#define PASS_IKA_BALLOON_2 L"Assets/Images/Item/ika_balloon_2.png"
+#define PASS_RESPAWN_POINT L"Assets/Images/MapGimmick/respawn_point.png"
+#define PASS_WALL_BLACK_CIRCLE  L"Assets/Images/MapGimmick/black_circle_128_120.png"
 
 #define PASS_EXPLOSION_READY(index) L"Assets/Images/Supernova/explosion_ready."+ToString(index)+L".png"
 #define PASS_EXPLOSION(index) L"Assets/Images/Supernova/explosion."+ToString(index)+L".png"
 #define PASS_SELECT_TYPHOON(index) L"Assets/Images/SelectScene/Typhoon/typhoon."+ToString(index)+L".png"
 #define PASS_SELECT_SUPERNOVA(index) L"Assets/Images/SelectScene/Supernova/supernova."+ToString(index)+L".png"
+#define PASS_ORB(index) L"Assets/Images/Orb/orb."+ToString(index)+L".png"
+#define PASS_CUTIN_WIND(index) L"Assets/Images/Cutin/cutin."+ToString(index)+L".png"
+#define PASS_SELECT_DASH(index) L"Assets/Images/SelectScene/dash/orb."+ToString(index)+L".png"
 ////-----------------------------------------------NumOfImages---------------------------------------------------
 #define NUM_OF_ANIM_TYPHOON 36
 #define NUM_OF_ANIM_EXPLOSION_READY 25
 #define NUM_OF_ANIM_EXPLOSION 18					 											 
 #define NUM_OF_ANIM_SELECT_TYPHOON 36					 											 
-#define NUM_OF_ANIM_SELECT_SUPERNOVA 20					 											 
+#define NUM_OF_ANIM_SELECT_SUPERNOVA 20
+#define NUM_OF_ANIM_ORB 40
+#define NUM_OF_ANIM_CUTIN_WIND 24
+#define NUM_OF_ANIM_SELECT_DASH 40
 ////-----------------------------------------------NumOfImages---------------------------------------------------
 ///-----------------------------------------------Images---------------------------------------------------
 ///-----------------------------------------------Movies---------------------------------------------------
@@ -105,22 +119,28 @@
 #define UID_MGR_SCENE		0x01000000
 
 // or(| : 論理和) で　結合すること
-#define UID_MGR_OBJ				0x02000000
-#define UID_OBJ_MAP				0x02000001
-#define ID_OBJ_TEST				0x02010000
-#define ID_OBJ_IKA				0x02020000
-#define ID_OBJ_TYPHOON			0x02040000
-#define ID_MAPGIMMCIK_TIRE		0x02080000
-#define ID_OBJ_RUMBA		    0x02100000
-#define ID_OBJ_INKBALL		    0x02200000
-#define ID_MAPGIMMCIK_WALL		0x02400000
+#define UID_MGR_OBJ					0x02000000
+#define UID_OBJ_MAP					0x02000001
+#define ID_OBJ_TEST					0x02010000
+#define ID_OBJ_IKA					0x02020000
+#define ID_OBJ_TYPHOON				0x02040000
+#define ID_MAPGIMMCIK_TIRE			0x02080000
+#define ID_OBJ_RUMBA				0x02100000
+#define ID_OBJ_INKBALL				0x02200000
+#define ID_MAPGIMMCIK_WALL			0x02400000
+#define ID_OBJ_MISSILE				0x02800000
+//多分大丈夫
+#define ID_OBJ_IKA_BALLOON			0x02110000
+#define ID_OBJ_IKA_SPECIAL_ORB		0x02210000
+#define ID_MAPGIMMICK_TRAMPOLINE	0x02410000
+#define	ID_MAPGIMMCIK_RESPAWN_POINT	0x02810000
 
-#define UID_MGR_EFFECT			0x04000000
-#define UID_MGR_AUDIO			0x08000000
-#define UID_MGR_UI				0x10000000
-#define UID_SCENE_CAMERA		0x20000000
-#define UID_COLLIDE_TREE		0x40000000
-#define UID_MAP_LOADER			0x80000000
+#define UID_MGR_EFFECT				0x04000000
+#define UID_MGR_AUDIO				0x08000000
+#define UID_MGR_UI					0x10000000
+#define UID_SCENE_CAMERA			0x20000000
+#define UID_COLLIDE_TREE			0x40000000
+#define UID_MAP_LOADER				0x80000000
 #pragma endregion
 
 //--------------------------入力の閾値------------------------------------
@@ -185,6 +205,13 @@ typedef std::bitset<COLLIDE_SPACE_MAX_PARTITION_LEVEL*2 + 2> Bitset;
 //--------------------------ゲーム内パラメータ------------------------------------
 #define IKA_TYPHOON_DAMAEG 80
 #define IKA_SUPERNOVA_DAMAEG 200
+#define INK_BALL_DAMAGE 30
+#define IKA_DASH_DAMAGE 60
+#define MISSILE_DAMAGE 45
+#define GAUGE_INCREASE_NORMAL_ORB 5 
+#define GAUGE_INCREASE_SPECIAL_ORB 80 
+#define TRAMPOLINE_SCALING 5.0
+
 //--------------------------ゲーム内パラメータ------------------------------------
 
 //--------------------------簡易色識別------------------------------------

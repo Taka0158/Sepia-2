@@ -35,6 +35,14 @@ Vec2 IkaPlayerController::input(Ika* _owner)
 
 	ret = clamp(ret, Vec2(-1.0, -1.0), Vec2(1.0, 1.0));
 
+	if (is_pressed_swim())m_swim_pressed_frame++;
+	else m_swim_pressed_frame = 0;
+
+	if (m_swim_pressed_frame >= m_special_threshold && _owner->is_enable_execute_special())
+	{
+		_owner->execute_special();
+	}
+
 	return ret;
 }
 

@@ -22,10 +22,17 @@ Ika::Ika(Map* _map, ControllerType _controller_type,Vec2 _init_p, Color _color, 
 
 	m_ika_fsm.reset(new IkaStateMachine(this));
 	m_ika_fsm->set_current_state(new IkaNormal());
-	m_ika_fsm->set_global_state(nullptr);
+	//メッセージを受け取るまで動けない
+	m_ika_fsm->set_global_state(new IkaRespawn());
+	//遅延メッセージでIkaRespawn状態を解除
+	//DEBUG
+	MSG_DIS->dispatch_message(1.0*MSG_SEC, this, this, msg::TYPE::DELETE_IKA_GLOBAL_STATE);
+
 
 	//イカを被写体に追加
-	MSG_DIS->dispatch_message(0, m_id, UID_SCENE_CAMERA, msg::TYPE::REGIST_CAMERA_SUBJECT, this);
+	MSG_DIS->dispatch_message(0, m_id, ID(UID_SCENE_CAMERA), msg::TYPE::REGIST_CAMERA_SUBJECT, this);
+	//イカをUI表示可能オブジェに追加
+	//MSG_DIS->dispatch_message(0.0, m_id, ID(UID_MGR_UI), msg::TYPE::REGISTER_TO_UI, this,false);
 
 }
 Ika::~Ika()
@@ -50,6 +57,9 @@ void Ika::initialize()
 	m_height = 50.0;
 
 	m_mask_radius = 32.0;
+	m_mask_height = 24.0;
+
+
 }
 
 void Ika::finalize()
@@ -75,7 +85,7 @@ void Ika::update()
 
 	gravity();
 
-	if (m_hp < 0.0)
+	if (m_hp <= 0.0)
 	{
 		m_is_alive = false;
 		finalize();
@@ -86,6 +96,7 @@ void Ika::draw()
 {
 	draw_shadow();
 	m_ika_fsm->draw();
+	show_ui();
 }
 
 void Ika::mask_update()
@@ -144,17 +155,18 @@ void Ika::debug_update()
 {
 	if (Input::KeyQ.clicked)
 	{
-		execute_special();
-	 }
+		increase_special_gauge(1000000);
+	}
 }
 
 void Ika::debug_draw()
 {
+
 	m_mask.drawFrame(1.0,0.0,Palette::Red);
-	FONT_DEBUG_8(L"HP:", m_hp).drawCenter(get_p(),Palette::Black);
-	FONT_DEBUG_8(L"GAUGE:", m_special_gauge).drawCenter(Vec2(get_p().x, get_p().y + 8.0), Palette::Black);
-	FONT_DEBUG_8(L"depth:", m_depth).drawCenter(Vec2(get_p().x, get_p().y + 16.0), Palette::Black);
-	FONT_DEBUG_8(L"height:", m_height).drawCenter(Vec2(get_p().x, get_p().y + 24.0), Palette::Black);
+	FONT_DEBUG_16(L"HP:", m_hp).drawCenter(get_p(),Palette::Black);
+	FONT_DEBUG_16(L"GAUGE:", m_special_gauge).drawCenter(Vec2(get_p().x, get_p().y + 18.0), Palette::Black);
+	FONT_DEBUG_8(L"depth:", m_depth).drawCenter(Vec2(get_p().x, get_p().y + 36.0), Palette::Black);
+	FONT_DEBUG_8(L"height:", m_height).drawCenter(Vec2(get_p().x, get_p().y + 54.0), Palette::Black);
 	//Println(L"m_velocity", m_velocity);
 	//Println(L"m_heading", m_heading);
 }
@@ -225,6 +237,7 @@ void Ika::set_moving_parm(IkaStateType _type)
 	case IkaStateType::IKA_SPECIAL_TYPHOON:
 	case IkaStateType::IKA_SPECIAL_DASH:
 	case IkaStateType::IKA_SPECIAL_SUPERNOVA:
+	case IkaStateType::IKA_RESPAWN:
 		set_moving_parm(m_init_mass, m_init_max_speed, m_init_max_force, m_init_max_turn_rate, m_init_friction);
 		break;
 	}
@@ -272,6 +285,9 @@ void Ika::paint()
 
 	//if (m_map->get_color(pos) != m_rival_color)return;
 
+	//どこを塗ったかは関係なくゲージ上昇
+	increase_special_gauge(0.05);
+
 	Paint p = Paint(pos, m_color,m_paint_scale);
 
 	MSG_DIS->dispatch_message(0.0, m_id, m_map->get_id(), msg::TYPE::MAP_PAINT, &p,false);
@@ -288,6 +304,7 @@ bool Ika::on_message(const Telegram& _msg)
 {
 	bool ret = false;
 	IkaStateType* new_state_type;
+	double value;
 
 	switch (_msg.msg)
 	{
@@ -309,6 +326,14 @@ bool Ika::on_message(const Telegram& _msg)
 		execute_special();
 		ret = true;
 		break;
+	case msg::TYPE::DEFINITE_DAMAGE_OTHER:
+		value = *((double*)_msg.extraInfo);
+		damaged_definitely(value);
+		ret = true;
+		break;
+	default:
+		ASSERT(L"メッセージタイプが不正です");
+		break;
 	}
 
 	return ret;
@@ -321,6 +346,8 @@ void Ika::restrain()
 	Vec2 p2 = m_map->get_map_size();
 
 	m_pos = clamp(m_pos, p1, p2);
+	m_hp = clamp(m_hp, 0.0, m_init_hp);
+	m_special_gauge = clamp(m_special_gauge, 0.0, m_max_special_gauge);
 }
 
 void Ika::damaged(double _damage)
@@ -331,7 +358,14 @@ void Ika::damaged(double _damage)
 		if (m_ika_fsm->get_global_state()->get_state_type() == IkaStateType::IKA_SPECIAL_TYPHOON)return;
 		else if (m_ika_fsm->get_global_state()->get_state_type() == IkaStateType::IKA_SPECIAL_SUPERNOVA)return;
 		else if (m_ika_fsm->get_global_state()->get_state_type() == IkaStateType::IKA_SPECIAL_DASH)return;
+		else if (m_ika_fsm->get_global_state()->get_state_type() == IkaStateType::IKA_DAMAGED)return;
 	}
+	m_hp -= _damage;
+	overwrite_global_state(IkaStateType::IKA_DAMAGED);
+}
+
+void Ika::damaged_definitely(double _damage)
+{
 	m_hp -= _damage;
 	overwrite_global_state(IkaStateType::IKA_DAMAGED);
 }
@@ -414,6 +448,8 @@ void Ika::set_global_state(IkaStateType _type)
 	case IkaStateType::IKA_SPECIAL_SUPERNOVA:
 		m_ika_fsm->set_global_state(new IkaSpecialSupernova());
 		break;
+	case IkaStateType::IKA_RESPAWN:
+		m_ika_fsm->overwrite_global_state(new IkaRespawn());
 	}
 }
 
@@ -424,6 +460,9 @@ void Ika::overwrite_global_state(IkaStateType _type)
 	case IkaStateType::IKA_DAMAGED:
 		m_ika_fsm->overwrite_global_state(new IkaDamaged());
 		break;
+	case IkaStateType::IKA_RESPAWN:
+		m_ika_fsm->overwrite_global_state(new IkaRespawn());
+		break;
 	default:
 		ASSERT(L"global_staetに上書き出来ないIkaStateTypeです");
 		break;
@@ -432,6 +471,7 @@ void Ika::overwrite_global_state(IkaStateType _type)
 
 void Ika::execute_special()
 {
+
 	//この一文がなかったためにメモリリークが発生していた？
 	if (m_ika_fsm->get_global_state() != nullptr)return;
 
@@ -449,6 +489,7 @@ void Ika::execute_special()
 		break;
 	}
 
+	init_special_gauge();
 }
 
 void Ika::set_char_param(CharType _type)
@@ -464,6 +505,8 @@ void Ika::set_char_param(CharType _type)
 		m_init_gauge_rate = 1.0;
 		m_init_mask_radius = 32.0;
 		m_init_mask_height = 2.0;
+		m_init_hp_regene_rate = 1.0;
+		m_init_swim_jump = 8.0;
 		break;
 	case CT::OCTOPUS:
 		m_init_hp = 85.0;
@@ -472,6 +515,8 @@ void Ika::set_char_param(CharType _type)
 		m_init_gauge_rate = 1.25;
 		m_init_mask_radius = 32.0;
 		m_init_mask_height = 2.0;
+		m_init_hp_regene_rate = 1.2;
+		m_init_swim_jump = 10.0;
 		break;
 	}
 	init_param();
@@ -485,5 +530,79 @@ void Ika::init_param()
 	m_gauge_rate = m_init_gauge_rate;
 	m_mask_radius = m_init_mask_radius;
 	m_mask_height = m_init_mask_height;
+	m_hp_regene_rate = m_init_hp_regene_rate;
+	m_swim_jump = m_init_swim_jump;
+}
+
+void Ika::show_ui()
+{
+	show_special_gauge();
+	show_hp();
+}
+
+void Ika::show_hp()
+{
+	double hp_ratio = m_hp / m_init_hp;
+
+	LineString line;
+	LineString hp_line;
+	double thickness = 6.0;
+	for (int i = 0; i < 17; i++)
+	{
+		double radius = 48.0;
+		double x = cos(double(i)*Pi / 8)*radius;
+		double y = sin(double(i)*Pi / 8)*radius;
+		double hp_x = cos(double(i)*Pi / 8 * hp_ratio)*radius;
+		double hp_y = sin(double(i)*Pi / 8 * hp_ratio)*radius;
+		line.push_back(get_pos_height() + Vec2(x, y));
+		hp_line.push_back(get_pos_height() + Vec2(hp_x, hp_y));
+	}
+
+
+	//スプライン曲線の描画
+	//下地
+	line.drawCatmullRomSpline(thickness - 2, Color(Palette::Gray, 200), false, 4);
+	
+	hp_line.drawCatmullRomSpline(thickness, Color(Palette::Red, 200), false, 2);
+}
+
+void Ika::show_special_gauge()
+{
+	double gauge_ratio = m_special_gauge / m_max_special_gauge;
+
+	LineString line;
+	LineString gauge_line;
+	double thickness = 6.0;
+	for (int i = 0; i < 17; i++)
+	{
+		double radius = 48.0-thickness;
+		double x = cos(double(i)*Pi / 8)*radius;
+		double y = sin(double(i)*Pi / 8)*radius;
+		double gauge_x = cos(double(i)*Pi / 8 * gauge_ratio)*radius;
+		double gauge_y = sin(double(i)*Pi / 8 * gauge_ratio)*radius;
+		line.push_back(get_pos_height() + Vec2(x, y));
+		gauge_line.push_back(get_pos_height() + Vec2(gauge_x, gauge_y));
+	}
+
+
+	//スプライン曲線の描画
+	//下地
+	line.drawCatmullRomSpline(thickness - 2, Color(Palette::Gray, 200),false,4);
+	gauge_line.drawCatmullRomSpline(thickness, Color(Palette::Green, 200),false,2);
+}
+
+void Ika::increase_special_gauge(double _value)
+{
+	m_special_gauge += _value*m_gauge_rate;
+}
+
+void Ika::regene_hp()
+{
+	m_hp += m_hp_regene_rate * 0.5;
+}
+
+void Ika::sink_damage()
+{
+	m_hp -= m_hp_regene_rate * 1.0;
 }
 

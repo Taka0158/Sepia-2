@@ -1,7 +1,6 @@
 ﻿#define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
-#include <stdlib.h>  
 #include <stdio.h>
 #include <Siv3D.hpp>
 #include<HamFramework.hpp>
@@ -101,9 +100,18 @@ void Main()
 		if (!Input::KeyF12.pressed)DEBUG->show();
 		if (!Input::KeyF12.pressed)MSG_DIS->debug_draw();
 		if (!Input::KeyF12.pressed)FONT_DEBUG_16(stopwatch.ms(), L"msec").draw(320, 32,Palette::Black);
-	   	}
-	//System::Sleep(3000);
+		
+		if (Input::KeyF11.pressed)System::Sleep(100);
+	}
 }
+
+/*
+注意点
+遅延メッセージの際にmessage_dispatcherで追加情報にnewして渡すことで
+スコープを気にしなくてよくなったが、void*のままdeleteしているため
+デストラクタは呼ばれない
+
+newした追加情報には構造体のみにすべき（～parm構造体）
 
 /*
 仕上げまで

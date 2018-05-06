@@ -12,3 +12,5 @@ protected:
 
 #include"MapGimmickSub\Tire.cpp"
 #include"MapGimmickSub\Wall.cpp"
+#include"MapGimmickSub\Trampoline.cpp"
+#include"MapGimmickSub\RespawnPoint.cpp"

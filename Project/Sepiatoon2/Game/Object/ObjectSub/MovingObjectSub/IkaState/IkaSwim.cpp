@@ -29,6 +29,8 @@ void IkaSwim::update(Ika* _owner)
 
 	input(_owner);
 
+	_owner->regene_hp();
+
 	//State遷移処理
 	execute_change_state(_owner);
 
@@ -45,6 +47,13 @@ void IkaSwim::draw(Ika* _owner)
 void IkaSwim::exit(Ika* _owner)
 {
 	_owner->set_init_depth(0);
+
+	//インクから出るときにはジャンプしてインクボール生成
+	_owner->fly(_owner->get_swim_jump());
+	_owner->init_swim_jump();
+
+	InkballParm ibp = InkballParm(_owner->get_p(), _owner->get_height() + 5.0, _owner->get_heading()*_owner->get_velocity().length(), _owner->get_velocity().length()*0.20, _owner->get_color());
+	MSG_DIS->dispatch_message(0.0, _owner->get_id(), UID_MGR_OBJ, msg::TYPE::CREATE_INK_BALL, &ibp,false);
 }
 
 void IkaSwim::input(Ika* _owner)
@@ -116,6 +125,10 @@ bool IkaSwim::on_collide(Ika* _owner, CollidableObject* _obj)
 		case IST::IKA_SPECIAL_SUPERNOVA:
 			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*10.0);
 			_owner->damaged(IKA_SUPERNOVA_DAMAEG);
+			break;
+		case IST::IKA_SPECIAL_DASH:
+			_owner->burst(get_Vec2(other->get_p(), _owner->get_p())*10.0);
+			_owner->damaged(IKA_DASH_DAMAGE);
 			break;
 		}
 	}

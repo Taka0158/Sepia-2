@@ -70,7 +70,14 @@ public:
 	static int window_sc_w;
 	static int window_sc_h;
 
-	static Color get_color(TeamType _type) { return (_type==TeamType::TEAM_A)?m_color_A:m_color_B; }
+	static Color get_color(TeamType _type) { return (_type == TeamType::TEAM_A) ? m_color_A : m_color_B; }
+	static Color get_color(int _index) 
+	{
+		if (_index == 1) { return get_color(m_ika_1); }
+		else if (_index == 2){return get_color(m_ika_2);}
+		else if (_index == 3){return m_color_B;}
+		else { return get_color(m_ika_4); }
+	}
 	static TeamType get_ika_1_team() { return m_ika_1; }
 	static TeamType get_ika_2_team() { return m_ika_2; }
 	static TeamType get_ika_3_team() { return m_ika_3; }
@@ -225,7 +232,7 @@ CharType Setting::m_char_3 = CharType::NORMAL;
 CharType Setting::m_char_4 = CharType::NORMAL;
 
 //スペシャルタイプ
-SpecialType Setting::m_special_1 = SpecialType::TYPHOON;
+SpecialType Setting::m_special_1 = SpecialType::DASH;
 SpecialType Setting::m_special_2 = SpecialType::TYPHOON;
 SpecialType Setting::m_special_3 = SpecialType::SUPERNOVA;
 SpecialType Setting::m_special_4 = SpecialType::TYPHOON;

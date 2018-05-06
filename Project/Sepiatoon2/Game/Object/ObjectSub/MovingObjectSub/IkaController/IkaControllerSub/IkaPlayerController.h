@@ -19,4 +19,11 @@ public:
 
 	bool is_pressed_swim();
 private:
+	//swimボタンを何フレームおしているか
+	int m_swim_pressed_frame = 0;
+	//何フレームおしていたらスペシャルが発動するか
+	static int m_special_threshold;
 };
+
+int IkaPlayerController::m_special_threshold = 45;
+

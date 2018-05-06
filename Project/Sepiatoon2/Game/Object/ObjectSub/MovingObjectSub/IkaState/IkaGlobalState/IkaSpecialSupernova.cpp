@@ -19,6 +19,7 @@ void IkaSpecialSupernova::enter(Ika* _owner)
 	_owner->unable_gravity();
 	_owner->fly(1.0);
 	_owner->set_moving_parm(m_state_type);
+	_owner->set_special_gauge_rate(0.0);
 
 }
 void IkaSpecialSupernova::update(Ika* _owner)
@@ -89,6 +90,7 @@ void IkaSpecialSupernova::exit(Ika* _owner)
 	_owner->enable_gravity();
 	_owner->init_mask_radius();
 	_owner->init_mask_height();
+	_owner->init_special_gauge_rate();
 }
 
 void IkaSpecialSupernova::fire(Ika* _owner)

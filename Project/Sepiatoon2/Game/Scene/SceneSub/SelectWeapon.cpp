@@ -162,16 +162,13 @@ Texture* SelectWeapon::get_tex(int _index,int& _tex_index)
 	switch (SpecialType(_index))
 	{
 	case SpecialType::TYPHOON:
-		_tex_index = clamp(_tex_index, 0, NUM_OF_ANIM_SELECT_TYPHOON - 1);
 		ret = &ASSET_FAC->get_tex(ImageType::ANIM_SELECT_TYPHOON, _tex_index);
 		break;
 	case SpecialType::SUPERNOVA:
-		_tex_index = clamp(_tex_index, 0, NUM_OF_ANIM_SELECT_SUPERNOVA - 1);
 		ret = &ASSET_FAC->get_tex(ImageType::ANIM_SELECT_SUPERNOVA, _tex_index);
 		break;
 	case SpecialType::DASH:
-		_tex_index = clamp(_tex_index, 0, NUM_OF_ANIM_SELECT_TYPHOON - 1);
-		ret = &ASSET_FAC->get_tex(ImageType::ANIM_SELECT_TYPHOON, _tex_index);
+		ret = &ASSET_FAC->get_tex(ImageType::ANIM_SELECT_DASH, _tex_index);
 		break;
 	}
 
